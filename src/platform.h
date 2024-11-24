@@ -20,11 +20,11 @@ error "Missing the <filesystem> header."
 // <- filesystem
 
 #include <string>
+#include <vector>
 
 namespace platform
 {
-
-int unlink(const std::string &pathname);
+enum class OutputMode { IGNORE, CAPTURE };
 
 char *strdup(const char *s);
 
@@ -33,6 +33,9 @@ typedef int mode_t;
 #endif
 
 int mkdir(const std::string &pathname, mode_t mode = 0);
+
+int executeProcess(const std::string& program, const std::vector<std::string>& args,
+                   OutputMode mode = OutputMode::IGNORE, std::string* output = nullptr);
 
 } /* namespace platform */
 

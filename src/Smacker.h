@@ -23,12 +23,10 @@ public:
   /**
    *  Convert SMK video to OGV
    */
-  bool convertOGV(const std::string &arcfile, Storage storage);
-
-  bool convertMNG(const std::string &arcfile,  Storage storage);
+  bool convert(const std::string &arcfile, Storage storage);
 
 private:
-  bool callConvert(const std::string &cmd);
+
 };
 
 #endif /* VIDEO_H */

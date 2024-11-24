@@ -1,36 +1,3 @@
-//       _________ __                 __
-//      /   _____//  |_____________ _/  |______     ____  __ __  ______
-//      \_____  \\   __\_  __ \__  \\   __\__  \   / ___\|  |  \/  ___/
-//      /        \|  |  |  | \// __ \|  |  / __ \_/ /_/  >  |  /\___ |
-//     /_______  /|__|  |__|  (____  /__| (____  /\___  /|____//____  >
-//             \/                  \/          \//_____/            \/
-//  ______________________                           ______________________
-//                        T H E   W A R   B E G I N S
-//   Utility for Stratagus - A free fantasy real time strategy game engine
-//
-/**@name startool.c - Extract files from star archives. */
-//
-//      (c) Copyright 2002-2012 by Jimmy Salmon and Pali Rohár
-//
-//      This program is free software; you can redistribute it and/or modify
-//      it under the terms of the GNU General Public License as published by
-//      the Free Software Foundation; version 2 dated June, 1991.
-//
-//      This program is distributed in the hope that it will be useful,
-//      but WITHOUT ANY WARRANTY; without even the implied warranty of
-//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//      GNU General Public License for more details.
-//
-//      You should have received a copy of the GNU General Public License
-//      along with this program; if not, write to the Free Software
-//      Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-//      02111-1307, USA.
-//
-//@{
-/*----------------------------------------------------------------------------
- --  Includes
-
- ----------------------------------------------------------------------------*/
 
 // project
 #include <UnitsConverter.h>
@@ -429,13 +396,6 @@ void testHook()
 
   json_file >> dlgsRaceJson; // initialize json object with what was read from file
 
-  Widgets widgets(storm);
-  widgets.setPalette(pal);
-  widgets.convert("dlgs\\terran.grp", "/tmp/widgets2/", dlgsRaceJson);
-
-
-  grp.save("/tmp/ofirec.png");
-
   cout << "end testHook()" << endl;
   exit(0);
 }
@@ -763,7 +723,7 @@ int main(int argc, const char **argv)
           {
             printf("ConvertSmacker: %s, %s", c[u].File, c[u].ArcFile);
             Smacker video(storm);
-            case_func = video.convertOGV(c[u].ArcFile, videos(c[u].File));
+            case_func = video.convert(c[u].ArcFile, videos(c[u].File));
             printf("...%s\n", case_func ? "ok" : "nok");
           }
           break;
@@ -772,7 +732,7 @@ int main(int argc, const char **argv)
           {
             printf("ConvertPortrait: %s, %s", c[u].File, c[u].ArcFile);
             Smacker video(storm);
-            case_func = video.convertOGV(c[u].ArcFile, videos(c[u].File));
+            case_func = video.convert(c[u].ArcFile, videos(c[u].File));
             printf("...%s\n", case_func ? "ok" : "nok");
           }
           break;
@@ -839,13 +799,12 @@ int main(int argc, const char **argv)
     console = "ui/pconsole";
     left = 227;
     right = 265;
-
     printf("UIConsole: %s", console.c_str());
     uic.convert(graphics(console), left, right);
     printf("...%s\n", case_func ? "ok" : "nok");
 
     // remove temporary sub files
-    platform::unlink(sub_storm->getArchiveName());
+    fs::remove(sub_storm->getArchiveName());
 
     CreatePanels();
   }

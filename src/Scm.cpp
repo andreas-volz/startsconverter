@@ -54,7 +54,7 @@ Scm::Scm(std::shared_ptr<Hurricane> hurricane, const std::string &arcfile, Stora
   string arcfile_scm = arcfile + ".scm";
   m_scm_path = storage(arcfile_scm).getFullPath();
 
-  bool result = mHurricane->extractFile(arcfile_scm, m_scm_path); // TODO maybe the Breeze extractFile interface is broken????
+  bool result = mHurricane->extractFile(arcfile_scm, m_scm_path);
   assert(result);
   if (result)
   {

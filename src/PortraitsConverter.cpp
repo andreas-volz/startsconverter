@@ -125,7 +125,7 @@ bool PortraitsConverter::convertOgvPortraits(const std::string &arcfile, std::ve
 
     cout << "Try export (last one may fail if less then three) " << smk_arcfile << " to " << target_basename;
 
-    smk_available = video.convertOGV(smk_arcfile, videos(target_basename));
+    smk_available = video.convert(smk_arcfile, videos(target_basename));
 
     if(smk_available)
     {

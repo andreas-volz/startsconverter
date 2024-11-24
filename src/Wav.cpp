@@ -12,6 +12,7 @@
 #include "FileUtil.h"
 
 // system
+#include <vector>
 
 using namespace std;
 
@@ -40,24 +41,32 @@ bool Wav::convert(const std::string &arcfile,  Storage storage)
   string wav_file = storage.getFullPath() + ".wav";
   string ogg_file = storage.getFullPath() + ".ogg";
 
-  CheckPath(wav_file);
   result = mHurricane->extractFile(arcfile, wav_file, false);
 
-  string ffmpeg_str =
-    string("ffmpeg -y -i \"") + wav_file
-    + "\" -acodec libvorbis  \""
-    + ogg_file + "\"";
-
-  //cout << "video: " << ffmpeg_str << endl;
-
-  // TODO: call it in a way we suppress the output to stdout
-  int sys_call = system(ffmpeg_str.c_str());
-  if (sys_call != 0)
+  if(result)
   {
-    result = false;
-  }
+    string ffmpeg = "ffmpeg";
+    vector<string> ffmped_args;
+    ffmped_args.push_back("-y");
 
-  fs::remove(wav_file);
+    ffmped_args.push_back("-i");
+    ffmped_args.push_back(wav_file);
+
+    ffmped_args.push_back("-acodec");
+    ffmped_args.push_back("libvorbis");
+
+    ffmped_args.push_back(ogg_file);
+
+    string output_capture;
+    int sys_call = platform::executeProcess(ffmpeg, ffmped_args, platform::OutputMode::CAPTURE, &output_capture);
+    if(sys_call != 0)
+    {
+      result = false;
+    }
+    LOG4CXX_TRACE(logger, output_capture);
+
+    fs::remove(wav_file);
+  }
 
   return result;
 }

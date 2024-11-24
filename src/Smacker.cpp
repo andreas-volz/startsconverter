@@ -13,6 +13,7 @@
 
 // System
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -29,7 +30,7 @@ Smacker::~Smacker()
 
 }
 
-bool Smacker::convertOGV(const std::string &arcfile,  Storage storage)
+bool Smacker::convert(const std::string &arcfile,  Storage storage)
 {
   bool result = true;
 
@@ -39,19 +40,37 @@ bool Smacker::convertOGV(const std::string &arcfile,  Storage storage)
   result = mHurricane->extractFile(arcfile, smk_file, false);
   if(result)
   {
-    string ffmpeg_str =
-      string("ffmpeg -y -i \"") + smk_file
-      + "\" -codec:v libtheora -qscale:v 31 -codec:a libvorbis -qscale:a 15 -pix_fmt yuv420p \""
-      + ogv_file + "\"";
+    string ffmpeg = "ffmpeg";
+    vector<string> ffmped_args;
+    ffmped_args.push_back("-y");
 
-    LOG4CXX_DEBUG(logger, ffmpeg_str);
+    ffmped_args.push_back("-i");
+    ffmped_args.push_back(smk_file);
 
-    // TODO: call it in a way we suppress the output to stdout
-    int sys_call = system(ffmpeg_str.c_str());
-    if (sys_call != 0)
+    ffmped_args.push_back("-codec:v");
+    ffmped_args.push_back("libtheora");
+
+    ffmped_args.push_back("-qscale:v");
+    ffmped_args.push_back("31");
+
+    ffmped_args.push_back("-codec:a");
+    ffmped_args.push_back("libvorbis");
+
+    ffmped_args.push_back("-qscale:a");
+    ffmped_args.push_back("15");
+
+    ffmped_args.push_back("-pix_fmt");
+    ffmped_args.push_back("yuv420p");
+
+    ffmped_args.push_back(ogv_file);
+
+    string output_capture;
+    int sys_call = platform::executeProcess(ffmpeg, ffmped_args, platform::OutputMode::CAPTURE, &output_capture);
+    if(sys_call != 0)
     {
       result = false;
     }
+    LOG4CXX_TRACE(logger, output_capture);
 
     fs::remove(smk_file);
   }
@@ -59,70 +78,3 @@ bool Smacker::convertOGV(const std::string &arcfile,  Storage storage)
   return result;
 }
 
-bool Smacker::convertMNG(const std::string &arcfile,  Storage storage)
-{
-  bool result = true;
-
-  string smk_file = storage.getFullPath() + ".smk";
-  string png_path = storage.getFullPath() + "_png/";
-  string mng_file = storage.getFullPath() + ".mng";
-
-  result = mHurricane->extractFile(arcfile, smk_file, false);
-  if(result)
-  {
-    CheckPath(png_path);
-
-    string ffmpeg_str =
-      string("ffmpeg -y -i \"") + smk_file + "\" -codec:v png -qscale:v 31 -pix_fmt yuv420p \"" + png_path + "\"image%05d.png";
-      LOG4CXX_DEBUG(logger, ffmpeg_str);
-
-    // TODO: call it in a way we suppress the output to stdout
-    int sys_call = system(ffmpeg_str.c_str());
-    if (sys_call == 0)
-    {
-      if(result)
-      {
-        string mng_cmd = "convert \"" + png_path + "image*.png\" -delay 4 \"" + mng_file + "\"";
-        LOG4CXX_DEBUG(logger, mng_cmd);
-
-        result = callConvert(mng_cmd);
-      }
-    }
-    else
-    {
-      result = false;
-    }
-
-    fs::remove(smk_file);
-    fs::remove_all(png_path);
-  }
-
-  return result;
-}
-
-bool Smacker::callConvert(const std::string &cmd)
-{
-  bool result = true;
-
-  // try convert with ImageMagick 7+
-  string magic7_cmd("magick " + cmd);
-  int sys_call = system(magic7_cmd.c_str());
-  if (sys_call != 0)
-  {
-    // try convert with ImageMagick <= 6
-    string magic6_cmd(cmd);
-    sys_call = system(magic6_cmd.c_str());
-    if (sys_call != 0)
-    {
-      // try convert with GraphicsMagick
-      string gm_cmd("gm " + cmd);
-      sys_call = system(gm_cmd.c_str());
-      if (sys_call != 0)
-      {
-        result = false;
-      }
-    }
-  }
-
-  return result;
-}
