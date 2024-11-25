@@ -9,10 +9,8 @@
 #include "dat/Portrait.h"
 #include "Smacker.h"
 #include "StringUtil.h"
-#include "Preferences.h"
 #include "FileUtil.h"
 #include "platform.h"
-#include "luagen.h"
 #include "Logger.h"
 
 // system
@@ -23,38 +21,22 @@
 using namespace std;
 using namespace dat;
 
-static Logger mLogger = Logger("startool.dat.PortraitsConverter");
+static Logger mLogger = Logger("startool.PortraitsConverter");
 
 PortraitsConverter::PortraitsConverter(std::shared_ptr<Hurricane> hurricane, DataHub &datahub) :
     Converter(hurricane),
     mDatahub(datahub)
 {
-
 }
 
 PortraitsConverter::~PortraitsConverter()
 {
-
 }
 
-bool PortraitsConverter::convert()
+bool PortraitsConverter::convert(Storage videosStorage)
 {
   bool result = true;
 
-  Preferences &preferences = Preferences::getInstance();
-
-  Storage videos;
-  videos.setDataPath(preferences.getDestDir());
-  videos.setDataType("videos/portrait");
-
-  Storage luagen;
-  luagen.setDataPath(preferences.getDestDir());
-  luagen.setDataType("luagen/portrait");
-  CheckPath(luagen.getFullPath());
-
-  ofstream lua_include;
-  lua_include.open (luagen("luagen-portrait.lua").getFullPath());
-  string lua_include_str;
 
   for(unsigned int i = 0; i < mDatahub.portdata->video_idle()->size(); i++)
   {
@@ -67,25 +49,14 @@ bool PortraitsConverter::convert()
     string portrait_talking_id(portrait.getIDString(portrait_arcfile_talking));
 
     // just to ensure the idle / talking consistency in the database
-    // this should also be the case otherwise something is broken
+    // this should also be the case otherwise something is broken (TODO: => not sure if this is still valid)
     if(portrait_idle_id == portrait_talking_id)
     {
-      Storage lua_file_store(luagen("portrait-" + portrait_idle_id + ".lua"));
-      ofstream lua_file;
-      lua_file.open (lua_file_store.getFullPath());
-
       vector<string> portrait_list;
 
-      convertOgvPortraits(portrait_arcfile_idle, portrait_list);
-      portrait_list.push_back("talking"); // the stratagus API needs this as separator
-      convertOgvPortraits(portrait_arcfile_talking, portrait_list);
-
-      string portraits_table = lg::assign("portrait_" + portrait_idle_id ,lg::table(lg::paramsQuote(portrait_list)));
-
-      lua_include_str += lg::line(lg::function("Load", lg::quote(lua_file_store.getRelativePath())));
-
-      lua_file << portraits_table;
-      lua_file.close();
+      /* TODO: if it'S later needed to write a JSON file this might be a good place */
+      convertOgvPortraits(portrait_arcfile_idle, portrait_list, videosStorage);
+      convertOgvPortraits(portrait_arcfile_talking, portrait_list, videosStorage);
     }
     else
     {
@@ -93,23 +64,13 @@ bool PortraitsConverter::convert()
     }
   }
 
-
-  lua_include << lua_include_str;
-  lua_include.close();
-
   return result;
 }
 
-bool PortraitsConverter::convertOgvPortraits(const std::string &arcfile, std::vector<std::string> &portrait_list)
+bool PortraitsConverter::convertOgvPortraits(const std::string &arcfile, std::vector<std::string> &portrait_list, Storage videosStorage)
 {
   bool smk_available = true;
   unsigned int smk_num = 0;
-
-  Preferences &preferences = Preferences::getInstance();
-
-  Storage videos;
-  videos.setDataPath(preferences.getDestDir());
-  videos.setDataType("videos/portrait");
 
   while(smk_available && smk_num <= 3)
   {
@@ -123,16 +84,15 @@ bool PortraitsConverter::convertOgvPortraits(const std::string &arcfile, std::ve
     replaceString("\\", "/", target_basename);
     target_basename = to_lower(target_basename);
 
-    cout << "Try export (last one may fail if less then three) " << smk_arcfile << " to " << target_basename;
-
-    smk_available = video.convert(smk_arcfile, videos(target_basename));
+    LOG4CXX_INFO(mLogger, "Try export (last one may fail if less then three) " + smk_arcfile + " to " + target_basename);
+    smk_available = video.convert(smk_arcfile, videosStorage(target_basename));
+    LOG4CXX_INFO(mLogger, (smk_available ? "ok" : "nok"));
 
     if(smk_available)
     {
-      portrait_list.push_back(videos.getDataType() + "/" + target_basename + ".ogv");
+      portrait_list.push_back(videosStorage.getDataType() + "/" + target_basename + ".ogv");
     }
 
-    printf("...%s\n", smk_available ? "ok" : "nok");
     smk_num++;
   }
 

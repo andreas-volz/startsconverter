@@ -36,7 +36,6 @@ starformat_lib_sources = files(
 	'UIConsole.cpp',
 	'pacman.cpp',
 	'FileNotFoundException.cpp',
-	'UnitsConverter.cpp',
 	'PortraitsConverter.cpp',
 	'ImagesConverter.cpp',
 	'SfxConverter.cpp',

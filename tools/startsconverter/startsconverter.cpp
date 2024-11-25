@@ -13,6 +13,7 @@
 #include "ImagesConverter.h"
 #include "SfxConverter.h"
 #include "DatConverter.h"
+#include "PortraitsConverter.h"
 
 /* system */
 #include <string>
@@ -159,6 +160,10 @@ int main(int argc, const char **argv)
   Storage datStorage;
   datStorage.setDataPath(destination_directory);
 
+  Storage portraitsStorage;
+  portraitsStorage.setDataPath(destination_directory);
+  portraitsStorage.setDataType("portraits");
+
   CheckPath(destination_directory);
 
   Bootstrap bootstrap(archive, backend, archiveStorage);
@@ -174,8 +179,13 @@ int main(int argc, const char **argv)
   //SfxConverter sfx_converter(bootstrap.getSubArchive(), datahub);
   //sfx_converter.convert(soundsStorage);
 
-  DatConverter dat_converter(bootstrap.getSubArchive(), datahub);
-  dat_converter.convert(datStorage);
+  //DatConverter dat_converter(bootstrap.getSubArchive(), datahub);
+  //dat_converter.convert(datStorage);
+
+  PortraitsConverter portraits_converter(bootstrap.getSubArchive(), datahub);
+  portraits_converter.convert(portraitsStorage);
+
+
 
   cout << "App Finished" << endl;
   return 0;

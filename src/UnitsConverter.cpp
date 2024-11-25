@@ -23,6 +23,10 @@
 
 using namespace std;
 
+/**
+ * TDOO: this file is deactivated and may be deleted after switch to new generators
+ */
+
 namespace dat
 {
 

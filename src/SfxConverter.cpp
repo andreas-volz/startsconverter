@@ -22,7 +22,6 @@ using namespace dat;
 
 static Logger logger = Logger("startool.SfxConverter");
 
-
 SfxConverter::SfxConverter(std::shared_ptr<Hurricane> hurricane, DataHub &datahub) :
   Converter(hurricane),
   mDatahub(datahub)
