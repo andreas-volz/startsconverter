@@ -43,7 +43,8 @@ starformat_lib_sources = files(
 	'NoValidPaletteException.cpp',
 	'AbstractPalette.cpp',
 	'Bootstrap.cpp',
-	'PaletteManager.cpp'
+	'PaletteManager.cpp',
+	'DatConverter.cpp'
 	)
 
 #stratagus_prefix = get_option('prefix')

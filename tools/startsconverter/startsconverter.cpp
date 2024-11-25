@@ -11,6 +11,8 @@
 #include "dat/DataHub.h"
 #include "PaletteManager.h"
 #include "ImagesConverter.h"
+#include "SfxConverter.h"
+#include "DatConverter.h"
 
 /* system */
 #include <string>
@@ -139,31 +141,41 @@ int main(int argc, const char **argv)
 
   parseOptions(argc, argv);
 
-  //Preferences &preferences = Preferences::getInstance();
-  //preferences.init(); // initialize all properties once in the beginning of the application
+  Storage archiveStorage;
+  archiveStorage.setDataPath(destination_directory);
 
-  Storage storage;
-  storage.setDataPath(destination_directory);
+  Storage paletteStorage;
+  paletteStorage.setDataPath(destination_directory);
+  paletteStorage.setDataType("palette");
 
-  Storage palStorage;
-  palStorage.setDataPath(destination_directory);
-  palStorage.setDataType("palette");
+  Storage graphicsStorage;
+  graphicsStorage.setDataPath(destination_directory);
+  graphicsStorage.setDataType("graphics");
 
-  Storage graphics;
-  graphics.setDataPath(destination_directory);
-  graphics.setDataType("graphics");
+  Storage soundsStorage;
+  soundsStorage.setDataPath(destination_directory);
+  soundsStorage.setDataType("sounds");
+
+  Storage datStorage;
+  datStorage.setDataPath(destination_directory);
 
   CheckPath(destination_directory);
 
-  Bootstrap bootstrap(archive, backend, storage);
+  Bootstrap bootstrap(archive, backend, archiveStorage);
 
   dat::DataHub datahub(bootstrap.getSubArchive());
 
-  PaletteManager palette_manager(bootstrap.getSubArchive());
-  palette_manager.convert(palStorage);
+  //PaletteManager palette_manager(bootstrap.getSubArchive());
+  //palette_manager.convert(paletteStorage);
 
-  ImagesConverter imagesConverter(bootstrap.getSubArchive(), datahub, palette_manager);
-  imagesConverter.convert(graphics);
+  //ImagesConverter imagesConverter(bootstrap.getSubArchive(), datahub, palette_manager);
+  //imagesConverter.convert(graphicsStorage);
+
+  //SfxConverter sfx_converter(bootstrap.getSubArchive(), datahub);
+  //sfx_converter.convert(soundsStorage);
+
+  DatConverter dat_converter(bootstrap.getSubArchive(), datahub);
+  dat_converter.convert(datStorage);
 
   cout << "App Finished" << endl;
   return 0;

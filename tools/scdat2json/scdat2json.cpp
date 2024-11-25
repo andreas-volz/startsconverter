@@ -333,24 +333,6 @@ int main(int argc, const char **argv)
   json stat_txt_tbl = scjsonexporter.export_file_tbl(datahub.stat_txt_tbl_vec);
   saveJson(stat_txt_tbl, jsonStorage("stat_txt_tbl.json"), pretty);
 
-  /*json stat_txt_units_tbl = scjsonexporter.export_file_tbl(datahub.stat_txt_units_tbl_vec);
-  saveJson(stat_txt_units_tbl, jsonStorage("stat_txt_units_tbl.json"), pretty);
-
-  json stat_txt_weapons_tbljson = scjsonexporter.export_file_tbl(datahub.stat_txt_weapons_tbl_vec);
-  saveJson(stat_txt_weapons_tbljson, jsonStorage("stat_txt_weapons_tbl.json"), pretty);
-
-  json stat_txt_error_messages_tbl = scjsonexporter.export_file_tbl(datahub.stat_txt_error_messages_tbl_vec);
-  saveJson(stat_txt_error_messages_tbl, jsonStorage("stat_txt_error_messages_tbl.json"), pretty);
-
-  json stat_txt_upgrades_tbl = scjsonexporter.export_file_tbl(datahub.stat_txt_upgrades_tbl_vec);
-  saveJson(stat_txt_upgrades_tbl, jsonStorage("stat_txt_upgrades_tbl.json"), pretty);
-
-  json stat_txt_orders_tbl = scjsonexporter.export_file_tbl(datahub.stat_txt_orders_tbl_vec);
-  saveJson(stat_txt_orders_tbl, jsonStorage("stat_txt_orders_tbl.json"), pretty);
-
-  json stat_txt_techdata_tbl = scjsonexporter.export_file_tbl(datahub.stat_txt_techdata_tbl_vec);
-  saveJson(stat_txt_techdata_tbl, jsonStorage("stat_txt_techdata_tbl.json"), pretty);*/
-
   cerr << "Application finished!" << endl;
 
   return 0;

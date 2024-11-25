@@ -9,6 +9,7 @@
 
 // project
 #include "dat/DataHub.h"
+#include "Storage.h"
 
 class SfxConverter : public Converter
 {
@@ -16,7 +17,7 @@ public:
   SfxConverter(std::shared_ptr<Hurricane> hurricane, dat::DataHub &datahub);
   virtual ~SfxConverter();
 
-  bool convert();
+  void convert(Storage sounds);
 
 private:
   dat::DataHub &mDatahub;

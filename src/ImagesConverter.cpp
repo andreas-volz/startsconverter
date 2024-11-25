@@ -197,7 +197,8 @@ void ImagesConverter::convert(Storage graphics)
       Storage png_file;
       png_file = graphics(grp_storage_file_base + ".png");
 
-      grp.save(png_file);
+      bool png_result = grp.save(png_file);
+      LOG4CXX_TRACE(logger, "save PNG file: " + grp_storage_file_base + ": " + to_string(png_result));
     }
   }
 }

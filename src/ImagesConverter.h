@@ -13,7 +13,7 @@
 #include "PaletteManager.h"
 
 
-class ImagesConverter: public Converter
+class ImagesConverter : public Converter
 {
 public:
   ImagesConverter(std::shared_ptr<Hurricane> hurricane, dat::DataHub &datahub, PaletteManager &palette_manager);
