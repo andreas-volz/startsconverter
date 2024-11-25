@@ -3,12 +3,14 @@
 #include "Storm.h"
 #include "Casc.h"
 #include "FileUtil.h"
-#include "iscript/IScript.h"
-#include "iscript/IScriptConverter.h"
+#include "Storage.h"
 #include "optparser.h"
 #include "Logger.h"
 #include "StringUtil.h"
-#include "Smacker.h"
+#include "Bootstrap.h"
+#include "dat/DataHub.h"
+#include "PaletteManager.h"
+#include "ImagesConverter.h"
 
 /* system */
 #include <string>
@@ -24,48 +26,6 @@ string backend;
 string archive;
 string archive_file;
 string destination_directory;
-
-bool CheckCASCDataFolder(const std::string &dir)
-{
-  return FileExists(dir + "/.build.info");
-}
-
-shared_ptr<Hurricane> selectChoosenBackend()
-{
-  shared_ptr<Hurricane> hurricane;
-
-  cerr << "Backend: " << backend << endl;
-  if(to_lower(backend) == "breeze")
-  {
-    hurricane = make_shared<Breeze>(archive);
-  }
-  else if(to_lower(backend) == "storm")
-  {
-    hurricane = make_shared<Storm>(archive);
-  }
-  else if(to_lower(backend) == "casc")
-  {
-#ifdef HAVE_CASC
-    if(CheckCASCDataFolder(archive))
-    {
-      hurricane = make_shared<Casc>(archive);
-    }
-    else
-    {
-      cerr << "Error: 'archive' is not a CASC archive!" << endl;
-    }
-#else
-    cerr << "Error: No CASC support compiled into sauwetter!" << endl;
-    exit(1);
-#endif
-  }
-  else
-  {
-    cerr << "Error: Unknown backend: " << backend << endl;
-  }
-
-  return hurricane;
-}
 
 enum optionIndex
 {
@@ -179,17 +139,32 @@ int main(int argc, const char **argv)
 
   parseOptions(argc, argv);
 
+  //Preferences &preferences = Preferences::getInstance();
+  //preferences.init(); // initialize all properties once in the beginning of the application
 
-  shared_ptr<Hurricane> hurricane = selectChoosenBackend();
+  Storage storage;
+  storage.setDataPath(destination_directory);
 
+  Storage palStorage;
+  palStorage.setDataPath(destination_directory);
+  palStorage.setDataType("palette");
 
-  Storage storage(destination_directory);
+  Storage graphics;
+  graphics.setDataPath(destination_directory);
+  graphics.setDataType("graphics");
 
   CheckPath(destination_directory);
-  Smacker smacker(hurricane);
-  smacker.convert("smk/prezerg_4.smk", storage("prezerg_4"));
 
+  Bootstrap bootstrap(archive, backend, storage);
 
+  dat::DataHub datahub(bootstrap.getSubArchive());
 
+  PaletteManager palette_manager(bootstrap.getSubArchive());
+  palette_manager.convert(palStorage);
+
+  ImagesConverter imagesConverter(bootstrap.getSubArchive(), datahub, palette_manager);
+  imagesConverter.convert(graphics);
+
+  cout << "App Finished" << endl;
   return 0;
 }

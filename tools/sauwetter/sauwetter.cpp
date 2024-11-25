@@ -23,11 +23,6 @@ string archive;
 string archive_file;
 string destination_directory;
 
-bool CheckCASCDataFolder(const std::string &dir)
-{
-  return FileExists(dir + "/.build.info");
-}
-
 shared_ptr<Hurricane> selectChoosenBackend()
 {
   shared_ptr<Hurricane> hurricane;
@@ -44,14 +39,7 @@ shared_ptr<Hurricane> selectChoosenBackend()
   else if(to_lower(backend) == "casc")
   {
 #ifdef HAVE_CASC
-    if(CheckCASCDataFolder(archive))
-    {
-      hurricane = make_shared<Casc>(archive);
-    }
-    else
-    {
-      cerr << "Error: 'archive' is not a CASC archive!" << endl;
-    }
+    hurricane = make_shared<Casc>(archive);
 #else
     cerr << "Error: No CASC support compiled into sauwetter!" << endl;
     exit(1);

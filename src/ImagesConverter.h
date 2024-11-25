@@ -10,19 +10,20 @@
 // project
 #include "Converter.h"
 #include "dat/DataHub.h"
-
+#include "PaletteManager.h"
 
 
 class ImagesConverter: public Converter
 {
 public:
-  ImagesConverter(std::shared_ptr<Hurricane> hurricane, dat::DataHub &datahub);
+  ImagesConverter(std::shared_ptr<Hurricane> hurricane, dat::DataHub &datahub, PaletteManager &palette_manager);
   virtual ~ImagesConverter();
 
-  bool convert(std::map<std::string, std::shared_ptr<AbstractPalette>> &paletteMap);
+  void convert(Storage graphics);
 
 private:
   dat::DataHub &mDatahub;
+  PaletteManager &mPaletteManager;
 };
 
 #endif /* IMAGESCONVERTER_H */

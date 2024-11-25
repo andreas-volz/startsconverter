@@ -23,11 +23,6 @@ bool FileExists(const std::string &filename);
 /**
  *  Check if path exists, if not make all directories.
  */
-void CheckPath(const char *path);
-
-/**
- *  Check if path exists, if not make all directories.
- */
-void CheckPath(const std::string &path);
+void CheckPath(const std::string &path_name);
 
 #endif /* FILEUTIL_H_ */

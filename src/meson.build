@@ -5,10 +5,6 @@ subdir('tileset')
 subdir('libgrp')
 subdir('iscript')
 
-startool_sources = files(
-	'startool.cpp'
-)
-
 starformat_lib_sources = files(
 	'Casc.cpp',
 	'FileUtil.cpp',
@@ -45,7 +41,9 @@ starformat_lib_sources = files(
 	'ImagesConverter.cpp',
 	'SfxConverter.cpp',
 	'NoValidPaletteException.cpp',
-	'AbstractPalette.cpp'
+	'AbstractPalette.cpp',
+	'Bootstrap.cpp',
+	'PaletteManager.cpp'
 	)
 
 #stratagus_prefix = get_option('prefix')
@@ -78,11 +76,7 @@ libstarformat = static_library('starformat',
 libstarformat_dep = declare_dependency(include_directories : [config_incdir, inc],
   link_with : libstarformat)
 
-executable('startool',
-	startool_sources,
-	include_directories : config_incdir,
-	dependencies : [log4cxx_dep, libstarformat_dep, nlohmann_json_dep, png_dep],
-	install : true)
+
 
 	
 

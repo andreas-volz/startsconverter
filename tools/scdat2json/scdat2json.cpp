@@ -43,11 +43,6 @@ string destination_directory;
 bool pretty = true;
 bool nested_objects = false;
 
-bool CheckCASCDataFolder(const std::string &dir)
-{
-  return FileExists(dir + "/.build.info");
-}
-
 enum optionIndex
 {
   UNKNOWN, HELP, BACKEND, PRETTY, OBJECTS
@@ -216,14 +211,7 @@ int main(int argc, const char **argv)
   else if(to_lower(backend) == "casc")
   {
 #ifdef HAVE_CASC
-    if(CheckCASCDataFolder(archive))
-    {
-      hurricane = make_shared<Casc>(archive);
-    }
-    else
-    {
-      cerr << "Error: 'archive' is not a CASC archive!" << endl;
-    }
+    hurricane = make_shared<Casc>(archive);
 #else
     cerr << "Error: No CASC support compiled into sauwetter!" << endl;
     exit(1);

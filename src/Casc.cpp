@@ -39,13 +39,21 @@ bool Casc::openArchive(const std::string &archiveName)
   // close it in case it's still open
   closeArchive();
 
-  if (!CascOpenStorage(archiveName.c_str(), 0, &mStorage))
+  // this file is in each CASC folder
+  if(FileExists(archiveName + "/.build.info"))
   {
-    result = false;
+    if (!CascOpenStorage(archiveName.c_str(), 0, &mStorage))
+    {
+      result = false;
+    }
+    else
+    {
+      mArchiveName = archiveName;
+    }
   }
   else
   {
-    mArchiveName = archiveName;
+    cerr << "Error: 'archive' is not a CASC archive!" << endl;
   }
   return result;
 }

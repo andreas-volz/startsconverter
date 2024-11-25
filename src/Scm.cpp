@@ -48,6 +48,10 @@
 
 using namespace std;
 
+/*
+ * TODO: .scm/.scx files could also contain .wav files which are reference (somehow) from the map Chk file
+ */
+
 Scm::Scm(std::shared_ptr<Hurricane> hurricane, const std::string &arcfile, Storage storage) :
   Converter(hurricane)
 {
@@ -67,8 +71,8 @@ Scm::Scm(std::shared_ptr<Hurricane> hurricane, const std::string &arcfile, Stora
 
 Scm::~Scm()
 {
-  // delete the temporary .chk file
-  //platform::unlink(m_scm_path);
+  // delete the temporary .scm/.scx file
+  fs::remove(m_scm_path);
 }
 
 

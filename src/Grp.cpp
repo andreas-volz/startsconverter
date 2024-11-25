@@ -70,8 +70,6 @@ bool Grp::getRGBA()
 
 bool Grp::load(const std::string &arcfile)
 {
-  //mArcfile = arcfile;
-
   std::shared_ptr<DataChunk> dcGrp = mHurricane->extractDataChunk(arcfile);
 
   std::vector<char> GrpVec = dcGrp->getCharVector();
@@ -91,7 +89,7 @@ bool Grp::save(Storage filename)
   int IPR = 17;
   int end_frame = mGRPImage.getNumberOfFrames();
 
-  // all IPR < 17 are buildings or similar and stratagus needs them in one image per row
+  // all IPR < 17 are buildings or similar and the engine needs them in one image per row
   if(end_frame < IPR)
   {
     IPR = 1;

@@ -18,43 +18,16 @@ bool FileExists(const std::string &filename)
   return stat(filename.c_str(), &buffer) == 0 ? true : false;
 }
 
-void CheckPath(const std::string &path)
+void CheckPath(const std::string &path_name)
 {
-  CheckPath(path.c_str());
-}
-
-void CheckPath(const char *path)
-{
-  char *cp = NULL;
-  char *s = NULL;
-
-  cp = platform::strdup(path);
-
-  s = strrchr(cp, '/');
-  if (s)
+  try
   {
-    *s = '\0';  // remove file
-    s = cp;
-    for (;;)
-    {
-      // make each path element
-      s = strchr(s, '/');
-      if (s)
-      {
-        *s = '\0';
-      }
-
-      platform::mkdir(cp, 0777);
-
-      if (s)
-      {
-        *s++ = '/';
-      }
-      else
-      {
-        break;
-      }
-    }
+    fs::path p(path_name);
+    fs::create_directories(p.parent_path());
   }
-  free(cp);
+  catch (const std::exception& ex)
+  {
+    // just ignore the exception if not possible to create a directory
+  }
 }
+

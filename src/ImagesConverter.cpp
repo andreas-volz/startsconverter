@@ -9,7 +9,6 @@
 #include "Logger.h"
 #include "Preferences.h"
 #include "Storage.h"
-#include "luagen.h"
 #include "FileUtil.h"
 #include "dat/Image.h"
 #include "StringUtil.h"
@@ -24,39 +23,21 @@
 using namespace std;
 using namespace dat;
 
-static Logger logger = Logger("startool.dat.ImagesConverter");
+static Logger logger = Logger("startool.ImagesConverter");
 
-ImagesConverter::ImagesConverter(std::shared_ptr<Hurricane> hurricane, DataHub &datahub) :
+ImagesConverter::ImagesConverter(std::shared_ptr<Hurricane> hurricane, DataHub &datahub, PaletteManager &palette_manager) :
     Converter(hurricane),
-    mDatahub(datahub)
+    mDatahub(datahub),
+    mPaletteManager(palette_manager)
 {
-
 }
 
 ImagesConverter::~ImagesConverter()
 {
-
 }
 
-bool ImagesConverter::convert(std::map<std::string, std::shared_ptr<AbstractPalette>> &paletteMap)
+void ImagesConverter::convert(Storage graphics)
 {
-  bool result = true;
-
-  Preferences &preferences = Preferences::getInstance();
-
-  Storage graphics;
-  graphics.setDataPath(preferences.getDestDir());
-  graphics.setDataType("graphics");
-
-  Storage luagen;
-  luagen.setDataPath(preferences.getDestDir());
-  luagen.setDataType("luagen/images");
-  CheckPath(luagen.getFullPath());
-
-  ofstream lua_include;
-  lua_include.open (luagen("luagen-images.lua").getFullPath());
-  string lua_include_str;
-
   for (unsigned int i = 0; i < mDatahub.images->grp()->size(); i++)
   {
     Image image(mDatahub, i);
@@ -129,7 +110,7 @@ bool ImagesConverter::convert(std::map<std::string, std::shared_ptr<AbstractPale
         remapping = "ofire";
       }
 
-      pal = paletteMap.at(remapping);
+      pal = mPaletteManager.getPalette(remapping);
       grp.setPalette(pal);
 
       grp.setRGBA(true);
@@ -138,7 +119,7 @@ bool ImagesConverter::convert(std::map<std::string, std::shared_ptr<AbstractPale
     {
       // Hmm, this generates a black shadow, but I would expect alpha transparent shadow...
       save_grp = true;
-      pal = paletteMap.at("tfontgam");
+      pal = mPaletteManager.getPalette("tfontgam");
       grp.setPalette(pal);
       grp.setRGBA(true);
     }
@@ -149,11 +130,11 @@ bool ImagesConverter::convert(std::map<std::string, std::shared_ptr<AbstractPale
       if(imageType == "thingy" && imageSubType == "tileset" && !imageSubSubType.empty())
       {
         tileset = imageSubSubType;
-        pal = paletteMap.at(tileset);
+        pal = mPaletteManager.getPalette(tileset);
       }
       else // in all other cases use the "tunit" palette
       {
-        pal = paletteMap.at("tunit");
+        pal = mPaletteManager.getPalette("tunit");
       }
     }
 
@@ -168,24 +149,24 @@ bool ImagesConverter::convert(std::map<std::string, std::shared_ptr<AbstractPale
     {
       // TODO: player color isn't available. But no problem visible for now.
       // maybe need to add cunit palette before into tileset palette?
-      pal = paletteMap.at("badlands");
+      pal = mPaletteManager.getPalette("badlands");
     }
     else if(grp_name == "neutral\\cbattle.grp")
     {
       // TODO: player color isn't available. See how to fix this (or if this is needed for neutral)
-      pal = paletteMap.at("badlands");
+      pal = mPaletteManager.getPalette("badlands");
     }
     else if(grp_name == "neutral\\ion.grp")
     {
-      pal = paletteMap.at("platform");
+      pal = mPaletteManager.getPalette("platform");
     }
     else if(grp_name == "neutral\\khyad01.grp")
     {
-      pal = paletteMap.at("jungle");
+      pal = mPaletteManager.getPalette("jungle");
     }
     else if(grp_name == "neutral\\temple.grp")
     {
-      pal = paletteMap.at("jungle");
+      pal = mPaletteManager.getPalette("jungle");
     }
     else if(grp_name == "neutral\\geyser.grp")
     {
@@ -195,7 +176,7 @@ bool ImagesConverter::convert(std::map<std::string, std::shared_ptr<AbstractPale
       frame 2 = "install.wpe"
       frame 3 = "ashworld.wpe"
       */
-      pal = paletteMap.at("badlands");
+      pal = mPaletteManager.getPalette("badlands");
     }
     grp.setPalette(pal);
 
@@ -216,64 +197,9 @@ bool ImagesConverter::convert(std::map<std::string, std::shared_ptr<AbstractPale
       Storage png_file;
       png_file = graphics(grp_storage_file_base + ".png");
 
-
-      result = grp.save(png_file);
-
-      string image_id = image.getIDString();
-      string image_lua = image_id + ".lua";
-
-      Storage lua_file_store(luagen(image_lua));
-
-      // only generate LUA file with the image properties in case it could be saved successful
-      if(result)
-      {
-        ofstream lua_file;
-        lua_file.open (lua_file_store.getFullPath());
-
-        Size tilesize = grp.getTileSize();
-
-        int NumDirections = 1;
-        if(image.gfx_turns() == true)
-        {
-          // it seems all animations which are calculated by gfx_turns have 32 directions
-          NumDirections = 32;
-        }
-
-        string unit_image_file(lg::assign(image_id + "_file", lg::quote(png_file.getRelativePath())));
-        lua_file << unit_image_file << endl;
-
-        string unit_image_size(lg::assign(image_id + "_size", lg::sizeTable(tilesize)));
-        lua_file << unit_image_size << endl;
-
-        string unit_image_NumDirections(lg::assign(image_id + "_NumDirections", to_string(NumDirections)));
-        lua_file << unit_image_NumDirections << endl;
-
-        string unit_image_table(
-            lg::table({lg::quote("file"), image_id + "_file",
-            lg::quote("size") , image_id + "_size"}));
-        string unit_image = lg::assign(image_id, unit_image_table);
-        lua_file << unit_image << endl;
-
-        string unit_image_table_var(
-            lg::table({lg::assign("File", image_id + "_file"),
-            lg::assign("Size" , image_id + "_size")}));
-        string unit_image_var = lg::assign(image_id + "_var", unit_image_table_var);
-        lua_file << unit_image_var << endl;
-
-        lua_file.close();
-
-        string grp_save_trace(to_string(i) +  ": " + grp_name + " : " + grp_arcfile + " => " + grp_storage_file_base);
-        LOG4CXX_TRACE(logger, grp_save_trace);
-      }
-      // write the Load call even if Grp not present to preserve the SC base files
-      lua_include_str += lg::line(lg::function("Load", lg::quote(lua_file_store.getRelativePath())));
+      grp.save(png_file);
     }
   }
-
-  lua_include << lua_include_str;
-  lua_include.close();
-
-  return result;
 }
 
 
