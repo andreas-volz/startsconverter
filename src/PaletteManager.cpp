@@ -41,7 +41,7 @@ std::shared_ptr<AbstractPalette> PaletteManager::getPalette(const std::string pa
 void PaletteManager::convert(Storage palStorage)
 {
   // read in the json file
-  std::ifstream json_file(pacman::searchFile("dataset/palettes.json"));
+  std::ifstream json_file(pacman::searchFile("/dataset/palettes.json"));
 
   json palettes_json; //create unitiialized json object
 

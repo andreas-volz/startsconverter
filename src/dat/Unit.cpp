@@ -105,7 +105,6 @@ uint16_t Unit::infestation()
   }
   catch (const std::out_of_range& oor)
   {
-    LOG4CXX_DEBUG(logger, string("Exception: infestation(") + to_string(infestation) + ")");
     throw PropertyNotAvailableException(mId, "infestation");
   }
 

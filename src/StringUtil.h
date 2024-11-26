@@ -43,6 +43,8 @@ int replaceString(const std::string &match, const std::string &replace, std::str
  */
 char* iconvISO2UTF8(char *iso);
 
+std::vector<std::string> splitString(const std::string &inputStr, const std::string &delim);
+
 /**
  * print Vector on std::cout
  */

@@ -4,13 +4,16 @@
  *      Author: Andreas Volz
  */
 
+/* project */
 #include "StringUtil.h"
 #include "Logger.h"
-#include <algorithm>
 
+/* system */
+#include <algorithm>
 #include <iconv.h>
 #include <string.h>
 #include <stdlib.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -183,4 +186,26 @@ char *iconvISO2UTF8(char *iso)
   utf8start[utf8len_save] ='\0';
   return utf8start;
 
+}
+
+std::vector<std::string> splitString(const std::string &inputStr, const std::string &delim)
+{
+  vector<string> string_container;
+  regex delim_regex(delim);
+
+  // Create a regex_token_iterator to split the string
+  sregex_token_iterator it(inputStr.begin(), inputStr.end(), delim_regex, -1);
+
+  // End iterator for the regex_token_iterator
+  sregex_token_iterator end;
+
+  // Iterating through each token
+  while (it != end)
+  {
+      //cout << "\"" << *it << "\"" << " ";
+    string_container.push_back(*it);
+    ++it;
+  }
+
+  return string_container;
 }

@@ -84,9 +84,8 @@ bool PortraitsConverter::convertOgvPortraits(const std::string &arcfile, std::ve
     replaceString("\\", "/", target_basename);
     target_basename = to_lower(target_basename);
 
-    LOG4CXX_INFO(mLogger, "Try export (last one may fail if less then three) " + smk_arcfile + " to " + target_basename);
+    // Try export (last one may fail if less then three - this is ok...)
     smk_available = video.convert(smk_arcfile, videosStorage(target_basename));
-    LOG4CXX_INFO(mLogger, (smk_available ? "ok" : "nok"));
 
     if(smk_available)
     {

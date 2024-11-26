@@ -29,23 +29,24 @@ string backend;
 string archive;
 string archive_file;
 string destination_directory;
+string converters;
+vector<string> converters_list;
 
 enum optionIndex
 {
-  UNKNOWN, HELP, PRETTY, BACKEND
+  UNKNOWN, HELP, BACKEND, CONVERTERS
 };
 const option::Descriptor usage[] =
 {
   {
-    UNKNOWN, 0, "", "", option::Arg::None, "USAGE: startsconverter [options] archive destination-directory\n\n"
+    UNKNOWN, 0, "", "", Arg::None, "USAGE: startsconverter [options] archive destination-directory\n\n"
     "Options:"
   },
-  { HELP, 0, "h", "help", option::Arg::None, "  --help, -h  \t\tPrint usage and exit" },
-  { PRETTY, 0, "p", "pretty", Arg::Required, "  --pretty=[yes/no], -p  \t\tPretty print the formated JSON file (default: yes)" },
-  { BACKEND, 0, "b", "backend", Arg::Required, "  --backend, -b  \t\tChoose a backend (storm=St*arcr*ft1/Br**dwar;casc=Remastered;breeze=Folder)" },
-  { HELP, 0, "h", "help", option::Arg::None, "  --help, -h  \t\tPrint usage and exit" },
+  { HELP, 0, "h", "help", Arg::None, "  --help, -h  \t\tPrint usage and exit" },
+  { BACKEND, 0, "b", "backend", Arg::Required, "  --backend=<backend>, -b <backend>  \t\tChoose a backend (storm=St*arcr*ft1/Br**dwar;casc=Remastered;breeze=Folder)" },
+  { CONVERTERS, 0, "c", "converters", Arg::Required, "  --converters=<conv1:conv2:conv3>, -c <conv1:conv2:conv3>   \t\tUnordered list of converters to run. If not used run all converters." },
   {
-    UNKNOWN, 0, "", "", option::Arg::None,
+    UNKNOWN, 0, "", "", Arg::None,
     "\narchive \t\tDestination to the archive (mpq, casc or dummy folder) based on backend.\n"
     "\ndestination-directory \t\tWhere to save the extracted file with same relative path.\n\n"
   },
@@ -69,18 +70,6 @@ int parseOptions(int argc, const char **argv)
     exit(0);
   }
 
-  if ( options[PRETTY].count() > 0 )
-  {
-    if (string(options[PRETTY].arg) == "yes")
-    {
-      pretty = true;
-    }
-    else if (string(options[PRETTY].arg) == "no")
-    {
-      pretty = false;
-    }
-  }
-
   if(options[BACKEND].count() > 0)
   {
     backend = options[BACKEND].arg;
@@ -90,6 +79,16 @@ int parseOptions(int argc, const char **argv)
     cerr << "Error: 'backend' not given!" << endl << endl;
     option::printUsage(std::cout, usage);
     exit(1);
+  }
+
+  if(options[CONVERTERS].count() > 0)
+  {
+    converters = options[CONVERTERS].arg;
+    converters_list = splitString(converters, ":");
+  }
+  else
+  {
+    converters = "all";
   }
 
   // parse options
@@ -171,23 +170,46 @@ int main(int argc, const char **argv)
 
   dat::DataHub datahub(bootstrap.getSubArchive());
 
-  //PaletteManager palette_manager(bootstrap.getSubArchive());
-  //palette_manager.convert(paletteStorage);
+  // TODO: run this only for palette needed options
+  cout << "Run PaletteManager...";fflush(stdout);
+  PaletteManager palette_manager(bootstrap.getSubArchive());
+  palette_manager.convert(paletteStorage);
+  cout << "DONE" << endl;
 
-  //GraphicsConverter graphics_converter(bootstrap.getSubArchive(), datahub, palette_manager);
-  //graphics_converter.convert(graphicsStorage);
+  //cout << "List of choosen converters: ";
+  //printVector<string>(converters_list);
 
-  //SfxConverter sfx_converter(bootstrap.getSubArchive(), datahub);
-  //sfx_converter.convert(soundsStorage);
+  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "graphics") != converters_list.end())
+  {
+    cout << "Run GraphicsConverter...";fflush(stdout);
+    GraphicsConverter graphics_converter(bootstrap.getSubArchive(), datahub, palette_manager);
+    graphics_converter.convert(graphicsStorage);
+    cout << "DONE" << endl;
+  }
 
-  //DatConverter dat_converter(bootstrap.getSubArchive(), datahub);
-  //dat_converter.convert(datStorage);
+  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "sfx") != converters_list.end())
+  {
+    cout << "Run SfxConverter...";fflush(stdout);
+    SfxConverter sfx_converter(bootstrap.getSubArchive(), datahub);
+    sfx_converter.convert(soundsStorage);
+    cout << "DONE" << endl;
+  }
 
-  //PortraitsConverter portraits_converter(bootstrap.getSubArchive(), datahub);
-  //portraits_converter.convert(portraitsStorage);
+  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "dat") != converters_list.end())
+  {
+    cout << "Run DatConverter...";fflush(stdout);
+    DatConverter dat_converter(bootstrap.getSubArchive(), datahub);
+    dat_converter.convert(datStorage);
+    cout << "DONE" << endl;
+  }
 
-
-
+  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "portraits") != converters_list.end())
+  {
+    cout << "Run PortraitsConverter...";fflush(stdout);
+    PortraitsConverter portraits_converter(bootstrap.getSubArchive(), datahub);
+    portraits_converter.convert(portraitsStorage);
+    cout << "DONE" << endl;
+  }
 
   cout << "App Finished" << endl;
   return 0;
