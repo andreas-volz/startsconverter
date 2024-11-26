@@ -1,5 +1,6 @@
 
 // project
+#include <GraphicsConverter.h>
 #include <UnitsConverter.h>
 #include <PortraitsConverter.h>
 #include "dat/DataHub.h"
@@ -28,7 +29,6 @@
 #include "UIConsole.h"
 #include "StringUtil.h"
 #include "pacman.h"
-#include "ImagesConverter.h"
 #include "SfxConverter.h"
 #include "optparser.h"
 

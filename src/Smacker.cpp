@@ -19,6 +19,12 @@ using namespace std;
 
 static Logger logger = Logger("startool.Smacker");
 
+/*
+ * TODO: do this for portraits: check if size < 64 and not quadratic and then add UI border around
+  Until I find a solution I'll workaround by padding some pixels and put a UI frame in front:
+  ffmpeg -y -i tscfid02.smk -vf "pad=width=64:height=64:x=2:y=4:color=black" -codec:v libtheora -codec:a libvorbis -pix_fmt yuv420p tscfid02.ogv
+*/
+
 Smacker::Smacker(std::shared_ptr<Hurricane> hurricane) :
   Converter(hurricane)
 {

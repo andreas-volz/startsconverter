@@ -1,11 +1,12 @@
 /*
- * ImagesConverter.cpp
+ * GraphicsConverter.cpp
  *
  *      Author: Andreas Volz
  */
 
 // project
-#include "ImagesConverter.h"
+#include "GraphicsConverter.h"
+
 #include "Logger.h"
 #include "Preferences.h"
 #include "Storage.h"
@@ -23,20 +24,20 @@
 using namespace std;
 using namespace dat;
 
-static Logger logger = Logger("startool.ImagesConverter");
+static Logger logger = Logger("startool.GraphicsConverter");
 
-ImagesConverter::ImagesConverter(std::shared_ptr<Hurricane> hurricane, DataHub &datahub, PaletteManager &palette_manager) :
+GraphicsConverter::GraphicsConverter(std::shared_ptr<Hurricane> hurricane, DataHub &datahub, PaletteManager &palette_manager) :
     Converter(hurricane),
     mDatahub(datahub),
     mPaletteManager(palette_manager)
 {
 }
 
-ImagesConverter::~ImagesConverter()
+GraphicsConverter::~GraphicsConverter()
 {
 }
 
-void ImagesConverter::convert(Storage graphics)
+void GraphicsConverter::convert(Storage graphics)
 {
   for (unsigned int i = 0; i < mDatahub.images->grp()->size(); i++)
   {

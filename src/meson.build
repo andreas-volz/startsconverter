@@ -37,7 +37,7 @@ starformat_lib_sources = files(
 	'pacman.cpp',
 	'FileNotFoundException.cpp',
 	'PortraitsConverter.cpp',
-	'ImagesConverter.cpp',
+	'GraphicsConverter.cpp',
 	'SfxConverter.cpp',
 	'NoValidPaletteException.cpp',
 	'AbstractPalette.cpp',

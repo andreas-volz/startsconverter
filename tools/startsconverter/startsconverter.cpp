@@ -1,4 +1,5 @@
 /* project */
+#include <GraphicsConverter.h>
 #include "Breeze.h"
 #include "Storm.h"
 #include "Casc.h"
@@ -10,7 +11,6 @@
 #include "Bootstrap.h"
 #include "dat/DataHub.h"
 #include "PaletteManager.h"
-#include "ImagesConverter.h"
 #include "SfxConverter.h"
 #include "DatConverter.h"
 #include "PortraitsConverter.h"
@@ -43,6 +43,7 @@ const option::Descriptor usage[] =
   { HELP, 0, "h", "help", option::Arg::None, "  --help, -h  \t\tPrint usage and exit" },
   { PRETTY, 0, "p", "pretty", Arg::Required, "  --pretty=[yes/no], -p  \t\tPretty print the formated JSON file (default: yes)" },
   { BACKEND, 0, "b", "backend", Arg::Required, "  --backend, -b  \t\tChoose a backend (storm=St*arcr*ft1/Br**dwar;casc=Remastered;breeze=Folder)" },
+  { HELP, 0, "h", "help", option::Arg::None, "  --help, -h  \t\tPrint usage and exit" },
   {
     UNKNOWN, 0, "", "", option::Arg::None,
     "\narchive \t\tDestination to the archive (mpq, casc or dummy folder) based on backend.\n"
@@ -173,8 +174,8 @@ int main(int argc, const char **argv)
   //PaletteManager palette_manager(bootstrap.getSubArchive());
   //palette_manager.convert(paletteStorage);
 
-  //ImagesConverter imagesConverter(bootstrap.getSubArchive(), datahub, palette_manager);
-  //imagesConverter.convert(graphicsStorage);
+  //GraphicsConverter graphics_converter(bootstrap.getSubArchive(), datahub, palette_manager);
+  //graphics_converter.convert(graphicsStorage);
 
   //SfxConverter sfx_converter(bootstrap.getSubArchive(), datahub);
   //sfx_converter.convert(soundsStorage);
@@ -182,8 +183,9 @@ int main(int argc, const char **argv)
   //DatConverter dat_converter(bootstrap.getSubArchive(), datahub);
   //dat_converter.convert(datStorage);
 
-  PortraitsConverter portraits_converter(bootstrap.getSubArchive(), datahub);
-  portraits_converter.convert(portraitsStorage);
+  //PortraitsConverter portraits_converter(bootstrap.getSubArchive(), datahub);
+  //portraits_converter.convert(portraitsStorage);
+
 
 
 
