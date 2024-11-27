@@ -161,15 +161,21 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
   CheckPath(save_png);
   CheckPath(save_png_anim);
   PngExporter::save(save_png, ultraTile, palette, false, false);
-  PngExporter::save(save_png_anim, ultraTileAnimation, palette, false, false);
-
   generateTilesetJson(storage);
-  generateAnimationTilesetJson(anim_group, storage);
+
+  /*
+   * don't export animations if none found
+   */
+  if(animation_tiles.size() > 0)
+  {
+    PngExporter::save(save_png_anim, ultraTileAnimation, palette, false, false);
+    generateAnimationTilesetJson(anim_group, storage);
+  }
 
   return true; // hack
 }
 
-void TilesetHub::generateVX4Png(Storage storage)
+void TilesetHub::generateVR4Png(std::shared_ptr<AbstractPalette> palette, Storage storage)
 {
 
 }

@@ -47,7 +47,7 @@ public:
 
   bool convertTiledFormat(std::shared_ptr<AbstractPalette> palette, Storage storage);
 
-  void generateVX4Png(Storage storage);
+  void generateVR4Png(std::shared_ptr<AbstractPalette> palette, Storage storage);
 
   void generateVF4Json(Storage storage);
 

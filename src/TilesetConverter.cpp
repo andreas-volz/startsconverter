@@ -30,6 +30,7 @@ void TilesetConverter::convert(Storage tilesetStorage)
     tilesethub.generateCV5Json(tilesetStorage);
     tilesethub.generateVF4Json(tilesetStorage);
     tilesethub.generateVX4Json(tilesetStorage);
+    tilesethub.convertTiledFormat(mPaletteManager.getPalette(tileset_str), tilesetStorage);
 
   }
 }
