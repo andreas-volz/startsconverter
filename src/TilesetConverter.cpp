@@ -20,13 +20,16 @@ TilesetConverter::~TilesetConverter()
 
 void TilesetConverter::convert(Storage tilesetStorage)
 {
+  /* TODO: If this idea doesn't work for Broodwar then get all valid names from all .chk files before... */
   std::vector<std::string> wpeTilesetNames = mPaletteManager.getTilesetNames();
 
   for(string tileset_str : wpeTilesetNames)
   {
     tileset::TilesetHub tilesethub(mHurricane, tileset_str);
 
-    tilesethub.generateVF4Json(tilesetStorage);
     tilesethub.generateCV5Json(tilesetStorage);
+    tilesethub.generateVF4Json(tilesetStorage);
+    tilesethub.generateVX4Json(tilesetStorage);
+
   }
 }

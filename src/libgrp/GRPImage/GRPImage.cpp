@@ -325,7 +325,6 @@ void GRPImage::DecodeGRPFrameData(std::vector<char> *inputData, GRPFrame *target
     noPaletteLoaded.SetErrorMessage("No palette has been set or loaded");
   }
 
-
   //Seek to the Row offset data
   std::vector<char>::iterator currentDataPosition = inputData->begin();
   currentDataPosition += targetFrame->GetDataOffset();

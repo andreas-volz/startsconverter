@@ -1,5 +1,4 @@
 /* project */
-#include <GraphicsConverter.h>
 #include "Breeze.h"
 #include "Storm.h"
 #include "Casc.h"
@@ -10,10 +9,12 @@
 #include "StringUtil.h"
 #include "Bootstrap.h"
 #include "dat/DataHub.h"
+#include "GraphicsConverter.h"
 #include "PaletteManager.h"
 #include "SfxConverter.h"
 #include "DatConverter.h"
 #include "PortraitsConverter.h"
+#include "TilesetConverter.h"
 
 /* system */
 #include <string>
@@ -145,25 +146,6 @@ int main(int argc, const char **argv)
   Storage archiveStorage;
   archiveStorage.setDataPath(destination_directory);
 
-  Storage paletteStorage;
-  paletteStorage.setDataPath(destination_directory);
-  paletteStorage.setDataType("palette");
-
-  Storage graphicsStorage;
-  graphicsStorage.setDataPath(destination_directory);
-  graphicsStorage.setDataType("graphics");
-
-  Storage soundsStorage;
-  soundsStorage.setDataPath(destination_directory);
-  soundsStorage.setDataType("sounds");
-
-  Storage datStorage;
-  datStorage.setDataPath(destination_directory);
-
-  Storage portraitsStorage;
-  portraitsStorage.setDataPath(destination_directory);
-  portraitsStorage.setDataType("portraits");
-
   CheckPath(destination_directory);
 
   Bootstrap bootstrap(archive, backend, archiveStorage);
@@ -171,6 +153,10 @@ int main(int argc, const char **argv)
   dat::DataHub datahub(bootstrap.getSubArchive());
 
   // TODO: run this only for palette needed options
+  Storage paletteStorage;
+  paletteStorage.setDataPath(destination_directory);
+  paletteStorage.setDataType("palette");
+
   cout << "Run PaletteManager...";fflush(stdout);
   PaletteManager palette_manager(bootstrap.getSubArchive());
   palette_manager.convert(paletteStorage);
@@ -181,6 +167,10 @@ int main(int argc, const char **argv)
 
   if(converters == "all" || find(converters_list.begin(), converters_list.end(), "graphics") != converters_list.end())
   {
+    Storage graphicsStorage;
+    graphicsStorage.setDataPath(destination_directory);
+    graphicsStorage.setDataType("graphics");
+
     cout << "Run GraphicsConverter...";fflush(stdout);
     GraphicsConverter graphics_converter(bootstrap.getSubArchive(), datahub, palette_manager);
     graphics_converter.convert(graphicsStorage);
@@ -189,6 +179,10 @@ int main(int argc, const char **argv)
 
   if(converters == "all" || find(converters_list.begin(), converters_list.end(), "sfx") != converters_list.end())
   {
+    Storage soundsStorage;
+    soundsStorage.setDataPath(destination_directory);
+    soundsStorage.setDataType("sounds");
+
     cout << "Run SfxConverter...";fflush(stdout);
     SfxConverter sfx_converter(bootstrap.getSubArchive(), datahub);
     sfx_converter.convert(soundsStorage);
@@ -197,6 +191,9 @@ int main(int argc, const char **argv)
 
   if(converters == "all" || find(converters_list.begin(), converters_list.end(), "dat") != converters_list.end())
   {
+    Storage datStorage;
+    datStorage.setDataPath(destination_directory);
+
     cout << "Run DatConverter...";fflush(stdout);
     DatConverter dat_converter(bootstrap.getSubArchive(), datahub);
     dat_converter.convert(datStorage);
@@ -205,9 +202,25 @@ int main(int argc, const char **argv)
 
   if(converters == "all" || find(converters_list.begin(), converters_list.end(), "portraits") != converters_list.end())
   {
+    Storage portraitsStorage;
+    portraitsStorage.setDataPath(destination_directory);
+    portraitsStorage.setDataType("portraits");
+
     cout << "Run PortraitsConverter...";fflush(stdout);
     PortraitsConverter portraits_converter(bootstrap.getSubArchive(), datahub);
     portraits_converter.convert(portraitsStorage);
+    cout << "DONE" << endl;
+  }
+
+  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "tileset") != converters_list.end())
+  {
+    Storage tilesetStorage;
+    tilesetStorage.setDataPath(destination_directory);
+    tilesetStorage.setDataType("tileset");
+
+    cout << "Run TilesetConverter...";fflush(stdout);
+    TilesetConverter tileset_converter(bootstrap.getSubArchive(), palette_manager);
+    tileset_converter.convert(tilesetStorage);
     cout << "DONE" << endl;
   }
 

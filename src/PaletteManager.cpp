@@ -24,6 +24,8 @@
 using namespace std;
 using json = nlohmann::json;
 
+static Logger logger = Logger("startool.PaletteManager");
+
 PaletteManager::PaletteManager(std::shared_ptr<Hurricane> hurricane) :
   Converter(hurricane)
 {
@@ -35,7 +37,35 @@ PaletteManager::~PaletteManager()
 
 std::shared_ptr<AbstractPalette> PaletteManager::getPalette(const std::string palette_name)
 {
-  return mPaletteMap.at(palette_name);
+  std::shared_ptr<AbstractPalette> palette;
+  /**
+   * TODO: this try-catch orgy is maybe a to be optimized design change. But it works with
+   * the old interface until I invent something better...
+   */
+  try
+  {
+    palette = mPCXPaletteMap.at(palette_name);
+  }
+  catch(out_of_range &e)
+  {
+    try
+    {
+      palette = mPCX2DPaletteMap.at(palette_name);
+    }
+    catch(out_of_range &e)
+    {
+      try
+      {
+        palette = mWPEPaletteMap.at(palette_name);
+      }
+      catch(out_of_range &e)
+      {
+        LOG4CXX_TRACE(logger, "palette not found: " + palette_name);
+      }
+    }
+  }
+
+  return palette;
 }
 
 void PaletteManager::convert(Storage palStorage)
@@ -65,7 +95,7 @@ void PaletteManager::convert(Storage palStorage)
     if (dataWPE) // load from WPE palette
     {
       shared_ptr<Palette> pal = make_shared<Palette>(dataWPE);
-      mPaletteMap[name] = pal;
+      mWPEPaletteMap[name] = pal;
       wpeNames.push_back(name);
 
       string pal_file(palStorage.getFullPath() + pal_palette);
@@ -80,7 +110,7 @@ void PaletteManager::convert(Storage palStorage)
       if(dataPal)
       {
         std::shared_ptr<Palette> pal = make_shared<Palette>(dataPal);
-        mPaletteMap[name] = pal;
+        mWPEPaletteMap[name] = pal;
       }
     }
 
@@ -120,7 +150,7 @@ void PaletteManager::convert(Storage palStorage)
       CheckPath(pal_file);
       pal->write(pal_file);
 
-      mPaletteMap[name] = pal;
+      mPCXPaletteMap[name] = pal;
     }
     else // load from stored .pal palette
     {
@@ -130,7 +160,7 @@ void PaletteManager::convert(Storage palStorage)
       if(dataPal)
       {
         std::shared_ptr<Palette> pal = make_shared<Palette>(dataPal);
-        mPaletteMap[name] = pal;
+        mPCXPaletteMap[name] = pal;
       }
     }
 
@@ -146,7 +176,11 @@ void PaletteManager::convert(Storage palStorage)
     string pcx_arcfile = pcx_array.at("arcfile");
     string pal_palette = pcx_array.at("palette");
 
-    // replace this with the first of the WPE palettes. Which one doesn't care for the palette logic.
+    /* Teplace this with the first of the WPE palettes. Which one doesn't care for the palette logic.
+     * The reason is that technical the PCX2D palettes are only used to blend against a static background
+     * and then converted to RGBA. For this it doesn't matter which tileset palette is used.
+     * see: Color::blendAgainstReference()
+     */
     replaceString("<?>", *wpeNames.begin(), pcx_arcfile);
 
     Pcx pcx(mHurricane, pcx_arcfile);
@@ -157,10 +191,20 @@ void PaletteManager::convert(Storage palStorage)
     CheckPath(pal_file);
     pal2D->write(pal_file);
 
-    mPaletteMap[pcx_name] = pal2D;
+    mPCX2DPaletteMap[pcx_name] = pal2D;
 
     //cout << pcx_array << endl;
   }
+}
 
+std::vector<std::string> PaletteManager::getTilesetNames()
+{
+  std::vector<std::string> wpePaletteNames;
 
+  for(auto palette : mWPEPaletteMap)
+  {
+    wpePaletteNames.push_back(palette.first);
+  }
+
+  return wpePaletteNames;
 }

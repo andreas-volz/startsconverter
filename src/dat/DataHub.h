@@ -82,13 +82,6 @@ public:
 
   // kaitai parsed Tbl vectors
   std::vector<TblEntry> stat_txt_tbl_vec;
-  /*std::vector<TblEntry> stat_txt_units_tbl_vec;
-  std::vector<TblEntry> stat_txt_weapons_tbl_vec;
-  std::vector<TblEntry> stat_txt_error_messages_tbl_vec;
-  std::vector<TblEntry> stat_txt_upgrades_tbl_vec;
-  std::vector<TblEntry> stat_txt_orders_tbl_vec;
-  std::vector<TblEntry> stat_txt_techdata_tbl_vec;*/
-
   std::vector<TblEntry> images_tbl_vec;
   std::vector<TblEntry> sfxdata_tbl_vec;
   std::vector<TblEntry> portdata_tbl_vec;

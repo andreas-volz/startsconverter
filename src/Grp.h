@@ -55,9 +55,7 @@ public:
 protected: // TODO: maybe back to private after Widget redesign
   std::shared_ptr<AbstractPalette> mPal;
   GRPImage mGRPImage;
-  //std::string mArcfile;
   bool mRGBA;
-  //int mTransparent;
 
 private:
   void saveJson(nlohmann::json &j, const std::string &file, bool pretty);

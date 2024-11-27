@@ -186,7 +186,7 @@ int main(int argc, const char **argv)
   backend = "breeze";
   shared_ptr<Hurricane> hurricane = selectChoosenBackend();
 
-  tileset::TilesetHub tilesethub(hurricane, "tileset/" + tileset_str);
+  tileset::TilesetHub tilesethub(hurricane, tileset_str);
 
 
   tilesethub.generateVF4Json(tilesets);
@@ -204,7 +204,7 @@ int main(int argc, const char **argv)
 
   chk->generateMapJson(tilesethub, tilesets);
 
-
+  cout << "App finished" << endl;
 
   return 0;
 }

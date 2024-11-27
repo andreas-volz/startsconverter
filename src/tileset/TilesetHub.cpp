@@ -27,9 +27,9 @@ namespace tileset
 
 const Size TilesetHub::MEGATILE_SIZE = Size(32, 32);
 
-TilesetHub::TilesetHub(std::shared_ptr<Hurricane> hurricane, const std::string &arcfile) :
+TilesetHub::TilesetHub(std::shared_ptr<Hurricane> hurricane, const std::string &tilesetName) :
   Converter(hurricane),
-  m_arcfile(arcfile)
+  mTilesetName(tilesetName)
 {
   init();
 }
@@ -41,19 +41,21 @@ TilesetHub::~TilesetHub()
 
 void TilesetHub::init()
 {
-  m_cv5_stream = mHurricane->extractStream(m_arcfile + ".cv5");
+  string fullTilesetName = "tileset\\" + mTilesetName;
+
+  m_cv5_stream = mHurricane->extractStream(fullTilesetName + ".cv5");
   m_cv5_ks = make_shared<kaitai::kstream>(&*m_cv5_stream);
   cv5 = make_shared<tileset_cv5_t>(m_cv5_ks.get());
 
-  m_vx4_stream = mHurricane->extractStream(m_arcfile + ".vx4");
+  m_vx4_stream = mHurricane->extractStream(fullTilesetName + ".vx4");
   m_vx4_ks = make_shared<kaitai::kstream>(&*m_vx4_stream);
   vx4 = make_shared<tileset_vx4_t>(m_vx4_ks.get());
 
-  m_vf4_stream = mHurricane->extractStream(m_arcfile + ".vf4");
+  m_vf4_stream = mHurricane->extractStream(fullTilesetName + ".vf4");
   m_vf4_ks = make_shared<kaitai::kstream>(&*m_vf4_stream);
   vf4 = make_shared<tileset_vf4_t>(m_vf4_ks.get());
 
-  m_vr4_stream = mHurricane->extractStream(m_arcfile + ".vr4");
+  m_vr4_stream = mHurricane->extractStream(fullTilesetName + ".vr4");
   m_vr4_ks = make_shared<kaitai::kstream>(&*m_vr4_stream);
   vr4 = make_shared<tileset_vr4_t>(m_vr4_ks.get());
 }
@@ -153,7 +155,7 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
     ultraTile.copyTile(*palette_image, i);
   }
 
-  storage.setFilename(m_arcfile);
+  storage.setFilename(mTilesetName);
   string save_png(storage.getFullPath() + ".png");
   string save_png_anim(storage.getFullPath() + "_animation.png");
   CheckPath(save_png);
@@ -167,23 +169,30 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
   return true; // hack
 }
 
+void TilesetHub::generateVX4Png(Storage storage)
+{
+
+}
+
 void TilesetHub::generateCV5Json(Storage storage)
 {
   json j_cv5;
 
   for(auto element : *cv5->elements())
   {
-    json j_megatiles;
+    json j_cv5_element;
 
+    json j_megatiles;
     for(auto megatile_ref : *element->megatile_references())
     {
       j_megatiles.push_back(megatile_ref);
     }
-    //bool unwalkable = group->terrain_flags()->unwalkable();
-    j_cv5.push_back(j_megatiles);
+    j_cv5_element["vx4_vf4_ref"] = j_megatiles;
+
+    j_cv5.push_back(j_cv5_element);
   }
 
-  storage.setFilename(m_arcfile + "_cv5.json");
+  storage.setFilename("cv5/" + mTilesetName + "_cv5.json");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_cv5, full_path, true);
@@ -193,32 +202,50 @@ void TilesetHub::generateVF4Json(Storage storage)
 {
   json j_vf4;
 
-
   for(auto element : *vf4->elements())
   {
-    json j_minitiles;
+    json j_vf4_element;
 
     for(auto flags : *element->flags())
     {
-      bool walkable;
-      if (flags->walkable())
-      {
-        walkable = true;
-      }
-      else
-      {
-        walkable = false;
-      }
-      j_minitiles.push_back(walkable);
+      json j_minitile_flags;
+      j_minitile_flags["walkable"] = static_cast<bool>(flags->walkable());
+      // TODO: add all other flags
+      j_vf4_element.push_back(j_minitile_flags);
     }
 
-    j_vf4.push_back(j_minitiles);
+    j_vf4.push_back(j_vf4_element);
   }
 
-  storage.setFilename(m_arcfile + "_vf4.json");
+  storage.setFilename("vf4/" + mTilesetName + "_vf4.json");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_vf4, full_path, true);
+}
+
+void TilesetHub::generateVX4Json(Storage storage)
+{
+  json j_vx4;
+
+  for(auto element : *vx4->elements())
+  {
+    json j_vx4_element;
+
+    for(auto graphic_ref : *element->graphic_ref())
+    {
+      json j_graphic_ref;
+      j_graphic_ref["vr4_ref"] = graphic_ref->vr4_ref();
+      j_graphic_ref["horizontal_flip"] = static_cast<bool>(graphic_ref->horizontal_flip());
+      j_vx4_element.push_back(j_graphic_ref);
+    }
+
+    j_vx4.push_back(j_vx4_element);
+  }
+
+  storage.setFilename("vx4/" + mTilesetName + "_vx4.json");
+  string full_path = storage.getFullPath();
+  CheckPath(full_path);
+  saveJson(j_vx4, full_path, false);
 }
 
 void TilesetHub::generateTilesetJson(Storage storage)
@@ -237,11 +264,11 @@ void TilesetHub::generateTilesetJson(Storage storage)
   json j_tileset;
 
   j_tileset["columns"] = MEGATILE_COLUMNS;
-  j_tileset["image"] = "../" + m_arcfile + ".png";
+  j_tileset["image"] = "../" + mTilesetName + ".png";
   j_tileset["imageheight"] = image_size.getHeight();
   j_tileset["imagewidth"] = image_size.getWidth();
   j_tileset["margin"] = 0;
-  j_tileset["name"] = m_arcfile;
+  j_tileset["name"] = mTilesetName;
   j_tileset["spacing"] = 0;
   j_tileset["tilecount"] = ultra_tile_size.getHeight() * ultra_tile_size.getWidth();
   j_tileset["tileheight"] = MEGATILE_SIZE.getHeight();
@@ -249,7 +276,7 @@ void TilesetHub::generateTilesetJson(Storage storage)
   j_tileset["type"] = "tileset";
   j_tileset["version"] = "1.8";
 
-  storage.setFilename(m_arcfile + ".tsj");
+  storage.setFilename(mTilesetName + ".tsj");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_tileset, full_path, true);
@@ -272,11 +299,11 @@ void TilesetHub::generateAnimationTilesetJson(unsigned int animation_count, Stor
   json j_tileset;
 
   j_tileset["columns"] = TILE_ANIMATION_FRAMES;
-  j_tileset["image"] = "../" + m_arcfile + "_animation.png";
+  j_tileset["image"] = "../" + mTilesetName + "_animation.png";
   j_tileset["imageheight"] = image_size.getHeight();
   j_tileset["imagewidth"] = image_size.getWidth();
   j_tileset["margin"] = 0;
-  j_tileset["name"] = m_arcfile + " Animations";
+  j_tileset["name"] = mTilesetName + " Animations";
   j_tileset["spacing"] = 0;
   j_tileset["tilecount"] = ultra_tile_size.getHeight() * ultra_tile_size.getWidth();
   j_tileset["tileheight"] = MEGATILE_SIZE.getHeight();
@@ -305,7 +332,7 @@ void TilesetHub::generateAnimationTilesetJson(unsigned int animation_count, Stor
   }
 
 
-  storage.setFilename(m_arcfile + "_animation.tsj");
+  storage.setFilename(mTilesetName + "_animation.tsj");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_tileset, full_path, true);
@@ -328,7 +355,7 @@ void TilesetHub::saveJson(json &j, const std::string &file, bool pretty)
 
 const std::string TilesetHub::getTilesetName()
 {
-  return m_arcfile;
+  return mTilesetName;
 }
 
 std::vector<unsigned int> TilesetHub::getAnimationTiles()

@@ -47,7 +47,11 @@ public:
 
   bool convertTiledFormat(std::shared_ptr<AbstractPalette> palette, Storage storage);
 
+  void generateVX4Png(Storage storage);
+
   void generateVF4Json(Storage storage);
+
+  void generateVX4Json(Storage storage);
 
   void generateCV5Json(Storage storage);
 
@@ -76,7 +80,7 @@ private:
   std::vector<unsigned char> createRangeVector(unsigned char start_index, unsigned char end_index);
   std::vector<std::pair<unsigned char, unsigned char>> createShiftVector(const std::vector<unsigned char> &rangeVector, unsigned int amount);
 
-  std::string m_arcfile;
+  std::string mTilesetName;
 
   std::shared_ptr<std::istream> m_cv5_stream;
   std::shared_ptr<std::istream> m_vx4_stream;
@@ -90,7 +94,6 @@ private:
 
   std::vector<unsigned int> animation_tiles;
   unsigned int max_static_tiles = 0;
-
 };
 
 } /* namespace tileset */
