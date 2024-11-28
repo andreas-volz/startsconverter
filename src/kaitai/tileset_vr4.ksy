@@ -4,13 +4,15 @@ meta:
   bit-endian: le
   
 seq:
-  - id: elements
+  - id: array
     type: pixel_type
     repeat: eos
+    doc: Graphical Data for minitiles. Referenced by VX4 or VX4EX
 
     
 types:
   pixel_type:
     seq:
-      - id: minitile
+      - id: color_index
         size: 64
+        doc: WPE palette color index

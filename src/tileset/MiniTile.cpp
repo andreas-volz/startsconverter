@@ -14,8 +14,8 @@ namespace tileset
 MiniTile::MiniTile(TilesetHub &tilesethub, size_t element) :
     mPaletteImage(make_shared<PaletteImage>(Size(8, 8)))
 {
-  tileset_vr4_t::pixel_type_t* pixel_ref = tilesethub.vr4->elements()->at(element);
-  const string &color = pixel_ref->minitile(); // TODO: maybe change the kaitai API name to color_index() or similar
+  tileset_vr4_t::pixel_type_t* pixel_ref = tilesethub.vr4->array()->at(element);
+  const string &color = pixel_ref->color_index(); // TODO: maybe change the kaitai API name to color_index() or similar
 
   /* copy the color index positions into the palette image to replace them later in the PNGExporter with the
    * color palette RGB information

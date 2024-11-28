@@ -39,23 +39,31 @@ public:
         ~pixel_type_t();
 
     private:
-        std::string m_minitile;
+        std::string m_color_index;
         tileset_vr4_t* m__root;
         tileset_vr4_t* m__parent;
 
     public:
-        std::string minitile() const { return m_minitile; }
+
+        /**
+         * WPE palette color index
+         */
+        std::string color_index() const { return m_color_index; }
         tileset_vr4_t* _root() const { return m__root; }
         tileset_vr4_t* _parent() const { return m__parent; }
     };
 
 private:
-    std::vector<pixel_type_t*>* m_elements;
+    std::vector<pixel_type_t*>* m_array;
     tileset_vr4_t* m__root;
     kaitai::kstruct* m__parent;
 
 public:
-    std::vector<pixel_type_t*>* elements() const { return m_elements; }
+
+    /**
+     * Graphical Data for minitiles. Referenced by VX4 or VX4EX
+     */
+    std::vector<pixel_type_t*>* array() const { return m_array; }
     tileset_vr4_t* _root() const { return m__root; }
     kaitai::kstruct* _parent() const { return m__parent; }
 };
