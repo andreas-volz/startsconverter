@@ -175,7 +175,7 @@ void TilesetHub::generateVR4MiniTilePng(std::shared_ptr<AbstractPalette> palette
   }
 
   storage.setFilename("vr4/" + mTilesetName);
-  string save_png(storage.getFullPath() + "_minitile.png");
+  string save_png(storage.getFullPath() + "_vr4.png");
   CheckPath(save_png);
   PngExporter::save(save_png, ultraTile, palette, false, false);
 }
@@ -184,12 +184,12 @@ void TilesetHub::generateCV5Json(Storage storage)
 {
   json j_cv5;
 
-  for(auto element : *cv5->elements())
+  for(auto element : *cv5->array())
   {
     json j_cv5_element;
 
     json j_megatiles;
-    for(auto megatile_ref : *element->megatile_references())
+    for(auto megatile_ref : *element->vx4_vf4_ref())
     {
       j_megatiles.push_back(megatile_ref);
     }
@@ -208,7 +208,7 @@ void TilesetHub::generateVF4Json(Storage storage)
 {
   json j_vf4;
 
-  for(auto element : *vf4->elements())
+  for(auto element : *vf4->array())
   {
     json j_vf4_element;
 

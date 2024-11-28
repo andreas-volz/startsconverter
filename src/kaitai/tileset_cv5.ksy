@@ -4,7 +4,7 @@ meta:
   bit-endian: le
   
 seq:
-  - id: elements
+  - id: array
     type: group
     repeat: eos
     doc: |
@@ -19,6 +19,7 @@ types:
 
       - id: terrain_flags
         type: terrain_flags_type
+        doc: This field is not understood and verified to work! Use the ones VF4 instead!
         
       - id: unknown1
         type: u2
@@ -44,7 +45,7 @@ types:
       - id: unknown8
         type: u2
         
-      - id: megatile_references
+      - id: vx4_vf4_ref
         type: u2
         repeat: expr
         repeat-expr: 16

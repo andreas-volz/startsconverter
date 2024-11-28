@@ -5,7 +5,7 @@
 tileset_vf4_t::tileset_vf4_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent, tileset_vf4_t* p__root) : kaitai::kstruct(p__io) {
     m__parent = p__parent;
     m__root = this;
-    m_elements = 0;
+    m_array = 0;
 
     try {
         _read();
@@ -16,11 +16,11 @@ tileset_vf4_t::tileset_vf4_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent,
 }
 
 void tileset_vf4_t::_read() {
-    m_elements = new std::vector<minitile_t*>();
+    m_array = new std::vector<minitile_t*>();
     {
         int i = 0;
         while (!m__io->is_eof()) {
-            m_elements->push_back(new minitile_t(m__io, this, m__root));
+            m_array->push_back(new minitile_t(m__io, this, m__root));
             i++;
         }
     }
@@ -31,11 +31,11 @@ tileset_vf4_t::~tileset_vf4_t() {
 }
 
 void tileset_vf4_t::_clean_up() {
-    if (m_elements) {
-        for (std::vector<minitile_t*>::iterator it = m_elements->begin(); it != m_elements->end(); ++it) {
+    if (m_array) {
+        for (std::vector<minitile_t*>::iterator it = m_array->begin(); it != m_array->end(); ++it) {
             delete *it;
         }
-        delete m_elements; m_elements = 0;
+        delete m_array; m_array = 0;
     }
 }
 

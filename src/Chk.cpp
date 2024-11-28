@@ -123,8 +123,8 @@ bool Chk::convertTiled(tileset::TilesetHub &tilesethub, Storage storage)
         uint16_t groupIndex = (terrain & 0x7FF0) >> 4;
         uint16_t tileIndex = terrain & 0x000F;
 
-        tileset_cv5_t::group_t* group = tilesethub.cv5->elements()->at(groupIndex);
-        unsigned int megatile_ref = group->megatile_references()->at(tileIndex);
+        tileset_cv5_t::group_t* group = tilesethub.cv5->array()->at(groupIndex);
+        unsigned int megatile_ref = group->vx4_vf4_ref()->at(tileIndex);
 
         auto animation_tiles = tilesethub.getAnimationTiles();
 
@@ -210,11 +210,11 @@ void Chk::generateMapJson(tileset::TilesetHub &tilesethub, Storage storage)
 
       for(uint16_t terrain : *terrain_array->values())
       {
-        uint16_t groupIndex = (terrain & 0x7FF0) >> 4;
+        /*uint16_t groupIndex = (terrain & 0x7FF0) >> 4;
         uint16_t tileIndex = terrain & 0x000F;
 
         tileset_cv5_t::group_t* group = tilesethub.cv5->elements()->at(groupIndex);
-        unsigned int megatile_ref = group->megatile_references()->at(tileIndex);
+        unsigned int megatile_ref = group->megatile_references()->at(tileIndex);*/
 
         j_layer_data.push_back(terrain);
       }

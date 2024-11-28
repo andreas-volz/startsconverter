@@ -110,12 +110,12 @@ public:
     };
 
 private:
-    std::vector<minitile_t*>* m_elements;
+    std::vector<minitile_t*>* m_array;
     tileset_vf4_t* m__root;
     kaitai::kstruct* m__parent;
 
 public:
-    std::vector<minitile_t*>* elements() const { return m_elements; }
+    std::vector<minitile_t*>* array() const { return m_array; }
     tileset_vf4_t* _root() const { return m__root; }
     kaitai::kstruct* _parent() const { return m__parent; }
 };

@@ -56,12 +56,16 @@ public:
         uint16_t m_unknown6;
         uint16_t m_unknown7;
         uint16_t m_unknown8;
-        std::vector<uint16_t>* m_megatile_references;
+        std::vector<uint16_t>* m_vx4_vf4_ref;
         tileset_cv5_t* m__root;
         tileset_cv5_t* m__parent;
 
     public:
         uint16_t terrain_type() const { return m_terrain_type; }
+
+        /**
+         * This field is not understood and verified to work! Use the ones VF4 instead!
+         */
         terrain_flags_type_t* terrain_flags() const { return m_terrain_flags; }
         uint16_t unknown1() const { return m_unknown1; }
         uint16_t unknown2() const { return m_unknown2; }
@@ -71,7 +75,7 @@ public:
         uint16_t unknown6() const { return m_unknown6; }
         uint16_t unknown7() const { return m_unknown7; }
         uint16_t unknown8() const { return m_unknown8; }
-        std::vector<uint16_t>* megatile_references() const { return m_megatile_references; }
+        std::vector<uint16_t>* vx4_vf4_ref() const { return m_vx4_vf4_ref; }
         tileset_cv5_t* _root() const { return m__root; }
         tileset_cv5_t* _parent() const { return m__parent; }
     };
@@ -213,7 +217,7 @@ public:
     };
 
 private:
-    std::vector<group_t*>* m_elements;
+    std::vector<group_t*>* m_array;
     tileset_cv5_t* m__root;
     kaitai::kstruct* m__parent;
 
@@ -223,7 +227,7 @@ public:
      * This file defines the various tile groups that are referenced by the TILE/MTXM 
      * sections of the CHK (0x7FF0 for the group index, 0x000F for the tile index).
      */
-    std::vector<group_t*>* elements() const { return m_elements; }
+    std::vector<group_t*>* array() const { return m_array; }
     tileset_cv5_t* _root() const { return m__root; }
     kaitai::kstruct* _parent() const { return m__parent; }
 };

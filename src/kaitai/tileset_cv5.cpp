@@ -5,7 +5,7 @@
 tileset_cv5_t::tileset_cv5_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent, tileset_cv5_t* p__root) : kaitai::kstruct(p__io) {
     m__parent = p__parent;
     m__root = this;
-    m_elements = 0;
+    m_array = 0;
 
     try {
         _read();
@@ -16,11 +16,11 @@ tileset_cv5_t::tileset_cv5_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent,
 }
 
 void tileset_cv5_t::_read() {
-    m_elements = new std::vector<group_t*>();
+    m_array = new std::vector<group_t*>();
     {
         int i = 0;
         while (!m__io->is_eof()) {
-            m_elements->push_back(new group_t(m__io, this, m__root));
+            m_array->push_back(new group_t(m__io, this, m__root));
             i++;
         }
     }
@@ -31,11 +31,11 @@ tileset_cv5_t::~tileset_cv5_t() {
 }
 
 void tileset_cv5_t::_clean_up() {
-    if (m_elements) {
-        for (std::vector<group_t*>::iterator it = m_elements->begin(); it != m_elements->end(); ++it) {
+    if (m_array) {
+        for (std::vector<group_t*>::iterator it = m_array->begin(); it != m_array->end(); ++it) {
             delete *it;
         }
-        delete m_elements; m_elements = 0;
+        delete m_array; m_array = 0;
     }
 }
 
@@ -43,7 +43,7 @@ tileset_cv5_t::group_t::group_t(kaitai::kstream* p__io, tileset_cv5_t* p__parent
     m__parent = p__parent;
     m__root = p__root;
     m_terrain_flags = 0;
-    m_megatile_references = 0;
+    m_vx4_vf4_ref = 0;
 
     try {
         _read();
@@ -64,10 +64,10 @@ void tileset_cv5_t::group_t::_read() {
     m_unknown6 = m__io->read_u2le();
     m_unknown7 = m__io->read_u2le();
     m_unknown8 = m__io->read_u2le();
-    m_megatile_references = new std::vector<uint16_t>();
-    const int l_megatile_references = 16;
-    for (int i = 0; i < l_megatile_references; i++) {
-        m_megatile_references->push_back(m__io->read_u2le());
+    m_vx4_vf4_ref = new std::vector<uint16_t>();
+    const int l_vx4_vf4_ref = 16;
+    for (int i = 0; i < l_vx4_vf4_ref; i++) {
+        m_vx4_vf4_ref->push_back(m__io->read_u2le());
     }
 }
 
@@ -79,8 +79,8 @@ void tileset_cv5_t::group_t::_clean_up() {
     if (m_terrain_flags) {
         delete m_terrain_flags; m_terrain_flags = 0;
     }
-    if (m_megatile_references) {
-        delete m_megatile_references; m_megatile_references = 0;
+    if (m_vx4_vf4_ref) {
+        delete m_vx4_vf4_ref; m_vx4_vf4_ref = 0;
     }
 }
 
