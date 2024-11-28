@@ -31,7 +31,6 @@ starformat_lib_sources = files(
 	'Wav.cpp',
 	'Palette2D.cpp',
 	'StringUtil.cpp',
-	'luagen.cpp',
 	'platform.cpp',
 	'UIConsole.cpp',
 	'pacman.cpp',

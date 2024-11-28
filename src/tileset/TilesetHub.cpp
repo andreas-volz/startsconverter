@@ -10,7 +10,6 @@
 #include "PngExporter.h"
 #include "MegaTile.h"
 #include "FileUtil.h"
-#include "luagen.h"
 #include "Preferences.h"
 #include "Hurricane.h"
 #include "FileUtil.h"

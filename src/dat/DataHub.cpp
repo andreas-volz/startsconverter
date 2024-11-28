@@ -6,7 +6,6 @@
 
 // Local
 #include "Logger.h"
-#include "luagen.h"
 #include "DataHub.h"
 #include "StringUtil.h"
 #include "Grp.h"
