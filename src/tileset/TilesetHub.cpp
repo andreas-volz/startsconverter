@@ -111,7 +111,13 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
   {
     MegaTile mega(*this, i);
 
-    std::shared_ptr<PaletteImage> palette_image = mega.getImage();
+    std::shared_ptr<PaletteImage> palette_image = mega.getPaletteImage();
+    /*
+     * TODO: Those ranges are only estimates by experiments for water and lava. I need more research.
+     * Could be slightly other pixels and more ranges. I'm even not sure if all tilesets have the same range.
+     * I need to put this somewhere in the json file. Maybe palettes.json. A correct solution needs then to use the same pixels
+     * later below in createShiftVector(createRangeVector())
+     */
     bool index_found = palette_image->hasPaletteIndexRange(1, 6) || palette_image->hasPaletteIndexRange(7, 13);
     if(index_found)
     {
@@ -129,7 +135,7 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
   {
     MegaTile mega(*this, i);
 
-    std::shared_ptr<PaletteImage> palette_image = mega.getImage();
+    std::shared_ptr<PaletteImage> palette_image = mega.getPaletteImage();
     auto found_it = find(animation_tiles.begin(), animation_tiles.end(), i);
     if(found_it != animation_tiles.end())
     {

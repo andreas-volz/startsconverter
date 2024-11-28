@@ -7,7 +7,7 @@
 #ifndef MEGATILE_H
 #define MEGATILE_H
 
-// project
+/* project */
 #include "TilesetHub.h"
 #include "TiledPaletteImage.h"
 
@@ -27,14 +27,10 @@ public:
   MegaTile(TilesetHub &tilesethub, size_t element);
   virtual ~MegaTile();
 
-  std::shared_ptr<PaletteImage> getImage();
+  std::shared_ptr<PaletteImage> getPaletteImage();
 
 private:
-  TilesetHub &mTilesetHub;
-  size_t mElement;
   std::shared_ptr<TiledPaletteImage> mPaletteImage;
-
-  void generateTiles();
 };
 
 } /* namespace tileset */
