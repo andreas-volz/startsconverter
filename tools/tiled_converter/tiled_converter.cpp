@@ -199,6 +199,8 @@ int main(int argc, const char **argv)
 
   tilesethub.convertTiledFormat(terrainPalette, tilesets);
 
+  tilesethub.generateVR4MiniTilePng(terrainPalette, tilesets);
+
   // do this after all the other stuff
   chk->convertTiled(tilesethub, tilesets);
 

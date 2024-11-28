@@ -46,7 +46,7 @@ private:
    * Perform a rotation of rotated by `amount` to the right within the range [start, end]
    * It makes a temporal copy of a part of the vector
    */
-  void shift(unsigned int start, unsigned int end, unsigned int amount, const std::vector<int> &original, std::vector<int> &rotated);
+  void wrap(unsigned int start, unsigned int end, unsigned int amount, const std::vector<int> &original, std::vector<int> &rotated);
 };
 
 #endif // PALETTE_TEST_H

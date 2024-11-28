@@ -101,12 +101,12 @@ public:
     };
 
 private:
-    std::vector<megatile_type_t*>* m_elements;
+    std::vector<megatile_type_t*>* m_array;
     tileset_vx4_t* m__root;
     kaitai::kstruct* m__parent;
 
 public:
-    std::vector<megatile_type_t*>* elements() const { return m_elements; }
+    std::vector<megatile_type_t*>* array() const { return m_array; }
     tileset_vx4_t* _root() const { return m__root; }
     kaitai::kstruct* _parent() const { return m__parent; }
 };

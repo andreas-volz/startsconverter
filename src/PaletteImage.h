@@ -32,6 +32,9 @@ public:
    */
   PaletteImage(const DataChunk &datachunk, const Size &size);
 
+  /**
+   * Construct a new palette image based on a give one, but replace all palette indices according the replacer variable
+   */
   PaletteImage(const PaletteImage &paletteImage, const std::vector<std::pair<unsigned char, unsigned char>> &replacer);
 
   virtual ~PaletteImage();
@@ -74,10 +77,23 @@ public:
   bool hasPaletteIndex(unsigned char index);
 
   /**
-   * Search if at least one palette index in the range between [start_index; end_index] is used in the data.
+   * Search if at least one palette index in the range between [start_index, end_index] is used in the data.
    * This is helpful to identify if an image would be influenced by a specific palette cycle animation or not.
    */
   bool hasPaletteIndexRange(unsigned char start_index, unsigned char end_index);
+
+  /**
+   * @return a vector of unsigned integers between [start_index, end_index] (both including)
+   */
+  static std::vector<unsigned char> createRangeVector(unsigned char start_index, unsigned char end_index);
+
+  /**
+   * THis function wraps a vector of numbers. It's a cycling wrapping around from the other side of the vector.
+   *
+   * @param rangeVector is a vector of pixel to shift (typically created from createRangeVector()
+   * @param amount is the amount of shift numbers
+   */
+  static std::vector<std::pair<unsigned char, unsigned char>> createWrapVector(const std::vector<unsigned char> &rangeVector, unsigned int amount);
 
 private:
   std::vector<unsigned char> mData;

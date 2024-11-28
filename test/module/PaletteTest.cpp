@@ -38,7 +38,7 @@ void PaletteTest::test1_rotate_basic()
   int end = 5;
   int amount = 1;
 
-  shift(start, end, amount, original, rotated);
+  wrap(start, end, amount, original, rotated);
 
   /*cout << endl;
   cout << "original: "; printVector(original);
@@ -63,7 +63,7 @@ void PaletteTest::test2_rotate_more()
   int end = 6;
   int amount = 3;
 
-  shift(start, end, amount, original, rotated);
+  wrap(start, end, amount, original, rotated);
 
   /*cout << endl;
   cout << "original: "; printVector(original);
@@ -85,13 +85,13 @@ void PaletteTest::test3_rotate_much()
   int end = 6;
   int amount = 30;
 
-  shift(start, end, amount, original, rotated);
+  wrap(start, end, amount, original, rotated);
 
   // don't really care about the result, just ensure not to crash after rotation more then vector length
   CPPUNIT_ASSERT(true);
 }
 
-void PaletteTest::shift(unsigned int start, unsigned int end, unsigned int amount, const std::vector<int> &original, std::vector<int> &rotated)
+void PaletteTest::wrap(unsigned int start, unsigned int end, unsigned int amount, const std::vector<int> &original, std::vector<int> &rotated)
 {
   // Ensure amount is within the bounds of the subarray
   int subarray_size = end - start + 1;

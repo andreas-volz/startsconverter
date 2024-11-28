@@ -47,7 +47,7 @@ public:
 
   bool convertTiledFormat(std::shared_ptr<AbstractPalette> palette, Storage storage);
 
-  void generateVR4Png(std::shared_ptr<AbstractPalette> palette, Storage storage);
+  void generateVR4MiniTilePng(std::shared_ptr<AbstractPalette> palette, Storage storage);
 
   void generateVF4Json(Storage storage);
 
@@ -68,6 +68,7 @@ public:
 
   static constexpr int MEGATILE_COLUMNS = 16;
   static const Size MEGATILE_SIZE;
+  static const Size MINITILE_SIZE;
   static constexpr int TILE_ANIMATION_FRAMES = 8;
 
 private:
@@ -76,9 +77,6 @@ private:
 
   void generateTilesetJson(Storage storage);
   void generateAnimationTilesetJson(unsigned int animation_count, Storage storage);
-
-  std::vector<unsigned char> createRangeVector(unsigned char start_index, unsigned char end_index);
-  std::vector<std::pair<unsigned char, unsigned char>> createShiftVector(const std::vector<unsigned char> &rangeVector, unsigned int amount);
 
   std::string mTilesetName;
 

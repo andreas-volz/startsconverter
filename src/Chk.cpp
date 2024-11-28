@@ -87,10 +87,10 @@ bool Chk::convertTiled(tileset::TilesetHub &tilesethub, Storage storage)
 
   json j_tilesets_ref;
   j_tilesets_ref["firstgid"] = 1;
-  j_tilesets_ref["source"] = "../" + tilesethub.getTilesetName() + ".tsj";
+  j_tilesets_ref["source"] = "../tiledset/" + tilesethub.getTilesetName() + ".tsj";
   json j_tilesets_anim_ref;
   j_tilesets_anim_ref["firstgid"] = tilesethub.getMaxStaticTiles() + 1;
-  j_tilesets_anim_ref["source"] = "../" + tilesethub.getTilesetName() + "_animation.tsj";
+  j_tilesets_anim_ref["source"] = "../tiledset/" + tilesethub.getTilesetName() + "_animation.tsj";
   j_tilemap["tilesets"].push_back(j_tilesets_ref);
   j_tilemap["tilesets"].push_back(j_tilesets_anim_ref);
 

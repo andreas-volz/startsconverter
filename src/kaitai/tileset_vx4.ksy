@@ -4,7 +4,7 @@ meta:
   bit-endian: le
   
 seq:
-  - id: elements
+  - id: array
     type: megatile_type
     repeat: eos
 

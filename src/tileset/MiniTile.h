@@ -16,7 +16,14 @@ namespace tileset
 class MiniTile
 {
 public:
-  MiniTile(TilesetHub &tilesethub, size_t element);
+  /**
+   * A MiniTile has 8x8 pixels. It stores information to a indexed color palette, but not the RGB color information itself.
+   * Those are added later in the PNGExporter.
+   *
+   * @param tilesethub All the data files for a specific read Tileset
+   * @param  position The VR4 array position with the image data that is used to construct this MiniTile
+   */
+  MiniTile(TilesetHub &tilesethub, size_t position);
   virtual ~MiniTile();
 
   std::shared_ptr<PaletteImage> getPaletteImage();

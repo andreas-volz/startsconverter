@@ -9,6 +9,7 @@
 #include "PaletteImage.h"
 #include "PngExporter.h"
 #include "MegaTile.h"
+#include "MiniTile.h"
 #include "FileUtil.h"
 #include "Preferences.h"
 #include "Hurricane.h"
@@ -25,6 +26,7 @@ namespace tileset
 {
 
 const Size TilesetHub::MEGATILE_SIZE = Size(32, 32);
+const Size TilesetHub::MINITILE_SIZE = Size(8, 8);
 
 TilesetHub::TilesetHub(std::shared_ptr<Hurricane> hurricane, const std::string &tilesetName) :
   Converter(hurricane),
@@ -59,34 +61,6 @@ void TilesetHub::init()
   vr4 = make_shared<tileset_vr4_t>(m_vr4_ks.get());
 }
 
-std::vector<unsigned char> TilesetHub::createRangeVector(unsigned char start_index, unsigned char end_index)
-{
-  vector<unsigned char> rangeVector;
-
-  for(unsigned char i = start_index; i <= end_index; i++)
-  {
-    rangeVector.push_back(i);
-  }
-  return rangeVector;
-}
-
-std::vector<std::pair<unsigned char, unsigned char>> TilesetHub::createShiftVector(const std::vector<unsigned char> &rangeVector, unsigned int amount)
-{
-  std::vector<std::pair<unsigned char, unsigned char>> replacer;
-  std::vector<unsigned char> tmp_copy(rangeVector);
-
-  amount = amount % rangeVector.size();
-  rotate(tmp_copy.rbegin(), tmp_copy.rbegin() + amount, tmp_copy.rend());
-
-  for(unsigned int i = 0; i < rangeVector.size(); i++)
-  {
-    replacer.push_back(pair(rangeVector[i], tmp_copy[i]));
-  }
-
-  return replacer;
-}
-
-
 bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, Storage storage)
 {
   if(!vx4) // if it isn't available just return false
@@ -99,7 +73,7 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
     return false;
   }
 
-  unsigned int num_tiles = vx4->elements()->size();
+  unsigned int num_tiles = vx4->array()->size();
   int tiles_width = MEGATILE_COLUMNS;
   int tiles_height = static_cast<int>(ceil(static_cast<float>(num_tiles) / static_cast<float>(tiles_width)));
   Size ultra_tile_size = Size(tiles_width, tiles_height);
@@ -141,8 +115,8 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
     {
       for(unsigned int frame = 0; frame < TILE_ANIMATION_FRAMES; frame++)
       {
-        auto replacer = createShiftVector(createRangeVector(1, 6), frame);
-        auto replacer2 = createShiftVector(createRangeVector(7, 13), frame);
+        auto replacer = PaletteImage::createWrapVector(PaletteImage::createRangeVector(1, 6), frame);
+        auto replacer2 = PaletteImage::createWrapVector(PaletteImage::createRangeVector(7, 13), frame);
         replacer.insert(replacer.end(), replacer2.begin(), replacer2.end());
 
         PaletteImage replaced_image(*palette_image, replacer);
@@ -160,7 +134,7 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
     ultraTile.copyTile(*palette_image, i);
   }
 
-  storage.setFilename(mTilesetName);
+  storage.setFilename("tiledset/" + mTilesetName);
   string save_png(storage.getFullPath() + ".png");
   string save_png_anim(storage.getFullPath() + "_animation.png");
   CheckPath(save_png);
@@ -180,9 +154,30 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
   return true; // hack
 }
 
-void TilesetHub::generateVR4Png(std::shared_ptr<AbstractPalette> palette, Storage storage)
+void TilesetHub::generateVR4MiniTilePng(std::shared_ptr<AbstractPalette> palette, Storage storage)
 {
+  unsigned int num_tiles = vr4->array()->size();
+  Size ultra_tile_size;
+  ultra_tile_size.setWidth(sqrt(num_tiles));
+  ultra_tile_size.setHeight(num_tiles / ultra_tile_size.getWidth() + 1);
 
+  TiledPaletteImage ultraTile(ultra_tile_size, MINITILE_SIZE);
+
+  for(unsigned int i = 0; i < num_tiles; i++)
+  {
+    MiniTile mini(*this, i);
+
+    std::shared_ptr<PaletteImage> palette_image = mini.getPaletteImage();
+
+    // TODO: here copy of animation tiles...
+
+    ultraTile.copyTile(*palette_image, i);
+  }
+
+  storage.setFilename("vr4/" + mTilesetName);
+  string save_png(storage.getFullPath() + "_minitile.png");
+  CheckPath(save_png);
+  PngExporter::save(save_png, ultraTile, palette, false, false);
 }
 
 void TilesetHub::generateCV5Json(Storage storage)
@@ -238,7 +233,7 @@ void TilesetHub::generateVX4Json(Storage storage)
 {
   json j_vx4;
 
-  for(auto element : *vx4->elements())
+  for(auto element : *vx4->array())
   {
     json j_vx4_element;
 
@@ -266,7 +261,7 @@ void TilesetHub::generateTilesetJson(Storage storage)
     return;
   }
 
-  unsigned int num_tiles = vx4->elements()->size();
+  unsigned int num_tiles = vx4->array()->size();
   int tiles_width = MEGATILE_COLUMNS;
   int tiles_height = static_cast<int>(ceil(static_cast<float>(num_tiles) / static_cast<float>(tiles_width)));
   const Size ultra_tile_size = Size(tiles_width, tiles_height);
@@ -275,7 +270,7 @@ void TilesetHub::generateTilesetJson(Storage storage)
   json j_tileset;
 
   j_tileset["columns"] = MEGATILE_COLUMNS;
-  j_tileset["image"] = "../" + mTilesetName + ".png";
+  j_tileset["image"] = mTilesetName + ".png";
   j_tileset["imageheight"] = image_size.getHeight();
   j_tileset["imagewidth"] = image_size.getWidth();
   j_tileset["margin"] = 0;
@@ -287,7 +282,7 @@ void TilesetHub::generateTilesetJson(Storage storage)
   j_tileset["type"] = "tileset";
   j_tileset["version"] = "1.8";
 
-  storage.setFilename(mTilesetName + ".tsj");
+  storage.setFilename("tiledset/" + mTilesetName + ".tsj");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_tileset, full_path, true);
@@ -310,7 +305,7 @@ void TilesetHub::generateAnimationTilesetJson(unsigned int animation_count, Stor
   json j_tileset;
 
   j_tileset["columns"] = TILE_ANIMATION_FRAMES;
-  j_tileset["image"] = "../" + mTilesetName + "_animation.png";
+  j_tileset["image"] = mTilesetName + "_animation.png";
   j_tileset["imageheight"] = image_size.getHeight();
   j_tileset["imagewidth"] = image_size.getWidth();
   j_tileset["margin"] = 0;
@@ -343,7 +338,7 @@ void TilesetHub::generateAnimationTilesetJson(unsigned int animation_count, Stor
   }
 
 
-  storage.setFilename(mTilesetName + "_animation.tsj");
+  storage.setFilename("tiledset/" + mTilesetName + "_animation.tsj");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_tileset, full_path, true);

@@ -22,6 +22,10 @@ public:
 
   int getHeight() const {return mHeight;}
 
+  void setWidth(int width)  {mWidth = width;}
+
+  void setHeight(int height) {mHeight = height;}
+
   Size& operator= (const Size& inRHS);
 
   Size& operator*= (const Size& inSize);
@@ -34,8 +38,6 @@ public:
 
 private:
   int mWidth, mHeight;
-
-
 };
 
 inline Size::Size ()

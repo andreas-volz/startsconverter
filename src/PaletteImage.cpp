@@ -30,6 +30,7 @@ PaletteImage::PaletteImage(const PaletteImage &paletteImage, const std::vector<s
     mSize(paletteImage.mSize)
 {
   transform(paletteImage.mData.begin(), paletteImage.mData.end(), mData.begin(), [&replacer](unsigned char c) {
+    /* functor start */
     for(auto r : replacer)
     {
       if(c == r.first)
@@ -39,7 +40,8 @@ PaletteImage::PaletteImage(const PaletteImage &paletteImage, const std::vector<s
     }
 
     return c;
-   });
+   } /* functor end */
+  );
 }
 
 PaletteImage::~PaletteImage()
@@ -165,4 +167,29 @@ bool PaletteImage::hasPaletteIndexRange(unsigned char start_index, unsigned char
   return found_index;
 }
 
+std::vector<unsigned char> PaletteImage::createRangeVector(unsigned char start_index, unsigned char end_index)
+{
+  vector<unsigned char> rangeVector;
 
+  for(unsigned char i = start_index; i <= end_index; i++)
+  {
+    rangeVector.push_back(i);
+  }
+  return rangeVector;
+}
+
+std::vector<std::pair<unsigned char, unsigned char>> PaletteImage::createWrapVector(const std::vector<unsigned char> &rangeVector, unsigned int amount)
+{
+  std::vector<std::pair<unsigned char, unsigned char>> replacer;
+  std::vector<unsigned char> tmp_copy(rangeVector);
+
+  amount = amount % rangeVector.size();
+  rotate(tmp_copy.rbegin(), tmp_copy.rbegin() + amount, tmp_copy.rend());
+
+  for(unsigned int i = 0; i < rangeVector.size(); i++)
+  {
+    replacer.push_back(pair(rangeVector[i], tmp_copy[i]));
+  }
+
+  return replacer;
+}
