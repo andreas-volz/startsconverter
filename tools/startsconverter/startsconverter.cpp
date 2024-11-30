@@ -151,8 +151,8 @@ int main(int argc, const char **argv)
 
   parseOptions(argc, argv);
 
-  //cout << "List of choosen converters: ";
-  //printVector<string>(converters_list);
+  cout << "List of choosen converters: ";
+  printVector<string>(converters_list);
   // TODO: check for allowed converter options and print them as help
 
   Storage archiveStorage;
@@ -167,7 +167,7 @@ int main(int argc, const char **argv)
 
   // needs to stay outside because we need it later
   PaletteConverter palette_converter(bootstrap.getSubArchive());
-  if(converterCheck("all", "palette", "graphics", "tileset"))
+  if(converterCheck("all", "palette", "graphics", "tileset", "campaign"))
   {
     Storage paletteStorage;
     paletteStorage.setDataPath(destination_directory);
@@ -227,7 +227,7 @@ int main(int argc, const char **argv)
 
   // needs to stay outside because we need it later
   TilesetConverter tileset_converter(bootstrap.getSubArchive(), palette_converter);
-  if(converterCheck("all", "tileset", "campaign"))
+  if(converterCheck("all", "tileset", "campaign")) // TODO: could optimize "tileset->campaign" dependency, see comments inside
   {
     Storage tilesetStorage;
     tilesetStorage.setDataPath(destination_directory);

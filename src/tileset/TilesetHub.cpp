@@ -130,15 +130,20 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
       // TODO: save animated tiles in static tileset and remember index, then no need to export the static tile (maybe)
     }
 
+    /**
+     * TODO: this calculation could be optimized. If max_static_tiles is calculated in the constructur and remembered the
+     * getMaxStaticTiles() could be used in ChK generation without calling convert() here.
+     * Similar for getAnimationTiles()
+     * Both mainly a speed optimization, but also logic and dependency
+     */
     max_static_tiles++;
     ultraTile.copyTile(*palette_image, i);
   }
 
   storage.setFilename("tiled/" + mTilesetName);
+
   string save_png(storage.getFullPath() + ".png");
-  string save_png_anim(storage.getFullPath() + "_animation.png");
   CheckPath(save_png);
-  CheckPath(save_png_anim);
   PngExporter::save(save_png, ultraTile, palette, false, false);
   generateTilesetJson(storage);
 
@@ -147,6 +152,8 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
    */
   if(animation_tiles.size() > 0)
   {
+    string save_png_anim(storage.getFullPath() + "_animation.png");
+    CheckPath(save_png_anim);
     PngExporter::save(save_png_anim, ultraTileAnimation, palette, false, false);
     generateAnimationTilesetJson(anim_group, storage);
   }
