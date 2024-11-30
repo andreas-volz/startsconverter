@@ -18,7 +18,7 @@
 #include "CampaignConverter.h"
 #include "iscript/IScript.h"
 #include "iscript/IScriptConverter.h"
-#include "FileUtil.h"
+#include "WidgetsConverter.h"
 
 /* system */
 #include <string>
@@ -133,6 +133,7 @@ int parseOptions(int argc, const char **argv)
   return 0;
 }
 
+// TODO: works, but hard to manage converter dependency; other way around is easier to describe, but not sure if it worth...
 template <typename... Strings>
 bool converterCheck(const Strings&... strings)
 {
@@ -170,7 +171,7 @@ int main(int argc, const char **argv)
 
   // needs to stay outside because we need it later
   PaletteConverter palette_converter(bootstrap.getSubArchive());
-  if(converterCheck("all", "palette", "graphics", "tileset", "campaign"))
+  if(converterCheck("all", "palette", "graphics", "tileset", "campaign", "widgets"))
   {
     Storage paletteStorage;
     paletteStorage.setDataPath(destination_directory);
@@ -255,7 +256,7 @@ int main(int argc, const char **argv)
 
   if(converterCheck("all", "iscript"))
   {
-    // TODO: support Strorage
+    // TODO: support Storage
     // TODO: redesign Iscript to only call the Converter and wrap the IScript class
     string iscript_bin = "scripts\\iscript.bin";
     IScript iscript(bootstrap.getSubArchive(), iscript_bin);
@@ -270,6 +271,18 @@ int main(int argc, const char **argv)
     CheckPath(iscript_txt); // TODO: this should be inside the Converter
     cout << "Run IScriptConverter...";fflush(stdout);
     iscript_converter.saveConverted(iscript_txt, iscript_scpe_header_map, opcode_vector);
+    cout << "DONE" << endl;
+  }
+
+  if(converterCheck("all", "widgets"))
+  {
+    Storage widgetsStorage;
+    widgetsStorage.setDataPath(destination_directory);
+    widgetsStorage.setDataType("widgets");
+
+    cout << "Run WidgetsConverter...";fflush(stdout);
+    WidgetsConverter widgets_converter(bootstrap.getSubArchive(), palette_converter);
+    widgets_converter.convert(widgetsStorage);
     cout << "DONE" << endl;
   }
 

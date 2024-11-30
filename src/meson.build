@@ -44,7 +44,8 @@ starformat_lib_sources = files(
 	'PaletteConverter.cpp',
 	'DatConverter.cpp',
 	'TilesetConverter.cpp',
-	'CampaignConverter.cpp'
+	'CampaignConverter.cpp',
+	'WidgetsConverter.cpp'
 	)
 
 # this option is needed for kaitai binary parser

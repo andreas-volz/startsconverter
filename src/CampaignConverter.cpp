@@ -45,7 +45,5 @@ void CampaignConverter::convert(Storage campaignStorage)
       chk.generateMapJson(*mTilesetConverter.getTilesetHub(chk.getTileSet()), campaignStorage);
       //cout << "Campaign: " << campaign_path << " : " << chk.getTileSet() <<  endl;
     }
-
-    // TODO: + protoss and zerg tutorial??
   }
 }
