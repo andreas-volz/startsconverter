@@ -178,7 +178,7 @@ int main(int argc, const char **argv)
   //archive = "/home/andreas/Games/DOS/Starcraft/Original_Backup/starcraft/install.exe";
   shared_ptr<Hurricane> hurricane_scm = selectChoosenBackend();
 
-  Scm scm(hurricane_scm, "multimaps/(4)ruins of the ancients", tilesets);
+  Scm scm(hurricane_scm, "multimaps/(2)volcanis", tilesets);
   std::shared_ptr<Chk> chk = scm.chk;
   string tileset_str = chk->getTileSet();
 

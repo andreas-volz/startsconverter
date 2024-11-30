@@ -134,7 +134,7 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
     ultraTile.copyTile(*palette_image, i);
   }
 
-  storage.setFilename("tiledset/" + mTilesetName);
+  storage.setFilename("tiled/" + mTilesetName);
   string save_png(storage.getFullPath() + ".png");
   string save_png_anim(storage.getFullPath() + "_animation.png");
   CheckPath(save_png);
@@ -282,7 +282,7 @@ void TilesetHub::generateTilesetJson(Storage storage)
   j_tileset["type"] = "tileset";
   j_tileset["version"] = "1.8";
 
-  storage.setFilename("tiledset/" + mTilesetName + ".tsj");
+  storage.setFilename("tiled/" + mTilesetName + ".tsj");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_tileset, full_path, true);
@@ -338,7 +338,7 @@ void TilesetHub::generateAnimationTilesetJson(unsigned int animation_count, Stor
   }
 
 
-  storage.setFilename("tiledset/" + mTilesetName + "_animation.tsj");
+  storage.setFilename("tiled/" + mTilesetName + "_animation.tsj");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_tileset, full_path, true);

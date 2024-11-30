@@ -10,20 +10,20 @@
 // project
 #include "Converter.h"
 #include "dat/DataHub.h"
-#include "PaletteManager.h"
+#include "PaletteConverter.h"
 
 
 class GraphicsConverter : public Converter
 {
 public:
-  GraphicsConverter(std::shared_ptr<Hurricane> hurricane, dat::DataHub &datahub, PaletteManager &palette_manager);
+  GraphicsConverter(std::shared_ptr<Hurricane> hurricane, dat::DataHub &datahub, PaletteConverter &palette_converter);
   virtual ~GraphicsConverter();
 
   void convert(Storage graphics);
 
 private:
   dat::DataHub &mDatahub;
-  PaletteManager &mPaletteManager;
+  PaletteConverter &mPaletteConverter;
 };
 
 #endif /* GRAPHICSCONVERTER_H */

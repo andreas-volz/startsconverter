@@ -26,10 +26,10 @@ using namespace dat;
 
 static Logger logger = Logger("startool.GraphicsConverter");
 
-GraphicsConverter::GraphicsConverter(std::shared_ptr<Hurricane> hurricane, DataHub &datahub, PaletteManager &palette_manager) :
+GraphicsConverter::GraphicsConverter(std::shared_ptr<Hurricane> hurricane, dat::DataHub &datahub, PaletteConverter &paletteConverter) :
     Converter(hurricane),
     mDatahub(datahub),
-    mPaletteManager(palette_manager)
+    mPaletteConverter(paletteConverter)
 {
 }
 
@@ -111,7 +111,7 @@ void GraphicsConverter::convert(Storage graphics)
         remapping = "ofire";
       }
 
-      pal = mPaletteManager.getPalette(remapping);
+      pal = mPaletteConverter.getPalette(remapping);
       grp.setPalette(pal);
 
       grp.setRGBA(true);
@@ -120,7 +120,7 @@ void GraphicsConverter::convert(Storage graphics)
     {
       // Hmm, this generates a black shadow, but I would expect alpha transparent shadow...
       save_grp = true;
-      pal = mPaletteManager.getPalette("tfontgam");
+      pal = mPaletteConverter.getPalette("tfontgam");
       grp.setPalette(pal);
       grp.setRGBA(true);
     }
@@ -131,11 +131,11 @@ void GraphicsConverter::convert(Storage graphics)
       if(imageType == "thingy" && imageSubType == "tileset" && !imageSubSubType.empty())
       {
         tileset = imageSubSubType;
-        pal = mPaletteManager.getPalette(tileset);
+        pal = mPaletteConverter.getPalette(tileset);
       }
       else // in all other cases use the "tunit" palette
       {
-        pal = mPaletteManager.getPalette("tunit");
+        pal = mPaletteConverter.getPalette("tunit");
       }
     }
 
@@ -150,24 +150,24 @@ void GraphicsConverter::convert(Storage graphics)
     {
       // TODO: player color isn't available. But no problem visible for now.
       // maybe need to add cunit palette before into tileset palette?
-      pal = mPaletteManager.getPalette("badlands");
+      pal = mPaletteConverter.getPalette("badlands");
     }
     else if(grp_name == "neutral\\cbattle.grp")
     {
       // TODO: player color isn't available. See how to fix this (or if this is needed for neutral)
-      pal = mPaletteManager.getPalette("badlands");
+      pal = mPaletteConverter.getPalette("badlands");
     }
     else if(grp_name == "neutral\\ion.grp")
     {
-      pal = mPaletteManager.getPalette("platform");
+      pal = mPaletteConverter.getPalette("platform");
     }
     else if(grp_name == "neutral\\khyad01.grp")
     {
-      pal = mPaletteManager.getPalette("jungle");
+      pal = mPaletteConverter.getPalette("jungle");
     }
     else if(grp_name == "neutral\\temple.grp")
     {
-      pal = mPaletteManager.getPalette("jungle");
+      pal = mPaletteConverter.getPalette("jungle");
     }
     else if(grp_name == "neutral\\geyser.grp")
     {
@@ -177,7 +177,7 @@ void GraphicsConverter::convert(Storage graphics)
       frame 2 = "install.wpe"
       frame 3 = "ashworld.wpe"
       */
-      pal = mPaletteManager.getPalette("badlands");
+      pal = mPaletteConverter.getPalette("badlands");
     }
     grp.setPalette(pal);
 

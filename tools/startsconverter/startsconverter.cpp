@@ -10,11 +10,12 @@
 #include "Bootstrap.h"
 #include "dat/DataHub.h"
 #include "GraphicsConverter.h"
-#include "PaletteManager.h"
+#include "PaletteConverter.h"
 #include "SfxConverter.h"
 #include "DatConverter.h"
 #include "PortraitsConverter.h"
 #include "TilesetConverter.h"
+#include "CampaignConverter.h"
 
 /* system */
 #include <string>
@@ -158,8 +159,8 @@ int main(int argc, const char **argv)
   paletteStorage.setDataType("palette");
 
   cout << "Run PaletteManager...";fflush(stdout);
-  PaletteManager palette_manager(bootstrap.getSubArchive());
-  palette_manager.convert(paletteStorage);
+  PaletteConverter palette_converter(bootstrap.getSubArchive());
+  palette_converter.convert(paletteStorage);
   cout << "DONE" << endl;
 
   //cout << "List of choosen converters: ";
@@ -172,7 +173,7 @@ int main(int argc, const char **argv)
     graphicsStorage.setDataType("graphics");
 
     cout << "Run GraphicsConverter...";fflush(stdout);
-    GraphicsConverter graphics_converter(bootstrap.getSubArchive(), datahub, palette_manager);
+    GraphicsConverter graphics_converter(bootstrap.getSubArchive(), datahub, palette_converter);
     graphics_converter.convert(graphicsStorage);
     cout << "DONE" << endl;
   }
@@ -212,15 +213,27 @@ int main(int argc, const char **argv)
     cout << "DONE" << endl;
   }
 
-  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "tileset") != converters_list.end())
-  {
+  //if(converters == "all" || find(converters_list.begin(), converters_list.end(), "tileset") != converters_list.end())
+  //{
     Storage tilesetStorage;
     tilesetStorage.setDataPath(destination_directory);
     tilesetStorage.setDataType("tileset");
 
     cout << "Run TilesetConverter...";fflush(stdout);
-    TilesetConverter tileset_converter(bootstrap.getSubArchive(), palette_manager);
+    TilesetConverter tileset_converter(bootstrap.getSubArchive(), palette_converter);
     tileset_converter.convert(tilesetStorage);
+    cout << "DONE" << endl;
+  //}
+
+  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "campaign") != converters_list.end())
+  {
+    Storage campaignStorage;
+    campaignStorage.setDataPath(destination_directory);
+    campaignStorage.setDataType("campaign");
+
+    cout << "Run CampaignConverter...";fflush(stdout);
+    CampaignConverter campaign_converter(bootstrap.getMainArchive(), datahub, tileset_converter);
+    campaign_converter.convert(campaignStorage);
     cout << "DONE" << endl;
   }
 

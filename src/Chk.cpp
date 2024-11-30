@@ -9,6 +9,7 @@
 #include "Hurricane.h"
 #include "FileUtil.h"
 #include "Logger.h"
+#include "StringUtil.h"
 
 // system
 #include <cstring>
@@ -41,7 +42,7 @@ Chk::Chk(std::shared_ptr<Hurricane> hurricane, const std::string &map_name) :
   Converter(hurricane),
   m_map_name(map_name)
 {
-  const std::string arcfile = "staredit\\scenario.chk";
+  const std::string arcfile = map_name + "\\staredit\\scenario.chk";
   m_chk_parser_stream = mHurricane->extractStream(arcfile);
   assert(m_chk_parser_stream);
   m_chk_parser_ks = make_shared<kaitai::kstream>(&*m_chk_parser_stream);
@@ -73,12 +74,14 @@ const std::string Chk::getTileSet()
 bool Chk::convertTiled(tileset::TilesetHub &tilesethub, Storage storage)
 {
   bool result = false;
+  string map_name_flat(m_map_name);
+  replaceString("\\", "_", map_name_flat);
 
   json j_tilemap;
   j_tilemap["infinite"] = false;
   j_tilemap["compressionlevel"] = -1;
-  j_tilemap["tileheight"] = tilesethub.MEGATILE_SIZE.getHeight();
-  j_tilemap["tilewidth"] = tilesethub.MEGATILE_SIZE.getWidth();
+  j_tilemap["tileheight"] = tileset::TilesetHub::MEGATILE_SIZE.getHeight();
+  j_tilemap["tilewidth"] = tileset::TilesetHub::MEGATILE_SIZE.getWidth();
   j_tilemap["orientation"] = "orthogonal";
   j_tilemap["type"] = "map";
   j_tilemap["renderorder"] = "right-down";
@@ -87,16 +90,16 @@ bool Chk::convertTiled(tileset::TilesetHub &tilesethub, Storage storage)
 
   json j_tilesets_ref;
   j_tilesets_ref["firstgid"] = 1;
-  j_tilesets_ref["source"] = "../tiledset/" + tilesethub.getTilesetName() + ".tsj";
+  j_tilesets_ref["source"] = "../tileset/tiled/" + getTileSet() + ".tsj";
   json j_tilesets_anim_ref;
   j_tilesets_anim_ref["firstgid"] = tilesethub.getMaxStaticTiles() + 1;
-  j_tilesets_anim_ref["source"] = "../tiledset/" + tilesethub.getTilesetName() + "_animation.tsj";
+  j_tilesets_anim_ref["source"] = "../tileset/tiled/" + getTileSet() + "_animation.tsj";
   j_tilemap["tilesets"].push_back(j_tilesets_ref);
   j_tilemap["tilesets"].push_back(j_tilesets_anim_ref);
 
   json j_layer_0;
   j_layer_0["id"] = 1;
-  j_layer_0["name"] = m_map_name + " Layer";
+  j_layer_0["name"] = map_name_flat + " Layer";
   j_layer_0["type"] = "tilelayer";
   j_layer_0["visible"] = true;
   j_layer_0["x"] = 0;
@@ -153,7 +156,7 @@ bool Chk::convertTiled(tileset::TilesetHub &tilesethub, Storage storage)
 
   j_tilemap["layers"].push_back(j_layer_0);
 
-  storage.setFilename(m_map_name + ".tmj");
+  storage.setFilename(map_name_flat + ".tmj");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_tilemap, full_path, true);
@@ -164,6 +167,9 @@ bool Chk::convertTiled(tileset::TilesetHub &tilesethub, Storage storage)
 
 void Chk::generateMapJson(tileset::TilesetHub &tilesethub, Storage storage)
 {
+  string map_name_flat(m_map_name);
+  replaceString("\\", "_", map_name_flat);
+
   json j_tilemap;
   j_tilemap["infinite"] = false;
   j_tilemap["compressionlevel"] = -1;
@@ -186,7 +192,7 @@ void Chk::generateMapJson(tileset::TilesetHub &tilesethub, Storage storage)
 
   json j_layer_0;
   j_layer_0["id"] = 1;
-  j_layer_0["name"] = m_map_name + " Layer";
+  j_layer_0["name"] = map_name_flat + " Layer";
   j_layer_0["type"] = "tilelayer";
   j_layer_0["visible"] = true;
   j_layer_0["x"] = 0;
@@ -210,12 +216,7 @@ void Chk::generateMapJson(tileset::TilesetHub &tilesethub, Storage storage)
 
       for(uint16_t terrain : *terrain_array->values())
       {
-        /*uint16_t groupIndex = (terrain & 0x7FF0) >> 4;
-        uint16_t tileIndex = terrain & 0x000F;
-
-        tileset_cv5_t::group_t* group = tilesethub.cv5->elements()->at(groupIndex);
-        unsigned int megatile_ref = group->megatile_references()->at(tileIndex);*/
-
+        // store megatile link direct
         j_layer_data.push_back(terrain);
       }
     }
@@ -225,7 +226,7 @@ void Chk::generateMapJson(tileset::TilesetHub &tilesethub, Storage storage)
 
   j_tilemap["layers"].push_back(j_layer_0);
 
-  storage.setFilename(m_map_name + "_chk.json");
+  storage.setFilename(map_name_flat + "_chk.json");
   string full_path = storage.getFullPath();
   CheckPath(full_path);
   saveJson(j_tilemap, full_path, true);

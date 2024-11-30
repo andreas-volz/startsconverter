@@ -5,7 +5,7 @@
  */
 
 /* project */
-#include "PaletteManager.h"
+#include "PaletteConverter.h"
 #include "Hurricane.h"
 #include "Breeze.h"
 #include "pacman.h"
@@ -24,18 +24,18 @@
 using namespace std;
 using json = nlohmann::json;
 
-static Logger logger = Logger("startool.PaletteManager");
+static Logger logger = Logger("startool.PaletteConverter");
 
-PaletteManager::PaletteManager(std::shared_ptr<Hurricane> hurricane) :
+PaletteConverter::PaletteConverter(std::shared_ptr<Hurricane> hurricane) :
   Converter(hurricane)
 {
 }
 
-PaletteManager::~PaletteManager()
+PaletteConverter::~PaletteConverter()
 {
 }
 
-std::shared_ptr<AbstractPalette> PaletteManager::getPalette(const std::string palette_name)
+std::shared_ptr<AbstractPalette> PaletteConverter::getPalette(const std::string palette_name)
 {
   std::shared_ptr<AbstractPalette> palette;
   /**
@@ -68,16 +68,13 @@ std::shared_ptr<AbstractPalette> PaletteManager::getPalette(const std::string pa
   return palette;
 }
 
-void PaletteManager::convert(Storage palStorage)
+void PaletteConverter::convert(Storage palStorage)
 {
-  // read in the json file
   std::ifstream json_file(pacman::searchFile("/dataset/palettes.json"));
 
   json palettes_json; //create unitiialized json object
 
   json_file >> palettes_json; // initialize json object with what was read from file
-
-  //std::cout << units_json << std::endl; // prints json object to screen
 
   vector<string> wpeNames;
 
@@ -197,7 +194,7 @@ void PaletteManager::convert(Storage palStorage)
   }
 }
 
-std::vector<std::string> PaletteManager::getTilesetNames()
+std::vector<std::string> PaletteConverter::getTilesetNames()
 {
   std::vector<std::string> wpePaletteNames;
 

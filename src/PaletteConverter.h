@@ -4,8 +4,8 @@
  *      Author: Andreas Volz
  */
 
-#ifndef PALETTEMANAGER_H
-#define PALETTEMANAGER_H
+#ifndef PALETTECONVERTER_H
+#define PALETTECONVERTER_H
 
 /* project */
 #include "Converter.h"
@@ -16,11 +16,11 @@
 /* system */
 #include <map>
 
-class PaletteManager : public Converter
+class PaletteConverter : public Converter
 {
 public:
-  PaletteManager(std::shared_ptr<Hurricane> hurricane);
-  virtual ~PaletteManager();
+  PaletteConverter(std::shared_ptr<Hurricane> hurricane);
+  virtual ~PaletteConverter();
 
   void convert(Storage palStorage);
 
@@ -39,4 +39,4 @@ private:
   std::map<std::string, std::shared_ptr<AbstractPalette>> mWPEPaletteMap;
 };
 
-#endif /* PALETTEMANAGER_H */
+#endif /* PALETTECONVERTER_H */
