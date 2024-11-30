@@ -91,6 +91,7 @@ int parseOptions(int argc, const char **argv)
   else
   {
     converters = "all";
+    converters_list.push_back("all");
   }
 
   // parse options
@@ -129,6 +130,12 @@ int parseOptions(int argc, const char **argv)
   return 0;
 }
 
+template <typename... Strings>
+bool converterCheck(const Strings&... strings)
+{
+    return (... || (std::find(converters_list.begin(), converters_list.end(), strings) != converters_list.end()));
+}
+
 int main(int argc, const char **argv)
 {
 #ifdef HAVE_LOG4CXX
@@ -144,6 +151,10 @@ int main(int argc, const char **argv)
 
   parseOptions(argc, argv);
 
+  //cout << "List of choosen converters: ";
+  //printVector<string>(converters_list);
+  // TODO: check for allowed converter options and print them as help
+
   Storage archiveStorage;
   archiveStorage.setDataPath(destination_directory);
 
@@ -151,22 +162,23 @@ int main(int argc, const char **argv)
 
   Bootstrap bootstrap(archive, backend, archiveStorage);
 
+  // this is needed everywhere so create it without options
   dat::DataHub datahub(bootstrap.getSubArchive());
 
-  // TODO: run this only for palette needed options
-  Storage paletteStorage;
-  paletteStorage.setDataPath(destination_directory);
-  paletteStorage.setDataType("palette");
-
-  cout << "Run PaletteManager...";fflush(stdout);
+  // needs to stay outside because we need it later
   PaletteConverter palette_converter(bootstrap.getSubArchive());
-  palette_converter.convert(paletteStorage);
-  cout << "DONE" << endl;
+  if(converterCheck("all", "palette", "graphics", "tileset"))
+  {
+    Storage paletteStorage;
+    paletteStorage.setDataPath(destination_directory);
+    paletteStorage.setDataType("palette");
 
-  //cout << "List of choosen converters: ";
-  //printVector<string>(converters_list);
+    cout << "Run PaletteManager...";fflush(stdout);
+    palette_converter.convert(paletteStorage);
+    cout << "DONE" << endl;
+  }
 
-  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "graphics") != converters_list.end())
+  if(converterCheck("all", "graphics"))
   {
     Storage graphicsStorage;
     graphicsStorage.setDataPath(destination_directory);
@@ -178,7 +190,7 @@ int main(int argc, const char **argv)
     cout << "DONE" << endl;
   }
 
-  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "sfx") != converters_list.end())
+  if(converterCheck("all", "sfx"))
   {
     Storage soundsStorage;
     soundsStorage.setDataPath(destination_directory);
@@ -190,7 +202,7 @@ int main(int argc, const char **argv)
     cout << "DONE" << endl;
   }
 
-  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "dat") != converters_list.end())
+  if(converterCheck("all", "dat"))
   {
     Storage datStorage;
     datStorage.setDataPath(destination_directory);
@@ -201,7 +213,7 @@ int main(int argc, const char **argv)
     cout << "DONE" << endl;
   }
 
-  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "portraits") != converters_list.end())
+  if(converterCheck("all", "portraits"))
   {
     Storage portraitsStorage;
     portraitsStorage.setDataPath(destination_directory);
@@ -213,19 +225,20 @@ int main(int argc, const char **argv)
     cout << "DONE" << endl;
   }
 
-  //if(converters == "all" || find(converters_list.begin(), converters_list.end(), "tileset") != converters_list.end())
-  //{
+  // needs to stay outside because we need it later
+  TilesetConverter tileset_converter(bootstrap.getSubArchive(), palette_converter);
+  if(converterCheck("all", "tileset", "campaign"))
+  {
     Storage tilesetStorage;
     tilesetStorage.setDataPath(destination_directory);
     tilesetStorage.setDataType("tileset");
 
     cout << "Run TilesetConverter...";fflush(stdout);
-    TilesetConverter tileset_converter(bootstrap.getSubArchive(), palette_converter);
     tileset_converter.convert(tilesetStorage);
     cout << "DONE" << endl;
-  //}
+  }
 
-  if(converters == "all" || find(converters_list.begin(), converters_list.end(), "campaign") != converters_list.end())
+  if(converterCheck("all", "campaign"))
   {
     Storage campaignStorage;
     campaignStorage.setDataPath(destination_directory);
