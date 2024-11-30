@@ -16,6 +16,9 @@
 #include "PortraitsConverter.h"
 #include "TilesetConverter.h"
 #include "CampaignConverter.h"
+#include "iscript/IScript.h"
+#include "iscript/IScriptConverter.h"
+#include "FileUtil.h"
 
 /* system */
 #include <string>
@@ -247,6 +250,26 @@ int main(int argc, const char **argv)
     cout << "Run CampaignConverter...";fflush(stdout);
     CampaignConverter campaign_converter(bootstrap.getMainArchive(), datahub, tileset_converter);
     campaign_converter.convert(campaignStorage);
+    cout << "DONE" << endl;
+  }
+
+  if(converterCheck("all", "iscript"))
+  {
+    // TODO: support Strorage
+    // TODO: redesign Iscript to only call the Converter and wrap the IScript class
+    string iscript_bin = "scripts\\iscript.bin";
+    IScript iscript(bootstrap.getSubArchive(), iscript_bin);
+    iscript.parseIScript();
+
+    std::vector<Opcode> &opcode_vector = iscript.getOpcodeVector();
+    std::map<uint16_t, std::vector<uint16_t>> &iscript_scpe_header_map = iscript.getIScriptSCPEHeaderMap();
+
+    IScriptConverter iscript_converter;
+    iscript_converter.setHumanReadable(false);
+    string iscript_txt = destination_directory + "/iscript/iscript.txt";
+    CheckPath(iscript_txt); // TODO: this should be inside the Converter
+    cout << "Run IScriptConverter...";fflush(stdout);
+    iscript_converter.saveConverted(iscript_txt, iscript_scpe_header_map, opcode_vector);
     cout << "DONE" << endl;
   }
 
