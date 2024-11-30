@@ -47,17 +47,6 @@ starformat_lib_sources = files(
 	'CampaignConverter.cpp'
 	)
 
-#stratagus_prefix = get_option('prefix')
-#stratagus_bin = get_option('STRATAGUS_BIN')
-
-#stratagus_includedir = get_option('STRATAGUS_INCLUDE_DIR')
-#stratagus_incdir = include_directories(stratagus_includedir)
-
-#add_project_arguments('-DDATA_PATH="' + stratagus_prefix + '/share/games/stratagus/stargus"', language: 'cpp')
-#add_project_arguments('-DSCRIPTS_PATH="' + stratagus_prefix + '/share/games/stratagus/stargus"', language: 'cpp')
-#add_project_arguments('-DSTRATAGUS_BIN="' + stratagus_bin + '"', language: 'cpp')
-#add_project_arguments('-DSOURCE_DIR="' + meson.current_source_dir() + '/../"', language: 'cpp')
-
 # this option is needed for kaitai binary parser
 add_project_arguments('-DKS_STR_ENCODING_NONE', language: 'cpp')
 
