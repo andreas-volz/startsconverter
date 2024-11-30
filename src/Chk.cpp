@@ -203,6 +203,7 @@ void Chk::generateMapJson(tileset::TilesetHub &tilesethub, Storage storage)
 
   j_tilemap["MTXM"] = j_mtxm_data;
   j_tilemap["DIM"] = j_dim_data;
+  j_tilemap["ERA"] = getTileSet();
 
   storage.setFilename(map_name_flat + "_chk.json");
   string full_path = storage.getFullPath();
