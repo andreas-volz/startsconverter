@@ -178,44 +178,16 @@ void Chk::generateMapJson(tileset::TilesetHub &tilesethub, Storage storage)
   replaceString("\\", "_", map_name_flat);
 
   json j_tilemap;
-  j_tilemap["infinite"] = false;
-  j_tilemap["compressionlevel"] = -1;
-  j_tilemap["tileheight"] = tilesethub.MEGATILE_SIZE.getHeight();
-  j_tilemap["tilewidth"] = tilesethub.MEGATILE_SIZE.getWidth();
-  j_tilemap["orientation"] = "orthogonal";
-  j_tilemap["type"] = "map";
-  j_tilemap["renderorder"] = "right-down";
-  j_tilemap["version"] = "1.8";
-  j_tilemap["tiledversion"] = "1.8.0";
+  json j_mtxm_data;
+  json j_dim_data;
 
-  json j_tilesets_ref;
-  j_tilesets_ref["firstgid"] = 1;
-  j_tilesets_ref["source"] = "../" + tilesethub.getTilesetName() + ".tsj";
-  json j_tilesets_anim_ref;
-  j_tilesets_anim_ref["firstgid"] = tilesethub.getMaxStaticTiles() + 1;
-  j_tilesets_anim_ref["source"] = "../" + tilesethub.getTilesetName() + "_animation.tsj";
-  j_tilemap["tilesets"].push_back(j_tilesets_ref);
-  j_tilemap["tilesets"].push_back(j_tilesets_anim_ref);
-
-  json j_layer_0;
-  j_layer_0["id"] = 1;
-  j_layer_0["name"] = map_name_flat + " Layer";
-  j_layer_0["type"] = "tilelayer";
-  j_layer_0["visible"] = true;
-  j_layer_0["x"] = 0;
-  j_layer_0["y"] = 0;
-  j_layer_0["opacity"] = 1;
-
-  json j_layer_data;
   for(const chk_parser_t::chunk_type_t* chunk : *chk_parser->chunk())
   {
    if(chunk->tag() == "DIM ")
     {
       chk_parser_t::dimension_t *dimension = static_cast<chk_parser_t::dimension_t*>(chunk->data()->content());
-      j_tilemap["height"] = dimension->height();
-      j_tilemap["width"] = dimension->width();
-      j_layer_0["height"] = dimension->height();
-      j_layer_0["width"] = dimension->width();
+      j_dim_data["height"] = dimension->height();
+      j_dim_data["width"] = dimension->width();
     }
     else if(chunk->tag() == "MTXM")
     {
@@ -224,14 +196,13 @@ void Chk::generateMapJson(tileset::TilesetHub &tilesethub, Storage storage)
       for(uint16_t terrain : *terrain_array->values())
       {
         // store megatile link direct
-        j_layer_data.push_back(terrain);
+        j_mtxm_data.push_back(terrain);
       }
     }
   }
 
-  j_layer_0["data"] = j_layer_data;
-
-  j_tilemap["layers"].push_back(j_layer_0);
+  j_tilemap["MTXM"] = j_mtxm_data;
+  j_tilemap["DIM"] = j_dim_data;
 
   storage.setFilename(map_name_flat + "_chk.json");
   string full_path = storage.getFullPath();
