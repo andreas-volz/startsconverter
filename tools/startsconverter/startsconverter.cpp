@@ -19,6 +19,7 @@
 #include "iscript/IScript.h"
 #include "iscript/IScriptConverter.h"
 #include "WidgetsConverter.h"
+#include "GameUIConverter.h"
 
 /* system */
 #include <string>
@@ -283,6 +284,17 @@ int main(int argc, const char **argv)
     cout << "Run WidgetsConverter...";fflush(stdout);
     WidgetsConverter widgets_converter(bootstrap.getSubArchive(), palette_converter);
     widgets_converter.convert(widgetsStorage);
+    cout << "DONE" << endl;
+  }
+
+  if(converterCheck("all", "gameui"))
+  {
+    Storage gameUIStorage;
+    gameUIStorage.setDataPath(destination_directory);
+
+    cout << "Run GameUIConverter...";fflush(stdout);
+    GameUIConverter gameui_converter(bootstrap.getSubArchive());
+    gameui_converter.convert(gameUIStorage);
     cout << "DONE" << endl;
   }
 

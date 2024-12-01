@@ -1,0 +1,38 @@
+[
+	{
+		"mpq":		"game\\pconsole.pcx",
+		"export": 	"gameui/protoss_console.png"
+	},
+	{
+		"mpq": 		"game\\tconsole.pcx",
+		"export":	"gameui/terran_console.png"
+	},
+	{
+		"mpq": 		"game\\zconsole.pcx",
+		"export":	"gameui/zerg_console.png"
+	},
+	{
+		"mpq": 		"game\\pconover.pcx",
+		"export":	"gameui/protoss_console_overlay.png"
+	},
+	{
+		"mpq": 		"game\\tconover.pcx",
+		"export":	"gameui/terran_console_overlay.png"
+	},
+	{
+		"mpq": 		"game\\zconover.pcx",
+		"export":	"gameui/terran_console_overlay.png"
+	},
+	{
+		"mpq": 		"game\\tpbrfull.pcx",
+		"export":	"gameui/progress_full.png"
+	},
+	{
+		"mpq": 		"game\\tpbrempt.pcx",
+		"export":	"gameui/progress_empty.png"
+	},
+	{
+		"mpq": 		"game\\aggicons.pcx",
+		"export":	"gameui/flag_icons.png"
+	}
+]

@@ -72,9 +72,9 @@ void PaletteConverter::convert(Storage palStorage)
 {
   std::ifstream json_file(pacman::searchFile("/dataset/palettes.json"));
 
-  json palettes_json; //create unitiialized json object
+  json palettes_json;
 
-  json_file >> palettes_json; // initialize json object with what was read from file
+  json_file >> palettes_json;
 
   vector<string> wpeNames;
 
