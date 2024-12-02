@@ -18,19 +18,18 @@
 #include <iostream>
 
 using namespace std;
+using json = nlohmann::json;
 
 Widgets::Widgets(std::shared_ptr<Hurricane> hurricane) :
   Grp(hurricane)
 {
-
 }
 
 Widgets::~Widgets()
 {
-
 }
 
-bool Widgets::convert(const std::string &arcfile, Storage filename, json &frameExtractJson)
+bool Widgets::convert(const std::string &arcfile, Storage filename, bool frameStitching, const std::string &name)
 {
   bool result = true;
 
@@ -44,13 +43,53 @@ bool Widgets::convert(const std::string &arcfile, Storage filename, json &frameE
 
   if(dcGrp)
   {
-    //cout << frameExtractJson << endl; // prints json object to screen
+    if(frameStitching == false)
+    {
+      string image_basename(filename.getFullPath() + "/" + name);
+      mGRPImage.SaveSinglePNG(image_basename + "%d.png", 0, mGRPImage.getNumberOfFrames(), true);
 
-    //vector<string> frameSingleNames;
+      json j_frames_info;
+      for(unsigned int i = 0; i < mGRPImage.getNumberOfFrames(); i++)
+      {
+        json j_frame_info = name + to_string(i) + ".png";
+        j_frames_info.push_back(j_frame_info);
+      }
 
+      // save a JSON with all frames in the correct order
+      string json_path(filename.getFullPath() + "/" + filename.getFilename() + ".json");
+      saveJson(j_frames_info, json_path, true);
+    }
+    else
+    {
+      string image_basename(filename.getFullPath() + "/" + name);
+      mGRPImage.SaveStitchedPNG(image_basename + ".png", 0, mGRPImage.getNumberOfFrames(), 0, true);
+
+      // save json file beside each png file with tilesize information in it. The engine needs this information.
+      string json_path(filename.getFullPath() + "/" + filename.getFilename() + ".json");
+      json j_grp_info = json::object({ {"width", mGRPImage.getMaxImageWidth()}, {"height", mGRPImage.getMaxImageHeight()} });
+      saveJson(j_grp_info, json_path, true);
+    }
+  }
+
+  return result;
+}
+
+bool Widgets::convert(const std::string &arcfile, Storage targetpath, json &frameExtractJson)
+{
+  bool result = true;
+
+  std::shared_ptr<DataChunk> dcGrp = mHurricane->extractDataChunk(arcfile);
+
+  std::vector<char> GrpVec = dcGrp->getCharVector();
+
+  mGRPImage.LoadImage(&GrpVec, true); // true: no duplicate widgets needed
+
+  CheckPath(targetpath.getFullPath());
+
+  if(dcGrp)
+  {
     for(auto &array : frameExtractJson)
     {
-      //int frame_id = array.at("frame");
       string name = array.at("name");
       nlohmann::json frameArray = array.at("frame");
 
@@ -66,23 +105,20 @@ bool Widgets::convert(const std::string &arcfile, Storage filename, json &frameE
       if(frameStitching == 1)
       {
         //frameSingleNames.push_back(name);
-        mGRPImage.SaveSinglePNG(filename.getFullPath() + "/" + name, *stitchedFrames.begin(), *stitchedFrames.begin()+1, true);
+        mGRPImage.SaveSinglePNG(targetpath.getFullPath() + "/" + name, *stitchedFrames.begin(), *stitchedFrames.begin()+1, true);
       }
       else if(frameStitching > 1)
       {
-        mGRPImage.SaveStitchedPNG(filename.getFullPath() + "/" + name, stitchedFrames, 0, true);
+        string image_basename(targetpath.getFullPath() + "/" + name);
+        mGRPImage.SaveStitchedPNG(image_basename, stitchedFrames, 0, true);
       }
       else
       {
         cerr << "something wrong with frame array!" << endl;
       }
     }
-
-    //mGRPImage.SaveSinglePNG(filename.getFullPath(), frameSingleNames, 0, mGRPImage.getNumberOfFrames(), true);
   }
 
   return result;
 }
-
-
 

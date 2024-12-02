@@ -33,6 +33,10 @@ void WidgetsConverter::convert(Storage widgetStorage)
   json dlgsRaceJson; //create unitiialized json object
   dlgsRaceJsonStream >> dlgsRaceJson; // initialize json object with what was read from file
 
+  /**
+   * just hard coded those race GRPs. I don't think an additional JSON file around will help anyone...
+   */
+
   Widgets widgets(mHurricane);
   widgets.setPalette(mPaletteConverter.getPalette("tunit"));
   widgets.convert("dlgs\\terran.grp", widgetStorage("dlgs/terran"), dlgsRaceJson);

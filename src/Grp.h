@@ -53,12 +53,12 @@ public:
   Size getTileSize();
 
 protected: // TODO: maybe back to private after Widget redesign
+  void saveJson(nlohmann::json &j, const std::string &file, bool pretty);
+
   std::shared_ptr<AbstractPalette> mPal;
   GRPImage mGRPImage;
   bool mRGBA;
 
-private:
-  void saveJson(nlohmann::json &j, const std::string &file, bool pretty);
 };
 
 #endif /* GRP_H */

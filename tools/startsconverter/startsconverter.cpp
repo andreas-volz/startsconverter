@@ -20,6 +20,8 @@
 #include "iscript/IScriptConverter.h"
 #include "WidgetsConverter.h"
 #include "GameUIConverter.h"
+#include "CursorConverter.h"
+
 
 /* system */
 #include <string>
@@ -172,7 +174,7 @@ int main(int argc, const char **argv)
 
   // needs to stay outside because we need it later
   PaletteConverter palette_converter(bootstrap.getSubArchive());
-  if(converterCheck("all", "palette", "graphics", "tileset", "campaign", "widgets"))
+  if(converterCheck("all", "palette", "graphics", "tileset", "campaign", "widgets", "cursor"))
   {
     Storage paletteStorage;
     paletteStorage.setDataPath(destination_directory);
@@ -296,6 +298,19 @@ int main(int argc, const char **argv)
     GameUIConverter gameui_converter(bootstrap.getSubArchive());
     gameui_converter.convert(gameUIStorage);
     cout << "DONE" << endl;
+  }
+
+  if(converterCheck("all", "cursor"))
+  {
+    Storage cursorStorage;
+    cursorStorage.setDataPath(destination_directory);
+    cursorStorage.setDataType("cursor");
+
+    cout << "Run GameUIConverter...";fflush(stdout);
+    CursorConverter cursor_converter(bootstrap.getSubArchive(), palette_converter);
+    cursor_converter.convert(cursorStorage);
+    cout << "DONE" << endl;
+
   }
 
   cout << "App Finished" << endl;

@@ -46,7 +46,8 @@ starformat_lib_sources = files(
 	'TilesetConverter.cpp',
 	'CampaignConverter.cpp',
 	'WidgetsConverter.cpp',
-	'GameUIConverter.cpp'
+	'GameUIConverter.cpp',
+	'CursorConverter.cpp'
 	)
 
 # this option is needed for kaitai binary parser
