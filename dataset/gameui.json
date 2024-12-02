@@ -21,7 +21,7 @@
 	},
 	{
 		"mpq": 		"game\\zconover.pcx",
-		"export":	"gameui/terran_console_overlay.png"
+		"export":	"gameui/zerg_console_overlay.png"
 	},
 	{
 		"mpq": 		"game\\tpbrfull.pcx",
