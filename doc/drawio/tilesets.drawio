@@ -129,7 +129,7 @@
         <mxCell id="4CX_WXpqvXqgN1A4HGdK-52" value="MiniTile flags for each MegaTile" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="160" y="420" width="100" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="4CX_WXpqvXqgN1A4HGdK-53" value="MiniTile graphic references for each MegaTile." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="4CX_WXpqvXqgN1A4HGdK-53" value="MiniTile graphic references for each MegaTile" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="362" y="150" width="96" height="40" as="geometry" />
         </mxCell>
         <mxCell id="4CX_WXpqvXqgN1A4HGdK-59" value="Graphical Data for minitiles" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
