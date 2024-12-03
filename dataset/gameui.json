@@ -34,5 +34,13 @@
 	{
 		"mpq": 		"game\\aggicons.pcx",
 		"export":	"gameui/flag_icons.png"
+	},
+	{
+		"mpq": 		"glue\\title\\title.pcx",
+		"export":	"gameui/title.png"
+	},
+	{
+		"mpq": 		"glue\\PalMm\\Backgnd.pcx",
+		"export":	"gameui/mainmenu_backgnd.png"
 	}
 ]
