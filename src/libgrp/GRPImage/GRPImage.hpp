@@ -131,9 +131,11 @@ public:
    * \note NA*/
   void SetColorPalette(std::shared_ptr<AbstractPalette> selectedColorPalette);
 
-  /*!Save the GRPImage frames to a PNG file via libpng
+  /*!Save the GRPImage frames to a PNG file via libpng (stiched all frames in one PNG)
+   *
    * \pre GRPImage is loaded.
    * \post Outputs a image to the ourFilePath.
+   *
    * \param[in] outFilePath The output image file path. (use %d for single image frame replace in the exported image path)
    * \param[in] startingFrame The first image that you would like saved.
    * \param[in] endingFrame The frame you would like to stop saving on.
@@ -142,11 +144,24 @@ public:
    * \note NA*/
   void SaveStitchedPNG(const std::string &outFilePath, int startingFrame, int endingFrame, unsigned int imagesPerRow, bool rgba);
 
+  /*!Save the GRPImage frames to a PNG file via libpng (stiched all frames in one PNG)
+   *
+   */
   void SaveStitchedPNG(const std::string &outFilePath, const std::vector<int> &frameEnumerator, unsigned int imagesPerRow, bool rgba);
 
-  void SaveSinglePNG(const std::string &outFilePath, int startingFrame, int endingFrame, bool rgba);
+  /*!Save the GRPImage frames to a PNG file via libpng (each frame in one PNG)
+   *
+   * \param bestFit cuts the alpha area around to image data to a minimum. But take care when generating pivoted animations.
+   *
+   */
+  void SaveSinglePNG(const std::string &outFilePath, int startingFrame, int endingFrame, bool rgba, bool bestFit = false);
 
-  void SaveSinglePNG(const std::string &outFilePath, const std::vector<std::string> &fileNames, int startingFrame, int endingFrame, bool rgba);
+  /*!Save the GRPImage frames to a PNG file via libpng (each frame in one PNG)
+   *
+   * \param fileNames A list of filenames for each frame for the PNG files
+   *
+   */
+  void SaveSinglePNG(const std::string &outFilePath, const std::vector<std::string> &fileNames, int startingFrame, int endingFrame, bool rgba, bool bestFit = false);
 
 protected:
 
@@ -177,7 +192,7 @@ private:
   void DecodeHeader(std::vector<char> *inputImage);
 
   /**
-   * iterate over all frames and calculate a "best size" which fits all frames
+   * iterate over all frames and calculate a "best size" which i sat the end the minimal size to hold the pixels
    */
   void calculateBestSize(const std::vector<int> &frameEnumerator);
 

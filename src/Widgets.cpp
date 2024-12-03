@@ -46,7 +46,7 @@ bool Widgets::convert(const std::string &arcfile, Storage filename, bool frameSt
     if(frameStitching == false)
     {
       string image_basename(filename.getFullPath() + "/" + name);
-      mGRPImage.SaveSinglePNG(image_basename + "%d.png", 0, mGRPImage.getNumberOfFrames(), true);
+      mGRPImage.SaveSinglePNG(image_basename + "%d.png", 0, mGRPImage.getNumberOfFrames(), true, false); // no best fit, so create frames of same size
 
       json j_frames_info;
       for(unsigned int i = 0; i < mGRPImage.getNumberOfFrames(); i++)

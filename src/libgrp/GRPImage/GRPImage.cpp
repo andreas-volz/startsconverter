@@ -556,17 +556,28 @@ void GRPImage::SaveStitchedPNG(const std::string &outFilePath, const std::vector
   PngExporter::save(outFilePath, *paletteImage, mCurrentPalette, 0, rgba);
 }
 
-void GRPImage::SaveSinglePNG(const std::string &outFilePath, int startingFrame, int endingFrame, bool rgba)
+void GRPImage::SaveSinglePNG(const std::string &outFilePath, int startingFrame, int endingFrame, bool rgba, bool bestFit)
 {
-  SaveSinglePNG(outFilePath, std::vector<std::string>(), startingFrame, endingFrame, rgba);
+  SaveSinglePNG(outFilePath, std::vector<std::string>(), startingFrame, endingFrame, rgba, bestFit);
 }
 
-void GRPImage::SaveSinglePNG(const std::string &outFilePath, const std::vector<std::string> &fileNames, int startingFrame, int endingFrame, bool rgba)
+void GRPImage::SaveSinglePNG(const std::string &outFilePath, const std::vector<std::string> &fileNames, int startingFrame, int endingFrame, bool rgba, bool bestFit)
 {
   if(!mCurrentPalette)
   {
     GRPImageNoLoadedPaletteSet noPalette;
     noPalette.SetErrorMessage("No loaded palette");
+  }
+
+  if(bestFit)
+  {
+    vector<int> frameEnumarator;
+
+    for(int i = startingFrame; i < endingFrame; i++)
+    {
+      frameEnumarator.push_back(i);
+    }
+    calculateBestSize(frameEnumarator);
   }
 
   shared_ptr<PaletteImage> paletteImage;
@@ -578,16 +589,26 @@ void GRPImage::SaveSinglePNG(const std::string &outFilePath, const std::vector<s
   for(int currentProcessingFrame = startingFrame; currentProcessingFrame < endingFrame; ++currentProcessingFrame)
   {
     GRPFrame *currentFrame = mImageFrames.at(currentProcessingFrame);
+    Pos pixel_pivot;
 
     // create a image for each frame
-    //cout << "image size: " << to_string(currentFrame->GetImageWidth()) << "/" <<  to_string(currentFrame->GetImageHeight()) << endl;
-    paletteImage = make_shared<PaletteImage>(Size(currentFrame->GetImageWidth(), currentFrame->GetImageHeight()));
+    if(bestFit)
+    {
+      paletteImage = make_shared<PaletteImage>(Size(currentFrame->GetImageWidth(), currentFrame->GetImageHeight()));
+    }
+    else
+    {
+      paletteImage = make_shared<PaletteImage>(Size(mMaxImageWidth, mMaxImageWidth));
+      pixel_pivot.setX(currentFrame->GetXOffset());
+      pixel_pivot.setY(currentFrame->GetYOffset());
+    }
 
     //Start appling the pixels with the refence colorpalettes
     for (std::list<UniquePixel>::iterator currentProcessPixel = currentFrame->frameData.begin(); currentProcessPixel != currentFrame->frameData.end(); currentProcessPixel++)
     {
-      Pos pixel_pos((currentProcessPixel->xPosition),
-                    (currentProcessPixel->yPosition));
+      Pos pixel_pos((currentProcessPixel->xPosition + pixel_pivot.getX()),
+                    (currentProcessPixel->yPosition + pixel_pivot.getY()));
+
       //cout << "put color to: " << to_string(pixel_pos.getX()) << "/" << to_string(pixel_pos.getY()) << endl;
 
       paletteImage->at(pixel_pos) = currentProcessPixel->colorPaletteReference;
