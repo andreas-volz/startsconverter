@@ -142,7 +142,7 @@ public:
    * \note NA*/
   void SaveStitchedPNG(const std::string &outFilePath, int startingFrame, int endingFrame, unsigned int imagesPerRow, bool rgba);
 
-  void SaveStitchedPNG(const std::string &outFilePath, std::vector<int> frameEnumerator, unsigned int imagesPerRow, bool rgba);
+  void SaveStitchedPNG(const std::string &outFilePath, const std::vector<int> &frameEnumerator, unsigned int imagesPerRow, bool rgba);
 
   void SaveSinglePNG(const std::string &outFilePath, int startingFrame, int endingFrame, bool rgba);
 
@@ -175,6 +175,11 @@ private:
   bool DetectUncompressed(std::vector<char> *inputImage);
 
   void DecodeHeader(std::vector<char> *inputImage);
+
+  /**
+   * iterate over all frames and calculate a "best size" which fits all frames
+   */
+  void calculateBestSize(const std::vector<int> &frameEnumerator);
 
   //The decoded GRPFrames
   std::vector<GRPFrame *> mImageFrames;

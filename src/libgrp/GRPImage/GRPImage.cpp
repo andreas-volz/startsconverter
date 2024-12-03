@@ -462,6 +462,29 @@ void GRPImage::SetColorPalette(std::shared_ptr<AbstractPalette> selectedColorPal
     mCurrentPalette = selectedColorPalette;
 }
 
+void GRPImage::calculateBestSize(const std::vector<int> &frameEnumerator)
+{
+  int bestWidth = 0;
+  int bestHeight = 0;
+
+  for(int currentProcessingFrame : frameEnumerator)
+  {
+    GRPFrame *currentImageFrame = mImageFrames.at(currentProcessingFrame);
+
+    if (currentImageFrame->GetXOffset() + currentImageFrame->GetImageWidth() > bestWidth)
+    {
+      bestWidth = currentImageFrame->GetXOffset() + currentImageFrame->GetImageWidth();
+    }
+
+    if (currentImageFrame->GetYOffset() + currentImageFrame->GetImageHeight() > bestHeight)
+    {
+      bestHeight = currentImageFrame->GetYOffset() + currentImageFrame->GetImageHeight();
+    }
+    mMaxImageWidth = bestWidth;
+    mMaxImageHeight = bestHeight;
+  }
+}
+
 void GRPImage::SaveStitchedPNG(const std::string &outFilePath, int startingFrame, int endingFrame, unsigned int imagesPerRow, bool rgba)
 {
   vector<int> frameEnumarator;
@@ -474,7 +497,7 @@ void GRPImage::SaveStitchedPNG(const std::string &outFilePath, int startingFrame
   SaveStitchedPNG(outFilePath, frameEnumarator, imagesPerRow, rgba);
 }
 
-void GRPImage::SaveStitchedPNG(const std::string &outFilePath, std::vector<int> frameEnumerator, unsigned int imagesPerRow, bool rgba)
+void GRPImage::SaveStitchedPNG(const std::string &outFilePath, const std::vector<int> &frameEnumerator, unsigned int imagesPerRow, bool rgba)
 {
   if(!mCurrentPalette)
   {
@@ -495,27 +518,10 @@ void GRPImage::SaveStitchedPNG(const std::string &outFilePath, std::vector<int> 
   int currentImageDestinationColumn = 0;
   unsigned int currentImageDestinationRow = 0;
 
-  int bestWidth = 0;
-  int bestHeight = 0;
-  for(int currentProcessingFrame : frameEnumerator)
+  // calculate the best width/height for that image (only for uncompressed or only partly exported)
+  if((mUncompressed) || (frameEnumerator.size() != mNumberOfFrames))
   {
-    GRPFrame *currentImageFrame = mImageFrames.at(currentProcessingFrame);
-
-    // calculate the best width/height for that image (only for uncompressed or only partly exported)
-    if((mUncompressed) || (frameEnumerator.size() != mNumberOfFrames))
-    {
-      if (currentImageFrame->GetXOffset() + currentImageFrame->GetImageWidth() > bestWidth)
-      {
-        bestWidth = currentImageFrame->GetXOffset() + currentImageFrame->GetImageWidth();
-      }
-
-      if (currentImageFrame->GetYOffset() + currentImageFrame->GetImageHeight() > bestHeight)
-      {
-        bestHeight = currentImageFrame->GetYOffset() + currentImageFrame->GetImageHeight();
-      }
-      mMaxImageWidth = bestWidth;
-      mMaxImageHeight = bestHeight;
-    }
+    calculateBestSize(frameEnumerator);
   }
 
   int image_width = (mMaxImageWidth * imagesPerRow);
@@ -560,7 +566,7 @@ void GRPImage::SaveSinglePNG(const std::string &outFilePath, const std::vector<s
   if(!mCurrentPalette)
   {
     GRPImageNoLoadedPaletteSet noPalette;
-    noPalette.SetErrorMessage("No loaded set");
+    noPalette.SetErrorMessage("No loaded palette");
   }
 
   shared_ptr<PaletteImage> paletteImage;
