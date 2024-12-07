@@ -10,7 +10,6 @@
 #include "StringUtil.h"
 #include "Grp.h"
 #include "Unit.h"
-#include "Preferences.h"
 #include "FileUtil.h"
 #include "Hurricane.h"
 

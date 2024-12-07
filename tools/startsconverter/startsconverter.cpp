@@ -21,6 +21,7 @@
 #include "WidgetsConverter.h"
 #include "GameUIConverter.h"
 #include "CursorConverter.h"
+#include "Pcx.h" // remove
 
 
 /* system */
@@ -309,6 +310,21 @@ int main(int argc, const char **argv)
     cout << "Run GameUIConverter...";fflush(stdout);
     CursorConverter cursor_converter(bootstrap.getSubArchive(), palette_converter);
     cursor_converter.convert(cursorStorage);
+    cout << "DONE" << endl;
+
+  }
+
+  if(converterCheck("all", "rgbmap"))
+  {
+    Storage rgbmapStorage;
+    rgbmapStorage.setDataPath(destination_directory);
+    rgbmapStorage.setDataType("rgbmap");
+
+    cout << "Run RGBMapConverter...";fflush(stdout);
+    Pcx pcx_rgbmap(bootstrap.getSubArchive(), "game\\tunit.pcx");
+    pcx_rgbmap.saveRGBMapJson(rgbmapStorage("tunit.json"));
+    //CursorConverter cursor_converter(bootstrap.getSubArchive(), rgbmapStorage);
+    //cursor_converter.convert(cursorStorage);
     cout << "DONE" << endl;
 
   }

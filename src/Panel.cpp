@@ -7,11 +7,12 @@
 // Local
 #include "Panel.h"
 #include "FileUtil.h"
-#include "Preferences.h"
 
 // System
 #include <png.h>
 #include <zlib.h>
+
+// TODO: remove this class!
 
 Panel::Panel()
 {

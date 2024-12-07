@@ -7,12 +7,17 @@
 #ifndef PCX_H
 #define PCX_H
 
-// Project
+/* project */
 #include "Converter.h"
 #include "Palette.h"
 #include "Storage.h"
 #include "PaletteImage.h"
 #include "Palette2D.h"
+
+/* system */
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 class Pcx : public Converter
 {
@@ -31,6 +36,14 @@ public:
    *  @param storage where to save the PNG image
    */
   bool savePNG(Storage storage);
+
+
+  /**
+   * Definition on an RGBMap is a PCX file which is one pixel height and has information about palette remapping colors.
+   * One possibility is to map them in the offline converter tools and convert mapped PNG files. But this feature allows
+   * to export them in a JSON file that modern engines could use a shader to remap colors on-the-fly.
+   */
+  bool saveRGBMapJson(Storage storage);
 
   /**
    *
@@ -76,6 +89,8 @@ private:
   };
 
   void extractHeader();
+
+  void saveJson(nlohmann::json &j, const std::string &file, bool pretty);
 
   /**
    *  Convert 8 bit pcx file to raw image

@@ -7,6 +7,8 @@
 #ifndef PANEL_H_
 #define PANEL_H_
 
+// TODO: remove this class
+
 class Panel
 {
 public:

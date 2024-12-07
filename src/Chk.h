@@ -16,10 +16,9 @@
 // system
 #include <memory>
 #include <vector>
-#include <nlohmann/json.hpp>
 
 // Forward declarations
-class Hurricane;
+
 
 /**
  * representation of a specific map (.chk) and converter
@@ -44,7 +43,7 @@ private:
   static const std::vector<std::string> TILESET_MAPPING;
   std::string m_map_name;
 
-  void saveJson(json &j, const std::string &file, bool pretty);
+  void saveJson(nlohmann::json &j, const std::string &file, bool pretty);
 
 
 };

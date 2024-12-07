@@ -8,7 +8,6 @@
 #include "GraphicsConverter.h"
 
 #include "Logger.h"
-#include "Preferences.h"
 #include "Storage.h"
 #include "FileUtil.h"
 #include "dat/Image.h"

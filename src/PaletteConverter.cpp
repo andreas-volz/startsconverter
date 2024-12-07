@@ -173,7 +173,7 @@ void PaletteConverter::convert(Storage palStorage)
     string pcx_arcfile = pcx_array.at("arcfile");
     string pal_palette = pcx_array.at("palette");
 
-    /* Teplace this with the first of the WPE palettes. Which one doesn't care for the palette logic.
+    /* Replace this with the first of the WPE palettes. Which one doesn't care for the palette logic.
      * The reason is that technical the PCX2D palettes are only used to blend against a static background
      * and then converted to RGBA. For this it doesn't matter which tileset palette is used.
      * see: Color::blendAgainstReference()

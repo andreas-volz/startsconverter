@@ -10,7 +10,6 @@
 #include "Dds.h"
 #include "Hurricane.h"
 #include "FileUtil.h"
-#include "Preferences.h"
 
 // System
 #include <Magick++.h>
@@ -49,9 +48,9 @@ bool Dds::convert(const std::string &arcfile, const std::string &file)
       // Read a file into image object
       image.read(blob);
 
-      Preferences &preferences = Preferences::getInstance();
-      string targetPath = preferences.getDestDir() + "/" + GRAPHICS_PATH + "/"
-                          + file;
+      // TODO: repair
+      string targetPath;// = preferences.getDestDir() + "/" + GRAPHICS_PATH + "/"
+                        //  + file;
 
       // Write the image to a file
       CheckPath(targetPath);

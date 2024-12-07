@@ -9,7 +9,6 @@
 #include <PngExporter.h>
 #include "Widgets.h"
 #include "Storm.h"
-#include "Preferences.h"
 #include "FileUtil.h"
 #include "pacman.h"
 

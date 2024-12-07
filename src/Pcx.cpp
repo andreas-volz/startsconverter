@@ -11,14 +11,17 @@
 #include "Storm.h"
 #include "Hurricane.h"
 #include "Logger.h"
+#include "FileUtil.h"
 
 // System
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
 #include <fstream>
+#include <nlohmann/json.hpp>
 
 using namespace std;
+using json = nlohmann::json;
 
 static Logger logger = Logger("startool.Pcx");
 
@@ -71,6 +74,37 @@ bool Pcx::savePNG(Storage storage)
   {
     result = false;
   }
+
+  return result;
+}
+
+bool Pcx::saveRGBMapJson(Storage storage)
+{
+  bool result = true;
+
+  json j_color_list;
+
+  if(mPaletteImage->getSize().getHeight() != 1)
+  {
+    // those special color images in starcraft are only one pixel height
+    return false;
+  }
+
+  CheckPath(storage);
+
+  for(int i = 0; i < mPaletteImage->getSize().getWidth(); i++)
+  {
+    json j_rgb;
+    unsigned char pixel = mPaletteImage->at(i);
+    Color &color = mPalette->at(pixel);
+    j_rgb.push_back(color.getRed());
+    j_rgb.push_back(color.getGreen());
+    j_rgb.push_back(color.getBlue());
+    j_rgb.push_back(255);
+    j_color_list.push_back(j_rgb);
+  }
+
+  saveJson(j_color_list, storage, true);
 
   return result;
 }
@@ -238,3 +272,16 @@ void Pcx::extractImage()
   }
 }
 
+void Pcx::saveJson(json &j, const std::string &file, bool pretty)
+{
+  std::ofstream filestream(file);
+
+  if(pretty)
+  {
+    filestream << std::setw(4) << j;
+  }
+  else
+  {
+    filestream << j;
+  }
+}

@@ -13,8 +13,6 @@ starformat_lib_sources = files(
 	'Chk.cpp',
 	'Font.cpp',
 	'Grp.cpp',
-	'Panel.cpp',
-	'Preferences.cpp',
 	'Widgets.cpp',
 	'DataChunk.cpp',
 	'Hurricane.cpp',
