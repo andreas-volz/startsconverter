@@ -380,10 +380,10 @@ void to_json(json &j, Unit u)
   j["id"] = json(u.id());
   j["id_string"] = json(u.getIDString());
   j["name_tbl"] = json(u.name_tbl());
-  j["graphics"] = json(u.graphics());
+  j["flingy"] = json(u.flingy());
   if(u.get_generate_objects())
   {
-    j["graphics_obj"] = json(u.graphics_obj());
+    j["flingy_obj"] = json(u.flingy_obj());
   }
   j["subunit1"] = json(u.subunit1());
   if(u.get_generate_objects())
