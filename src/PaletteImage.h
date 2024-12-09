@@ -9,8 +9,7 @@
 
 // Project
 #include "DataChunk.h"
-#include "Size.h"
-#include "Pos.h"
+#include "Vector2.h"
 
 // System
 
@@ -25,12 +24,12 @@ public:
    * Construct with specific size but zero data to fill byte by byte
    * It allows random access to fill the elements with data as the internal vector is constructed at that size
    */
-  PaletteImage(const Size &size);
+  PaletteImage(const Vector2i &size);
 
   /**
    * Construct with specific size but fill in one chunk
    */
-  PaletteImage(const DataChunk &datachunk, const Size &size);
+  PaletteImage(const DataChunk &datachunk, const Vector2i &size);
 
   /**
    * Construct a new palette image based on a give one, but replace all palette indices according the replacer variable
@@ -44,7 +43,7 @@ public:
    */
   virtual const unsigned char* getRawDataPointer() const;
 
-  virtual const Size getSize() const;
+  virtual const Vector2i getSize() const;
 
   /**
    * Get or set a pixel with palette index based on l-value or r-value (and provide a const variant)
@@ -56,12 +55,12 @@ public:
   /**
    * set or get a pixel based on l-value/r-value implementation (and provide a const variant)
    */
-  virtual unsigned char &at(const Pos &pos);
-  virtual const unsigned char &at(const Pos &pos) const;
+  virtual unsigned char &at(const Vector2i &pos);
+  virtual const unsigned char &at(const Vector2i &pos) const;
 
-  virtual const Pos indexToPosition(size_t index) const;
+  virtual const Vector2i indexToPosition(size_t index) const;
 
-  virtual size_t positionToIndex(const Pos &pos) const;
+  virtual size_t positionToIndex(const Vector2i &pos) const;
 
   /**
    * Fills the complete image with a specific index color from the Palette.
@@ -97,7 +96,7 @@ public:
 
 private:
   std::vector<unsigned char> mData;
-  Size mSize;
+  Vector2i mSize;
 };
 
 #endif /* PALETTEIMAGE_H */

@@ -18,7 +18,7 @@ namespace tileset
 
 static Logger logger = Logger("startool.tileset.TiledPaletteImage");
 
-TiledPaletteImage::TiledPaletteImage(const Size &tileSize, const Size &subtileSize) :
+TiledPaletteImage::TiledPaletteImage(const Vector2i &tileSize, const Vector2i &subtileSize) :
     PaletteImage(tileSize * subtileSize),
     mTileSize(tileSize),
     mSubtileSize(subtileSize)
@@ -37,47 +37,47 @@ void TiledPaletteImage::copyTile(const PaletteImage &palette_image, size_t index
   int x = 0;
 
   // if index is out of data size that return Pos(0, 0) as fail safe
-  if((int)index < (getSize().getWidth() * getSize().getHeight()) /
-      (palette_image.getSize().getWidth() * palette_image.getSize().getHeight()))
+  if((int)index < (getSize().x * getSize().y) /
+      (palette_image.getSize().x * palette_image.getSize().y))
   {
-    y = index / (getSize().getWidth() / palette_image.getSize().getWidth());
-    x = index % (getSize().getWidth() / palette_image.getSize().getWidth());
+    y = index / (getSize().x / palette_image.getSize().x);
+    x = index % (getSize().x / palette_image.getSize().x);
   }
 
-  Pos rel_pos(x,y);
+  Vector2i rel_pos(x,y);
   copyTile(palette_image, rel_pos, horizontal_flip);
 }
 
-void TiledPaletteImage::copyTile(const PaletteImage &palette_image, const Pos &pos, bool horizontal_flip)
+void TiledPaletteImage::copyTile(const PaletteImage &palette_image, const Vector2i &pos, bool horizontal_flip)
 {
-  if(pos.getX() < mTileSize.getWidth() || pos.getY() < mTileSize.getWidth())
+  if(pos.x < mTileSize.x || pos.y < mTileSize.x)
   {
 
-    for(int x = 0; x < palette_image.getSize().getWidth(); x++)
+    for(int x = 0; x < palette_image.getSize().x; x++)
     {
-      for(int y = 0; y < palette_image.getSize().getHeight(); y++)
+      for(int y = 0; y < palette_image.getSize().y; y++)
       {
-        unsigned char pixel = palette_image.at(Pos(x, y));
+        unsigned char pixel = palette_image.at(Vector2i(x, y));
 
         int x_flip = x;
         if(horizontal_flip)
         {
-          x_flip = palette_image.getSize().getWidth() - 1 - x;
+          x_flip = palette_image.getSize().x - 1 - x;
         }
 
-        at(calcAbsolutePos(pos, Pos(x_flip, y))) = pixel;
+        at(calcAbsolutePos(pos, Vector2i(x_flip, y))) = pixel;
       }
     }
   }
   else
   {
-    LOG4CXX_WARN(logger, "copyTile() out of range! Pos(" + to_string(pos.getX()) + "/" + to_string(pos.getY()) + ")");
+    LOG4CXX_WARN(logger, "copyTile() out of range! Pos(" + to_string(pos.x) + "/" + to_string(pos.y) + ")");
   }
 }
 
-const Pos TiledPaletteImage::calcAbsolutePos(const Pos &tile_pos, const Pos &relative_pos)
+const Vector2i TiledPaletteImage::calcAbsolutePos(const Vector2i &tile_pos, const Vector2i &relative_pos)
 {
-  return Pos(tile_pos.getX() * mSubtileSize.getWidth() + relative_pos.getX(), tile_pos.getY() * mSubtileSize.getHeight() + relative_pos.getY());
+  return Vector2i(tile_pos.x * mSubtileSize.x + relative_pos.x, tile_pos.y * mSubtileSize.y + relative_pos.y);
 }
 
 } /* namespace tileset */

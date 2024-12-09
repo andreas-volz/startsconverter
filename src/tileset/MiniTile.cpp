@@ -12,7 +12,7 @@ namespace tileset
 {
 
 MiniTile::MiniTile(TilesetHub &tilesethub, size_t position) :
-    mPaletteImage(make_shared<PaletteImage>(Size(8, 8)))
+    mPaletteImage(make_shared<PaletteImage>(Vector2i(8, 8)))
 {
   tileset_vr4_t::pixel_type_t* pixel_ref = tilesethub.vr4->array()->at(position);
   const string &color = pixel_ref->color_index();
@@ -23,7 +23,7 @@ MiniTile::MiniTile(TilesetHub &tilesethub, size_t position) :
   unsigned int i = 0;
   for (auto c : color)
   {
-    Pos pos = mPaletteImage->indexToPosition(i);
+    Vector2i pos = mPaletteImage->indexToPosition(i);
     mPaletteImage->at(pos) = c;
 
     i++;

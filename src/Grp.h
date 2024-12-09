@@ -11,7 +11,7 @@
 #include "Converter.h"
 #include "Palette.h"
 #include "Storage.h"
-#include "Size.h"
+#include "Vector2.h"
 #include "Palette2D.h"
 #include "libgrp/libgrp.hpp"
 
@@ -50,7 +50,7 @@ public:
 
   void setPalette(std::shared_ptr<AbstractPalette> pal);
 
-  Size getTileSize();
+  Vector2i getTileSize();
 
 protected: // TODO: maybe back to private after Widget redesign
   void saveJson(nlohmann::json &j, const std::string &file, bool pretty);

@@ -22,19 +22,19 @@ namespace tileset
 class TiledPaletteImage: public PaletteImage
 {
 public:
-  TiledPaletteImage(const Size &tileSize, const Size &subtileSize);
+  TiledPaletteImage(const Vector2i &tileSize, const Vector2i &subtileSize);
 
   virtual ~TiledPaletteImage();
 
   void copyTile(const PaletteImage &palette_image, size_t index, bool horizontal_flip = false);
 
-  void copyTile(const PaletteImage &palette_image, const Pos &pos, bool horizontal_flip = false);
+  void copyTile(const PaletteImage &palette_image, const Vector2i &pos, bool horizontal_flip = false);
 
 private:
-  const Pos calcAbsolutePos(const Pos &tile_pos, const Pos &relative_pos);
+  const Vector2i calcAbsolutePos(const Vector2i &tile_pos, const Vector2i &relative_pos);
 
-  Size mTileSize;
-  Size mSubtileSize;
+  Vector2i mTileSize;
+  Vector2i mSubtileSize;
 };
 
 } /* namespace tileset */

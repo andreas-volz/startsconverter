@@ -24,8 +24,8 @@ using namespace std;
 namespace tileset
 {
 
-const Size TilesetHub::MEGATILE_SIZE = Size(32, 32);
-const Size TilesetHub::MINITILE_SIZE = Size(8, 8);
+const Vector2i TilesetHub::MEGATILE_SIZE = Vector2i(32, 32);
+const Vector2i TilesetHub::MINITILE_SIZE = Vector2i(8, 8);
 
 TilesetHub::TilesetHub(std::shared_ptr<Hurricane> hurricane, const std::string &tilesetName) :
   Converter(hurricane),
@@ -75,7 +75,7 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
   unsigned int num_tiles = vx4->array()->size();
   int tiles_width = MEGATILE_COLUMNS;
   int tiles_height = static_cast<int>(ceil(static_cast<float>(num_tiles) / static_cast<float>(tiles_width)));
-  Size ultra_tile_size = Size(tiles_width, tiles_height);
+  Vector2i ultra_tile_size = Vector2i(tiles_width, tiles_height);
 
   /*
    * identify how many tiles have palette animation to calculate maximum image size
@@ -98,7 +98,7 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
     }
   }
 
-  Size ultra_animation_tile_size = Size(TILE_ANIMATION_FRAMES, animation_tiles.size());
+  Vector2i ultra_animation_tile_size = Vector2i(TILE_ANIMATION_FRAMES, animation_tiles.size());
 
   TiledPaletteImage ultraTile(ultra_tile_size, MEGATILE_SIZE);
   TiledPaletteImage ultraTileAnimation(ultra_animation_tile_size, MEGATILE_SIZE);
@@ -119,7 +119,7 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
         replacer.insert(replacer.end(), replacer2.begin(), replacer2.end());
 
         PaletteImage replaced_image(*palette_image, replacer);
-        ultraTileAnimation.copyTile(replaced_image, Pos(frame, anim_group));
+        ultraTileAnimation.copyTile(replaced_image, Vector2i(frame, anim_group));
       }
 
       anim_group++;
@@ -163,9 +163,9 @@ bool TilesetHub::convertTiledFormat(std::shared_ptr<AbstractPalette> palette, St
 void TilesetHub::generateVR4MiniTilePng(std::shared_ptr<AbstractPalette> palette, Storage storage)
 {
   unsigned int num_tiles = vr4->array()->size();
-  Size ultra_tile_size;
-  ultra_tile_size.setWidth(sqrt(num_tiles));
-  ultra_tile_size.setHeight(num_tiles / ultra_tile_size.getWidth() + 1);
+  Vector2i ultra_tile_size;
+  ultra_tile_size.x = sqrt(num_tiles);
+  ultra_tile_size.y = num_tiles / ultra_tile_size.x + 1;
 
   TiledPaletteImage ultraTile(ultra_tile_size, MINITILE_SIZE);
 
@@ -270,21 +270,21 @@ void TilesetHub::generateTilesetJson(Storage storage)
   unsigned int num_tiles = vx4->array()->size();
   int tiles_width = MEGATILE_COLUMNS;
   int tiles_height = static_cast<int>(ceil(static_cast<float>(num_tiles) / static_cast<float>(tiles_width)));
-  const Size ultra_tile_size = Size(tiles_width, tiles_height);
-  const Size image_size = ultra_tile_size * MEGATILE_SIZE;
+  const Vector2i ultra_tile_size = Vector2i(tiles_width, tiles_height);
+  const Vector2i image_size = ultra_tile_size * MEGATILE_SIZE;
 
   json j_tileset;
 
   j_tileset["columns"] = MEGATILE_COLUMNS;
   j_tileset["image"] = mTilesetName + ".png";
-  j_tileset["imageheight"] = image_size.getHeight();
-  j_tileset["imagewidth"] = image_size.getWidth();
+  j_tileset["imageheight"] = image_size.y;
+  j_tileset["imagewidth"] = image_size.x;
   j_tileset["margin"] = 0;
   j_tileset["name"] = mTilesetName;
   j_tileset["spacing"] = 0;
-  j_tileset["tilecount"] = ultra_tile_size.getHeight() * ultra_tile_size.getWidth();
-  j_tileset["tileheight"] = MEGATILE_SIZE.getHeight();
-  j_tileset["tilewidth"] = MEGATILE_SIZE.getWidth();
+  j_tileset["tilecount"] = ultra_tile_size.y * ultra_tile_size.x;
+  j_tileset["tileheight"] = MEGATILE_SIZE.y;
+  j_tileset["tilewidth"] = MEGATILE_SIZE.x;
   j_tileset["type"] = "tileset";
   j_tileset["version"] = "1.8";
 
@@ -304,22 +304,22 @@ void TilesetHub::generateAnimationTilesetJson(unsigned int animation_count, Stor
 
   int tiles_width = TILE_ANIMATION_FRAMES;
   int tiles_height = animation_count;
-  const Size ultra_tile_size = Size(tiles_width, tiles_height);
-  const Size image_size = ultra_tile_size * MEGATILE_SIZE;
+  const Vector2i ultra_tile_size = Vector2i(tiles_width, tiles_height);
+  const Vector2i image_size = ultra_tile_size * MEGATILE_SIZE;
   unsigned int duration = 200;
 
   json j_tileset;
 
   j_tileset["columns"] = TILE_ANIMATION_FRAMES;
   j_tileset["image"] = mTilesetName + "_animation.png";
-  j_tileset["imageheight"] = image_size.getHeight();
-  j_tileset["imagewidth"] = image_size.getWidth();
+  j_tileset["imageheight"] = image_size.y;
+  j_tileset["imagewidth"] = image_size.x;
   j_tileset["margin"] = 0;
   j_tileset["name"] = mTilesetName + " Animations";
   j_tileset["spacing"] = 0;
-  j_tileset["tilecount"] = ultra_tile_size.getHeight() * ultra_tile_size.getWidth();
-  j_tileset["tileheight"] = MEGATILE_SIZE.getHeight();
-  j_tileset["tilewidth"] = MEGATILE_SIZE.getWidth();
+  j_tileset["tilecount"] = ultra_tile_size.y * ultra_tile_size.x;
+  j_tileset["tileheight"] = MEGATILE_SIZE.y;
+  j_tileset["tilewidth"] = MEGATILE_SIZE.x;
   j_tileset["type"] = "tileset";
   j_tileset["version"] = "1.8";
 

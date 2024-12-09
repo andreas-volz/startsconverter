@@ -22,7 +22,7 @@ namespace tileset
 static Logger logger = Logger("startool.tileset.MegaTile");
 
 MegaTile::MegaTile(TilesetHub &tilesethub, size_t position) :
-  mPaletteImage(make_shared<TiledPaletteImage>(Size(4, 4), Size(8, 8)))
+  mPaletteImage(make_shared<TiledPaletteImage>(Vector2i(4, 4), Vector2i(8, 8)))
 {
   tileset_vx4_t::megatile_type_t *megatile = tilesethub.vx4->array()->at(position);
 

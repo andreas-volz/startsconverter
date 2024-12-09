@@ -104,9 +104,9 @@ bool Grp::save(Storage filename)
   return result;
 }
 
-Size Grp::getTileSize()
+Vector2i Grp::getTileSize()
 {
-  Size size (mGRPImage.getMaxImageWidth(), mGRPImage.getMaxImageHeight());
+  Vector2i size (mGRPImage.getMaxImageWidth(), mGRPImage.getMaxImageHeight());
   return size;
 }
 

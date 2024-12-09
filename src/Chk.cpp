@@ -82,8 +82,8 @@ bool Chk::convertTiled(tileset::TilesetHub &tilesethub, Storage storage)
   json j_tilemap;
   j_tilemap["infinite"] = false;
   j_tilemap["compressionlevel"] = -1;
-  j_tilemap["tileheight"] = tileset::TilesetHub::MEGATILE_SIZE.getHeight();
-  j_tilemap["tilewidth"] = tileset::TilesetHub::MEGATILE_SIZE.getWidth();
+  j_tilemap["tileheight"] = tileset::TilesetHub::MEGATILE_SIZE.y;
+  j_tilemap["tilewidth"] = tileset::TilesetHub::MEGATILE_SIZE.x;
   j_tilemap["orientation"] = "orthogonal";
   j_tilemap["type"] = "map";
   j_tilemap["renderorder"] = "right-down";

@@ -38,20 +38,20 @@ void TiledPaletteImageTest::test1_tileStrategyCompare()
 
   Palette pal(generateTestPalette());
 
-  PaletteImage red_image(Size(8, 8));
+  PaletteImage red_image(Vector2i(8, 8));
   red_image.fill(ColorRed);
 
-  PaletteImage green_image(Size(8, 8));
+  PaletteImage green_image(Vector2i(8, 8));
   green_image.fill(ColorGreen);
 
-  PaletteImage blue_image(Size(8, 8));
+  PaletteImage blue_image(Vector2i(8, 8));
   blue_image.fill(ColorBlue);
 
-  PaletteImage yellow_image(Size(8, 8));
+  PaletteImage yellow_image(Vector2i(8, 8));
   yellow_image.fill(ColorYellow);
 
-  tileset::TiledPaletteImage tiled_image_num(Size(2, 2), Size(8, 8));
-  tileset::TiledPaletteImage tiled_image_pos(Size(2, 2), Size(8, 8));
+  tileset::TiledPaletteImage tiled_image_num(Vector2i(2, 2), Vector2i(8, 8));
+  tileset::TiledPaletteImage tiled_image_pos(Vector2i(2, 2), Vector2i(8, 8));
 
   // fill the tiled image with the little tiles by incrementing number
   tiled_image_num.copyTile(red_image, 0);
@@ -60,10 +60,10 @@ void TiledPaletteImageTest::test1_tileStrategyCompare()
   tiled_image_num.copyTile(yellow_image, 3);
 
   // fill the tiled image with the little tiles by specifying the tile position
-  tiled_image_pos.copyTile(red_image, Pos(0, 0));
-  tiled_image_pos.copyTile(green_image, Pos(1, 0));
-  tiled_image_pos.copyTile(blue_image, Pos(0, 1));
-  tiled_image_pos.copyTile(yellow_image, Pos(1, 1));
+  tiled_image_pos.copyTile(red_image, Vector2i(0, 0));
+  tiled_image_pos.copyTile(green_image, Vector2i(1, 0));
+  tiled_image_pos.copyTile(blue_image, Vector2i(0, 1));
+  tiled_image_pos.copyTile(yellow_image, Vector2i(1, 1));
 
   // export the PNGs for visual test feedback
   PngExporter::saveRGB(save_num_name_png, tiled_image_num, pal, 255);
@@ -88,19 +88,19 @@ void TiledPaletteImageTest::test2_tileHorizontalFlipping()
 
   Palette pal(generateTestPalette());
 
-  PaletteImage red_image(Size(8, 8));
+  PaletteImage red_image(Vector2i(8, 8));
   red_image.fill(ColorRed);
 
-  PaletteImage green_image(Size(8, 8));
+  PaletteImage green_image(Vector2i(8, 8));
   green_image.fill(ColorGreen);
 
-  PaletteImage blue_image(Size(8, 8));
+  PaletteImage blue_image(Vector2i(8, 8));
   blue_image.fill(ColorBlue);
 
-  PaletteImage yellow_image(Size(8, 8));
+  PaletteImage yellow_image(Vector2i(8, 8));
   yellow_image.fill(ColorYellow);
 
-  tileset::TiledPaletteImage tiled_image_num(Size(2, 2), Size(8, 8));
+  tileset::TiledPaletteImage tiled_image_num(Vector2i(2, 2), Vector2i(8, 8));
 
   // fill the tiled image with the little tiles by incrementing number
   tiled_image_num.copyTile(red_image, 0);
@@ -108,7 +108,7 @@ void TiledPaletteImageTest::test2_tileHorizontalFlipping()
   tiled_image_num.copyTile(blue_image, 2);
   tiled_image_num.copyTile(yellow_image, 3);
 
-  tileset::TiledPaletteImage tiled_image_big(Size(2, 2), Size(16, 16));
+  tileset::TiledPaletteImage tiled_image_big(Vector2i(2, 2), Vector2i(16, 16));
 
   tiled_image_big.copyTile(tiled_image_num, 0, true); // flip horizontal
   tiled_image_big.copyTile(tiled_image_num, 1);

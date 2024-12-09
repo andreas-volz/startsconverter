@@ -14,7 +14,7 @@
 #include "kaitai/tileset_vf4.h"
 #include "kaitai/tileset_vr4.h"
 #include "Storage.h"
-#include "Size.h"
+#include "Vector2.h"
 
 // system
 #include <memory>
@@ -67,8 +67,8 @@ public:
   std::shared_ptr<tileset_vr4_t> vr4;
 
   static constexpr int MEGATILE_COLUMNS = 16;
-  static const Size MEGATILE_SIZE;
-  static const Size MINITILE_SIZE;
+  static const Vector2i MEGATILE_SIZE;
+  static const Vector2i MINITILE_SIZE;
   static constexpr int TILE_ANIMATION_FRAMES = 8;
 
 private:

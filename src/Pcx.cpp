@@ -84,7 +84,7 @@ bool Pcx::saveRGBMapJson(Storage storage)
 
   json j_color_list;
 
-  if(mPaletteImage->getSize().getHeight() != 1)
+  if(mPaletteImage->getSize().y != 1)
   {
     // those special color images in starcraft are only one pixel height
     return false;
@@ -92,7 +92,7 @@ bool Pcx::saveRGBMapJson(Storage storage)
 
   CheckPath(storage);
 
-  for(int i = 0; i < mPaletteImage->getSize().getWidth(); i++)
+  for(int i = 0; i < mPaletteImage->getSize().x; i++)
   {
     json j_rgb;
     unsigned char pixel = mPaletteImage->at(i);
@@ -114,9 +114,9 @@ std::shared_ptr<Palette> Pcx::getPalette()
   return make_shared<Palette>(*mPalette);
 }
 
-Size Pcx::getSize()
+Vector2i Pcx::getSize()
 {
-  Size imageSize;
+  Vector2i imageSize;
 
   if(mPaletteImage)
   {
@@ -154,19 +154,19 @@ std::shared_ptr<Palette2D> Pcx::map2DPalette()
   if (mPaletteImage && mPalette)
   {
     // check magic size of the special 2D palette format
-    if (mPaletteImage->getSize().getWidth() == 256)
+    if (mPaletteImage->getSize().x == 256)
     {
-      palette2D = make_shared<Palette2D>(mPaletteImage->getSize().getHeight());
+      palette2D = make_shared<Palette2D>(mPaletteImage->getSize().y);
 
-      for (int x = 0; x < mPaletteImage->getSize().getWidth()-1; x++)
+      for (int x = 0; x < mPaletteImage->getSize().x-1; x++)
       {
-        for (int y = 0; y < mPaletteImage->getSize().getHeight()-1; y++)
+        for (int y = 0; y < mPaletteImage->getSize().y-1; y++)
         {
           // FIXME: there was a bug in getPalettePixel() that y was decremented 1. After fixing it the output was ugly
           // now I substract here y-1 before and now alpha graphics (e.g. fire) look fine. I've to check the algorithm later again
           int y_mod = (y > 0) ? (y-1) : 0;
 
-          unsigned char color_index = mPaletteImage->at(Pos(x, y_mod));
+          unsigned char color_index = mPaletteImage->at(Vector2i(x, y_mod));
 
           if(color_index != 255)
           {
@@ -203,7 +203,7 @@ void Pcx::extractHeader()
     int width = pcxh.Xmax - pcxh.Xmin + 1;
     int height = pcxh.Ymax - pcxh.Ymin + 1;
 
-    mPaletteImage = make_shared<PaletteImage>(Size(width, height));
+    mPaletteImage = make_shared<PaletteImage>(Vector2i(width, height));
   }
 }
 
@@ -218,14 +218,14 @@ void Pcx::extractImage()
 
   if (mRawData)
   {
-    rawImage = (unsigned char *) malloc(mPaletteImage->getSize().getWidth() * mPaletteImage->getSize().getHeight());
+    rawImage = (unsigned char *) malloc(mPaletteImage->getSize().x * mPaletteImage->getSize().y);
     imageParserPos = mRawData->getDataPointer() + sizeof(struct PCXheader);
 
-    for (y = 0; y < mPaletteImage->getSize().getHeight(); ++y)
+    for (y = 0; y < mPaletteImage->getSize().y; ++y)
     {
       count = 0;
-      dest = rawImage + y * mPaletteImage->getSize().getWidth();
-      for (int i = 0; i < mPaletteImage->getSize().getWidth(); ++i)
+      dest = rawImage + y * mPaletteImage->getSize().x;
+      for (int i = 0; i < mPaletteImage->getSize().x; ++i)
       {
         if (!count)
         {

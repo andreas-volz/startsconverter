@@ -110,7 +110,7 @@ bool PngExporter::saveRGB(const std::string &name, PaletteImage &palImage, Palet
   png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
 
   // prepare the file information
-  png_set_IHDR(png_ptr, info_ptr, palImage.getSize().getWidth(), palImage.getSize().getHeight(), 8, PNG_COLOR_TYPE_PALETTE,
+  png_set_IHDR(png_ptr, info_ptr, palImage.getSize().x, palImage.getSize().y, 8, PNG_COLOR_TYPE_PALETTE,
                0, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
   png_set_invalid(png_ptr, info_ptr, PNG_INFO_PLTE);
   png_set_PLTE(png_ptr, info_ptr, (png_colorp) pal, 256);
@@ -128,7 +128,7 @@ bool PngExporter::saveRGB(const std::string &name, PaletteImage &palImage, Palet
   png_write_info(png_ptr, info_ptr);
 
   // prepare image
-  lines = (unsigned char **) malloc(palImage.getSize().getHeight() * sizeof(*lines));
+  lines = (unsigned char **) malloc(palImage.getSize().y * sizeof(*lines));
   if (!lines)
   {
     png_destroy_write_struct(&png_ptr, &info_ptr);
@@ -136,9 +136,9 @@ bool PngExporter::saveRGB(const std::string &name, PaletteImage &palImage, Palet
     return false;
   }
 
-  for (i = 0; i < palImage.getSize().getHeight(); ++i)
+  for (i = 0; i < palImage.getSize().y; ++i)
   {
-    const unsigned char *line = image + i * palImage.getSize().getWidth();
+    const unsigned char *line = image + i * palImage.getSize().x;
     lines[i] = (unsigned char*) line;
   }
 
@@ -202,20 +202,20 @@ bool PngExporter::saveRGBA(const std::string &name, PaletteImage &palImage, Pale
   png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
 
   // prepare the file information
-  png_set_IHDR(png_ptr, info_ptr, palImage.getSize().getWidth(), palImage.getSize().getHeight(), 8, PNG_COLOR_TYPE_RGBA, 0, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+  png_set_IHDR(png_ptr, info_ptr, palImage.getSize().x, palImage.getSize().y, 8, PNG_COLOR_TYPE_RGBA, 0, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 
   // write the file header information
   png_write_info(png_ptr, info_ptr);
 
-  row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * palImage.getSize().getHeight());
+  row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * palImage.getSize().y);
 
-  for (int h_pos = 0; h_pos < palImage.getSize().getHeight(); ++h_pos)
+  for (int h_pos = 0; h_pos < palImage.getSize().y; ++h_pos)
   {
-    row_pointers[h_pos] = (unsigned char *) malloc(palImage.getSize().getWidth() * RGBA_BYTE_SIZE);
+    row_pointers[h_pos] = (unsigned char *) malloc(palImage.getSize().x * RGBA_BYTE_SIZE);
 
-    for (int w_pos = 0; w_pos < palImage.getSize().getWidth(); w_pos++)
+    for (int w_pos = 0; w_pos < palImage.getSize().x; w_pos++)
     {
-      unsigned char pal_pos = palImage.at(Pos(w_pos, h_pos));
+      unsigned char pal_pos = palImage.at(Vector2i(w_pos, h_pos));
 
       Color color;
 
@@ -241,7 +241,7 @@ bool PngExporter::saveRGBA(const std::string &name, PaletteImage &palImage, Pale
 
   if (NULL != row_pointers)
   {
-    for (int h_pos = 0; h_pos < palImage.getSize().getHeight(); ++h_pos)
+    for (int h_pos = 0; h_pos < palImage.getSize().y; ++h_pos)
     {
       free(row_pointers[h_pos]);
     }
@@ -302,12 +302,12 @@ bool PngExporter::saveRGBA(const std::string &name, PaletteImage &palImage, Pale
   png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
 
   // prepare the file information
-  png_set_IHDR(png_ptr, info_ptr, palImage.getSize().getWidth(), palImage.getSize().getHeight(), 8, PNG_COLOR_TYPE_RGBA, 0, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+  png_set_IHDR(png_ptr, info_ptr, palImage.getSize().x, palImage.getSize().y, 8, PNG_COLOR_TYPE_RGBA, 0, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 
   // write the file header information
   png_write_info(png_ptr, info_ptr);
 
-  row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * palImage.getSize().getHeight());
+  row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * palImage.getSize().y);
 
   /*
    * Count how many lines are allocated in case of Exception cleanup later!
@@ -318,14 +318,14 @@ bool PngExporter::saveRGBA(const std::string &name, PaletteImage &palImage, Pale
 
   try
   {
-    for (int h_pos = 0; h_pos < palImage.getSize().getHeight(); ++h_pos)
+    for (int h_pos = 0; h_pos < palImage.getSize().y; ++h_pos)
     {
-      row_pointers[h_pos] = (unsigned char *) malloc(palImage.getSize().getWidth() * RGBA_BYTE_SIZE);
+      row_pointers[h_pos] = (unsigned char *) malloc(palImage.getSize().x * RGBA_BYTE_SIZE);
       h_pos_allocated = h_pos;
 
-      for (int w_pos = 0; w_pos < palImage.getSize().getWidth(); w_pos++)
+      for (int w_pos = 0; w_pos < palImage.getSize().x; w_pos++)
       {
-        unsigned char pal_pos = palImage.at(Pos(w_pos, h_pos));
+        unsigned char pal_pos = palImage.at(Vector2i(w_pos, h_pos));
 
         unsigned char pal_beneath = 0;// back palette id #0 (known in the palette format)
         Color reference_beneath_color (0, 0, 0); // back palette id #0 (known in the palette format)

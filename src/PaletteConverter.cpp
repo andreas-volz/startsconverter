@@ -125,7 +125,7 @@ void PaletteConverter::convert(Storage palStorage)
 
     Pcx pcx(mHurricane, pcx_arcfile);
 
-    if(!pcx.getSize().isEmpty()) // load from PCX palette
+    if(pcx.getSize() != Vector2i(0, 0)) // load from PCX palette
     {
       std::shared_ptr<Palette> pal;
       try
