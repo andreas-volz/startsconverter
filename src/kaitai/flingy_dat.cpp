@@ -55,10 +55,10 @@ void flingy_dat_t::_read() {
     for (int i = 0; i < l_unused; i++) {
         m_unused->push_back(m__io->read_u1());
     }
-    m_movement_control = new std::vector<uint8_t>();
+    m_movement_control = new std::vector<movement_control_enum_t>();
     const int l_movement_control = num_lines();
     for (int i = 0; i < l_movement_control; i++) {
-        m_movement_control->push_back(m__io->read_u1());
+        m_movement_control->push_back(static_cast<flingy_dat_t::movement_control_enum_t>(m__io->read_u1()));
     }
 }
 

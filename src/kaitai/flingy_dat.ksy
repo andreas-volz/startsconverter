@@ -48,10 +48,17 @@ seq:
 
   - id: movement_control
     type: u1
+    enum: movement_control_enum
     repeat: expr
     repeat-expr: num_lines
     doc: |
       Indicates the mechanism that is used to control the movement of the flingy.dat entry. "Flingy.dat Control" makes use of the Acceleration, Speed, Turn Style and Turn Radius properties, i.e. the values in this editor will be used. "Iscript.bin Control" ignores these properties and follows only the Iscript opcode sequence. "Partially Mobile/Weapon" is used for various weapons sprites, not completely understood.
+
+enums:
+  movement_control_enum:
+    0: flingy
+    1: weapon
+    2: iscript
 
 instances:
   num_lines:

@@ -15,6 +15,12 @@ class flingy_dat_t : public kaitai::kstruct {
 
 public:
 
+    enum movement_control_enum_t {
+        MOVEMENT_CONTROL_ENUM_FLINGY = 0,
+        MOVEMENT_CONTROL_ENUM_WEAPON = 1,
+        MOVEMENT_CONTROL_ENUM_ISCRIPT = 2
+    };
+
     flingy_dat_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent = 0, flingy_dat_t* p__root = 0);
 
 private:
@@ -60,7 +66,7 @@ private:
     std::vector<uint32_t>* m_halt_distance;
     std::vector<uint8_t>* m_turn_radius;
     std::vector<uint8_t>* m_unused;
-    std::vector<uint8_t>* m_movement_control;
+    std::vector<movement_control_enum_t>* m_movement_control;
     flingy_dat_t* m__root;
     kaitai::kstruct* m__parent;
 
@@ -99,7 +105,7 @@ public:
     /**
      * Indicates the mechanism that is used to control the movement of the flingy.dat entry. "Flingy.dat Control" makes use of the Acceleration, Speed, Turn Style and Turn Radius properties, i.e. the values in this editor will be used. "Iscript.bin Control" ignores these properties and follows only the Iscript opcode sequence. "Partially Mobile/Weapon" is used for various weapons sprites, not completely understood.
      */
-    std::vector<uint8_t>* movement_control() const { return m_movement_control; }
+    std::vector<movement_control_enum_t>* movement_control() const { return m_movement_control; }
     flingy_dat_t* _root() const { return m__root; }
     kaitai::kstruct* _parent() const { return m__parent; }
 };
