@@ -16,8 +16,9 @@
 /* system */
 #include <nlohmann/json.hpp>
 
-// -> units_dat.ksy
 
+
+// -> units_dat.ksy
 void to_json(nlohmann::json &j, units_dat_t::hit_points_type_t* t);
 void to_json(nlohmann::json &j, units_dat_t::special_ability_flags_type_t* t);
 void to_json(nlohmann::json &j, units_dat_t::staredit_placement_box_type_t* t);
@@ -26,10 +27,8 @@ void to_json(nlohmann::json &j, units_dat_t::unit_dimension_type_t* t);
 void to_json(nlohmann::json &j, units_dat_t::staredit_group_flags_type_t* t);
 void to_json(nlohmann::json &j, units_dat_t::staredit_availability_flags_type_t* t);
 
-// -> file_tbl.ksy
 
 // -> specific wrapper objects in dat namespace
-
 namespace dat {
 
 void to_json(nlohmann::json &j, TblEntry t);
@@ -56,6 +55,18 @@ public:
 
 private:
   void saveJson(nlohmann::json &j, const std::string &file, bool pretty);
+
+  nlohmann::json export_units_dat();
+  nlohmann::json export_orders_dat();
+  nlohmann::json export_weapons_dat();
+  nlohmann::json export_flingy_dat();
+  nlohmann::json export_sprites_dat();
+  nlohmann::json export_images_dat();
+  nlohmann::json export_sfxdata_dat();
+  nlohmann::json export_portdata_dat();
+  nlohmann::json export_upgrades_dat();
+  nlohmann::json export_techdata_dat();
+  nlohmann::json export_mapdata_dat();
 
   dat::DataHub &mDatahub;
 };
