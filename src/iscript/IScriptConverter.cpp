@@ -8,6 +8,7 @@
 #include "IScriptConverter.h"
 #include "IScript.h"
 #include "opcode_types.h"
+#include "Logger.h"
 
 /* system */
 #include <map>
@@ -15,6 +16,8 @@
 #include <sstream>
 
 using namespace std;
+
+static Logger logger = Logger("startool.iscript.IScriptConverter");
 
 IScriptConverter::IScriptConverter() :
   m_human_readable(false)
@@ -377,6 +380,8 @@ const std::string IScriptConverter::convertSCPEHeaderMap(const std::map<uint16_t
   for(auto iscript_scpe_header_it : iscript_scpe_header_map)
   {
     uint16_t iscript_id = iscript_scpe_header_it.first;
+    LOG4CXX_TRACE(logger, "convert iscript: " + to_string(iscript_id));
+
     std::vector<uint16_t> opcode_offsets = iscript_scpe_header_it.second;
 
     header_string += convertSCPEHeader(iscript_id, opcode_offsets);

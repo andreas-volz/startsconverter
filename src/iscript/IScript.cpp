@@ -7,11 +7,14 @@
 /* project */
 #include "IScript.h"
 #include "Hurricane.h"
+#include "Logger.h"
 
 /* system */
 #include <algorithm>
 
 using namespace std;
+
+static Logger logger = Logger("startool.iscript.IScript");
 
 IScript::IScript(std::shared_ptr<Hurricane> hurricane, const std::string &arcfile) :
   Converter(hurricane),
@@ -283,8 +286,6 @@ void IScript::parseSCPEHeader()
     throw std::runtime_error("Invalid block magic number!");
   }
 
-  //std::cout << "Animation Type: " << dec << static_cast<int>(scpe_header.animation_type.value()) << endl;
-
   unsigned int scpe_header_animation_blocks = 0;
   if (auto search = ANIMATION_TYPE_MAPPING.find(scpe_header.animation_type.value()); search != ANIMATION_TYPE_MAPPING.end())
   {
@@ -301,6 +302,7 @@ void IScript::parseSCPEHeader()
     m_global_offsets.insert(scpe_opcode_offset.value());
   }
 
+  LOG4CXX_TRACE(logger, "insert iscript in map: " + to_string(iscript_id));
   m_iscript_scpe_header_map.insert(pair(iscript_id, scpe_opcode_offset_list));
 }
 
@@ -355,6 +357,7 @@ void IScript::parseEntreeOffsetList()
     //m_iscript_offset_mapping.insert(pair<uint16_t, uint16_t>(entry.iscript_id.value(), entry.offset.value()));
 
     // fill hashmap for accessing iscript by the offset
+    LOG4CXX_TRACE(logger, "m_offset_iscript_mapping.insert: " + to_string(entry.offset.value()) + "," + to_string(entry.iscript_id.value()));
     m_offset_iscript_mapping.insert(pair<uint16_t, uint16_t>(entry.offset.value(), entry.iscript_id.value()));
 
     // Store the entry if valid
