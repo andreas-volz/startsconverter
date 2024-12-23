@@ -510,6 +510,8 @@ json DatConverter::export_portdata_dat()
 
   j["change_idle"] = json(*portdata->change_idle());
 
+  j["change_talking"] = json(*portdata->change_talking());
+
   j["unknown1_idle"] = json(*portdata->unknown1_idle());
 
   j["unknown1_talking"] = json(*portdata->unknown1_talking());
