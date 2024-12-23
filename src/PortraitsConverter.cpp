@@ -54,7 +54,7 @@ bool PortraitsConverter::convert(Storage videosStorage)
     {
       vector<string> portrait_list;
 
-      /* TODO: if it'S later needed to write a JSON file this might be a good place */
+      /* TODO: if it's later needed to write a JSON file this might be a good place */
       convertOgvPortraits(portrait_arcfile_idle, portrait_list, videosStorage);
       convertOgvPortraits(portrait_arcfile_talking, portrait_list, videosStorage);
     }
