@@ -71,7 +71,7 @@ public:
 
 private:
     std::vector<uint16_t>* m_label;
-    std::vector<uint32_t>* m_graphics;
+    std::vector<uint32_t>* m_flingy;
     std::vector<uint8_t>* m_explosion;
     std::vector<attack_type_enum_t>* m_target_flags;
     std::vector<uint32_t>* m_minimum_range;
@@ -107,7 +107,7 @@ public:
     /**
      * The main graphics that the weapon uses. 0-Scourge = No graphics.[pointer to flingy.dat]
      */
-    std::vector<uint32_t>* graphics() const { return m_graphics; }
+    std::vector<uint32_t>* flingy() const { return m_flingy; }
 
     /**
      * Effect the weapon has on the area around the target after hitting its target. Used to determine different type of spell effects and splash damage.

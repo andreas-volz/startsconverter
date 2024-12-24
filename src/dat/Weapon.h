@@ -25,8 +25,8 @@ public:
   uint16_t label();
   TblEntry label_tbl();
 
-  uint32_t graphics();
-  Flingy graphics_obj();
+  uint32_t flingy();
+  Flingy flingy_obj();
 
   // TODO: make enum as return
   uint8_t explosion();

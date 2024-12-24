@@ -10,7 +10,7 @@ seq:
     doc: |
       The name of the weapon, displayed when you highlight its icon in the control bar. [pointer to stat_txt.tbl]
 
-  - id: graphics
+  - id: flingy
     type: u4
     repeat: expr
     repeat-expr: num_lines

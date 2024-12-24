@@ -349,7 +349,7 @@ json DatConverter::export_weapons_dat()
 
   j["label"] = json(*weapons->label());
 
-  j["graphics"] = json(*weapons->graphics());
+  j["flingy"] = json(*weapons->flingy());
 
   j["explosion"] = json(*weapons->explosion());
 
@@ -803,10 +803,10 @@ void to_json(json &j, Weapon w)
   {
     j["label_tbl"] = json(w.label_tbl());
   }
-  j["graphics"] = json(w.graphics());
+  j["flingy"] = json(w.flingy());
   if(w.get_generate_objects())
   {
-    j["graphics_obj"] = json(w.graphics_obj());
+    j["flingy_obj"] = json(w.flingy_obj());
   }
   j["explosion"] = json(w.explosion());
   j["target_flags"] = json(w.target_flags());

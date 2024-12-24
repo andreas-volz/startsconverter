@@ -6,7 +6,7 @@ weapons_dat_t::weapons_dat_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent,
     m__parent = p__parent;
     m__root = this;
     m_label = 0;
-    m_graphics = 0;
+    m_flingy = 0;
     m_explosion = 0;
     m_target_flags = 0;
     m_minimum_range = 0;
@@ -47,10 +47,10 @@ void weapons_dat_t::_read() {
     for (int i = 0; i < l_label; i++) {
         m_label->push_back(m__io->read_u2le());
     }
-    m_graphics = new std::vector<uint32_t>();
-    const int l_graphics = num_lines();
-    for (int i = 0; i < l_graphics; i++) {
-        m_graphics->push_back(m__io->read_u4le());
+    m_flingy = new std::vector<uint32_t>();
+    const int l_flingy = num_lines();
+    for (int i = 0; i < l_flingy; i++) {
+        m_flingy->push_back(m__io->read_u4le());
     }
     m_explosion = new std::vector<uint8_t>();
     const int l_explosion = num_lines();
@@ -172,8 +172,8 @@ void weapons_dat_t::_clean_up() {
     if (m_label) {
         delete m_label; m_label = 0;
     }
-    if (m_graphics) {
-        delete m_graphics; m_graphics = 0;
+    if (m_flingy) {
+        delete m_flingy; m_flingy = 0;
     }
     if (m_explosion) {
         delete m_explosion; m_explosion = 0;

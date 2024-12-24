@@ -43,25 +43,25 @@ TblEntry Weapon::label_tbl()
   return mDatahub.stat_txt_tbl_vec.at(label()-1);
 }
 
-uint32_t Weapon::graphics()
+uint32_t Weapon::flingy()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
-  return mDatahub.weapons->graphics()->at(mId);
+  return mDatahub.weapons->flingy()->at(mId);
 }
 
-Flingy Weapon::graphics_obj()
+Flingy Weapon::flingy_obj()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
 
-  uint32_t graphics_id = graphics();
+  uint32_t flingy_id = flingy();
 
 
-  if(graphics_id == Weapon::graphics_none)
+  if(flingy_id == Weapon::graphics_none)
   {
-    throw PropertyNotAvailableException(mId, "graphics_obj");
+    throw PropertyNotAvailableException(mId, "flingy_obj");
   }
 
-  return Flingy(mDatahub, graphics());
+  return Flingy(mDatahub, flingy());
 }
 
 uint8_t Weapon::explosion()
