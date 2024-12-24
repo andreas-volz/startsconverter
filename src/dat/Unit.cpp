@@ -66,7 +66,7 @@ Unit Unit::subunit1_obj()
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   uint16_t subunit_id = subunit1();
 
-  if(subunit_id == Unit::subunit_none)
+  if(subunit_id == Unit::SUBUNIT_NONE)
   {
     throw PropertyNotAvailableException(mId, "subunit1_obj");
   }
@@ -85,7 +85,7 @@ Unit Unit::subunit2_obj()
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   uint16_t subunit_id = subunit2();
 
-  if(subunit_id == Unit::subunit_none)
+  if(subunit_id == Unit::SUBUNIT_NONE)
   {
     throw PropertyNotAvailableException(mId, "subunit2_obj");
   }
@@ -101,7 +101,7 @@ uint16_t Unit::infestation()
   try
   {
     // only for units of ID 106-201 (buildings)
-    infestation = mDatahub.units->infestation()->at(mId-106);
+    infestation = mDatahub.units->infestation()->at(mId - BUILDING_START);
   }
   catch (const std::out_of_range& oor)
   {
@@ -116,7 +116,7 @@ Unit Unit::infestation_obj()
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   uint16_t infestation_id = infestation();
 
-  if(infestation_id == Unit::infestation_none)
+  if(infestation_id == Unit::INFESTATION_NONE)
   {
     throw PropertyNotAvailableException(mId, "infestation_obj");
   }
@@ -136,7 +136,7 @@ Image Unit::construction_animation_obj()
 
   uint32_t construction_animation_id = construction_animation();
 
-  if(construction_animation_id == Unit::construction_none)
+  if(construction_animation_id == Unit::CONSTRUCTION_NONE)
   {
     throw PropertyNotAvailableException(mId, "construction_animation_obj");
   }
@@ -374,7 +374,7 @@ Sfx Unit::ready_sound_obj()
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   uint16_t ready_sound_id = ready_sound();
 
-  if(ready_sound_id == Unit::sound_none)
+  if(ready_sound_id == Unit::SOUND_NONE)
   {
     LOG4CXX_TRACE(logger, string("Exception: ready_sound_obj(") + to_string(ready_sound_id) + ")");
     throw PropertyNotAvailableException(mId, "ready_sound_obj");
@@ -405,7 +405,7 @@ std::vector<Sfx> Unit::what_sound_obj()
   uint16_t what_sound_start_id = what_sound_start();
   uint16_t what_sound_end_id = what_sound_end();
 
-  if((what_sound_start_id || what_sound_end_id) == Unit::sound_none)
+  if((what_sound_start_id || what_sound_end_id) == Unit::SOUND_NONE)
   {
     LOG4CXX_TRACE(logger, string("Exception: what_sound_obj(") + to_string(mId) + ")");
     throw PropertyNotAvailableException(mId, "what_sound_obj");
@@ -466,7 +466,7 @@ std::vector<Sfx> Unit::piss_sound_obj()
   uint16_t piss_sound_start_id = piss_sound_start();
   uint16_t piss_sound_end_id = piss_sound_end();
 
-  if((piss_sound_start_id || piss_sound_end_id) == Unit::sound_none)
+  if((piss_sound_start_id || piss_sound_end_id) == Unit::SOUND_NONE)
   {
     LOG4CXX_TRACE(logger, string("Exception: piss_sound_obj(") + to_string(mId) + ")");
     throw PropertyNotAvailableException(mId, "piss_sound_obj");
@@ -527,7 +527,7 @@ std::vector<Sfx> Unit::yes_sound_obj()
   uint16_t yes_sound_start_id = yes_sound_start();
   uint16_t yes_sound_end_id = yes_sound_end();
 
-  if((yes_sound_start_id || yes_sound_end_id) == Unit::sound_none)
+  if((yes_sound_start_id || yes_sound_end_id) == Unit::SOUND_NONE)
   {
     LOG4CXX_TRACE(logger, string("Exception: yes_sound_obj(") + to_string(mId) + ")");
     throw PropertyNotAvailableException(mId, "yes_sound_obj");
@@ -584,7 +584,7 @@ Portrait Unit::portrait_obj()
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   uint16_t portrait_id = portrait();
 
-  if (portrait_id == Unit::portrait_none)
+  if (portrait_id == Unit::PORTRAIT_NONE)
   {
     LOG4CXX_TRACE(logger, string("Exception: portrait_obj(") + to_string(mId) + ")");
     throw PropertyNotAvailableException(mId, "portrait_obj");

@@ -158,11 +158,12 @@ public:
   std::string getIDString();
 
   /* constants */
-  static const int portrait_none = 65535;
-  static const int sound_none = 0;
-  static const int construction_none = 0;
-  static const int subunit_none = 228;
-  static const int infestation_none = 228;
+  static const int PORTRAIT_NONE = 65535;
+  static const int SOUND_NONE = 0;
+  static const int CONSTRUCTION_NONE = 0;
+  static const int SUBUNIT_NONE = 228;
+  static const int INFESTATION_NONE = 228;
+  static const int BUILDING_START = 106;
 
 private:
   std::string mIdentString;
