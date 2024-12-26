@@ -70,7 +70,7 @@ uint8_t Weapon::explosion()
   return mDatahub.weapons->explosion()->at(mId);
 }
 
-uint16_t Weapon::target_flags()
+weapons_dat_t::attack_type_enum_t Weapon::target_flags()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.weapons->target_flags()->at(mId);
@@ -100,7 +100,7 @@ Upgrade Weapon::damage_upgrade_obj()
   return Upgrade(mDatahub, damage_upgrade());
 }
 
-uint8_t Weapon::weapon_type()
+weapons_dat_t::weapon_type_enum_t Weapon::weapon_type()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.weapons->weapon_type()->at(mId);

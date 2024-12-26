@@ -31,7 +31,7 @@ public:
   // TODO: make enum as return
   uint8_t explosion();
 
-  uint16_t target_flags();
+  weapons_dat_t::attack_type_enum_t target_flags();
 
   uint32_t minimum_range();
 
@@ -40,7 +40,7 @@ public:
   uint8_t damage_upgrade();
   Upgrade damage_upgrade_obj();
 
-  uint8_t weapon_type();
+  weapons_dat_t::weapon_type_enum_t weapon_type();
 
   // TODO: make enum as return
   uint8_t weapon_behaviour();
