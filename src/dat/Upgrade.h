@@ -45,7 +45,7 @@ public:
 
   bool has_broodwar_flag();
 
-  static const int label_none = 0;
+  static const int LABEL_NONE = 0;
 };
 
 } /* namespace dat */

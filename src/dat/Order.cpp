@@ -160,13 +160,13 @@ uint8_t Order::animation()
   return mDatahub.orders->animation()->at(mId);
 }
 
-uint8_t Order::highlight()
+uint16_t Order::highlight()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.orders->highlight()->at(mId);
 }
 
-uint8_t Order::unknown17()
+uint16_t Order::unknown17()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.orders->unknown17()->at(mId);

@@ -56,9 +56,9 @@ public:
 
   uint8_t animation();
 
-  uint8_t highlight();
+  uint16_t highlight();
 
-  uint8_t unknown17();
+  uint16_t unknown17();
 
   uint8_t obscured_order();
 

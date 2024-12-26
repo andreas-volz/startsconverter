@@ -84,7 +84,7 @@ TblEntry Upgrade::label_tbl()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
 
-  if(label() == Upgrade::label_none)
+  if(label() == Upgrade::LABEL_NONE)
   {
     throw PropertyNotAvailableException(mId, "label_tbl");
   }
