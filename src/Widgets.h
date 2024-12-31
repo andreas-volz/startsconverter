@@ -25,7 +25,7 @@ public:
    *
    * @param arcfile The archive path inside the archive file
    * @param targetpath A path where all the generated PNG files are saved
-   * @param frameStitching Only decide to save all frames in one stitched image or several single ones
+   * @param frameStitching decide to save all frames in one stitched image or several single ones
    * @param name The prefix name for the generated frames (default: frame.png for stitched version, frame%d.png for single version)
    */
   bool convert(const std::string &arcfile, Storage filename,  bool frameStitching = false, const std::string &name = "frame");

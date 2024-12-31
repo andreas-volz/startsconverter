@@ -60,11 +60,11 @@ bool Widgets::convert(const std::string &arcfile, Storage filename, bool frameSt
     }
     else
     {
-      string image_basename(filename.getFullPath() + "/" + name);
+      string image_basename(filename.getFullPath());
       mGRPImage.SaveStitchedPNG(image_basename + ".png", 0, mGRPImage.getNumberOfFrames(), 0, true);
 
       // save json file beside each png file with tilesize information in it. The engine needs this information.
-      string json_path(filename.getFullPath() + "/" + filename.getFilename() + ".json");
+      string json_path(filename.getFullPath() + ".json");
       json j_grp_info = json::object({ {"width", mGRPImage.getMaxImageWidth()}, {"height", mGRPImage.getMaxImageHeight()} });
       saveJson(j_grp_info, json_path, true);
     }
