@@ -22,6 +22,7 @@
 #include "GameUIConverter.h"
 #include "CursorConverter.h"
 #include "Pcx.h" // remove
+#include "Widgets.h" // remove
 
 
 /* system */
@@ -323,11 +324,42 @@ int main(int argc, const char **argv)
     cout << "Run RGBMapConverter...";fflush(stdout);
     Pcx pcx_rgbmap(bootstrap.getSubArchive(), "game\\tunit.pcx");
     pcx_rgbmap.saveRGBMapJson(rgbmapStorage("tunit.json"));
+    Pcx pcx_rgbmap2(bootstrap.getSubArchive(), "unit\\cmdbtns\\ticon.pcx");
+    pcx_rgbmap2.saveRGBMapJson(rgbmapStorage("ticon.json"));
     //CursorConverter cursor_converter(bootstrap.getSubArchive(), rgbmapStorage);
     //cursor_converter.convert(cursorStorage);
     cout << "DONE" << endl;
 
   }
+
+  Storage iconStorage;
+  iconStorage.setDataPath(destination_directory);
+  iconStorage.setDataType("icons");
+
+  Grp icons(bootstrap.getSubArchive());
+  icons.setPalette(palette_converter.getPalette("ticon-0"));
+  icons.load("unit\\cmdbtns\\cmdicons.grp");
+  icons.save(iconStorage("cmdbtns-0.png"));
+
+  icons.setPalette(palette_converter.getPalette("ticon-1"));
+  icons.load("unit\\cmdbtns\\cmdicons.grp");
+  icons.save(iconStorage("cmdbtns-1.png"));
+
+  icons.setPalette(palette_converter.getPalette("ticon-2"));
+  icons.load("unit\\cmdbtns\\cmdicons.grp");
+  icons.save(iconStorage("cmdbtns-2.png"));
+
+  icons.setPalette(palette_converter.getPalette("ticon-3"));
+  icons.load("unit\\cmdbtns\\cmdicons.grp");
+  icons.save(iconStorage("cmdbtns-3.png"));
+
+  icons.setPalette(palette_converter.getPalette("ticon-4"));
+  icons.load("unit\\cmdbtns\\cmdicons.grp");
+  icons.save(iconStorage("cmdbtns-4.png"));
+
+  icons.setPalette(palette_converter.getPalette("ticon-5"));
+  icons.load("unit\\cmdbtns\\cmdicons.grp");
+  icons.save(iconStorage("cmdbtns-5.png"));
 
   cout << "App Finished" << endl;
   return 0;
