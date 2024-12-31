@@ -776,7 +776,7 @@ void to_json(json &j, Order o)
   //j["obscured_order_obj"] = json(o.obscured_order_obj());
 }
 
-void to_json(json &j, Techdata t)
+void to_json(json &j, Tech t)
 {
   j["id"] = json(t.id());
   j["mineral_cost"] = json(t.mineral_cost());

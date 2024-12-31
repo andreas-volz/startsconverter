@@ -12,11 +12,11 @@
 namespace dat
 {
 
-class Techdata : public ObjectAccess
+class Tech : public ObjectAccess
 {
 public:
-  Techdata(DataHub &datahub, unsigned int id);
-  virtual ~Techdata();
+  Tech(DataHub &datahub, unsigned int id);
+  virtual ~Tech();
 
   uint16_t mineral_cost();
 

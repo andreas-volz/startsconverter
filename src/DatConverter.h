@@ -33,7 +33,7 @@ namespace dat {
 
 void to_json(nlohmann::json &j, TblEntry t);
 void to_json(nlohmann::json &j, Upgrade u);
-void to_json(nlohmann::json &j, Techdata t);
+void to_json(nlohmann::json &j, Tech t);
 void to_json(nlohmann::json &j, Order o);
 void to_json(nlohmann::json &j, Weapon w);
 void to_json(nlohmann::json &j, Sfx s);

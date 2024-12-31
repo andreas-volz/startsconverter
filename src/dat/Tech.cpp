@@ -4,7 +4,7 @@
  *      Author: Andreas Volz
  */
 
-#include "Techdata.h"
+#include <dat/Tech.h>
 #include "Logger.h"
 #include "PropertyNotAvailableException.h"
 
@@ -15,64 +15,64 @@ using namespace std;
 namespace dat
 {
 
-Techdata::Techdata(DataHub &datahub, unsigned int id) :
+Tech::Tech(DataHub &datahub, unsigned int id) :
   ObjectAccess(datahub, id)
 {
 
 }
 
-Techdata::~Techdata()
+Tech::~Tech()
 {
 
 }
 
-uint16_t Techdata::mineral_cost()
+uint16_t Tech::mineral_cost()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->mineral_cost()->at(mId);
 }
 
-uint16_t Techdata::vespene_cost()
+uint16_t Tech::vespene_cost()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->vespene_cost()->at(mId);
 }
 
-uint16_t Techdata::research_time()
+uint16_t Tech::research_time()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->research_time()->at(mId);
 }
 
-uint16_t Techdata::energy_required()
+uint16_t Tech::energy_required()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->energy_required()->at(mId);
 }
 
-uint32_t Techdata::unknown4()
+uint32_t Tech::unknown4()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->unknown4()->at(mId);
 }
 
-uint16_t Techdata::icon()
+uint16_t Tech::icon()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->icon()->at(mId);
 }
 
-uint16_t Techdata::label()
+uint16_t Tech::label()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->label()->at(mId);
 }
 
-TblEntry Techdata::label_tbl()
+TblEntry Tech::label_tbl()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
 
-  if(label() == Techdata::label_none)
+  if(label() == Tech::label_none)
   {
     throw PropertyNotAvailableException(mId, "label_tbl");
   }
@@ -80,25 +80,25 @@ TblEntry Techdata::label_tbl()
   return mDatahub.stat_txt_tbl_vec.at(label()-1);
 }
 
-uint8_t Techdata::race()
+uint8_t Tech::race()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->race()->at(mId);
 }
 
-uint8_t Techdata::unused()
+uint8_t Tech::unused()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->unused()->at(mId);
 }
 
-bool Techdata::broodwar_flag()
+bool Tech::broodwar_flag()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->broodwar_flag()->at(mId);
 }
 
-bool Techdata::has_broodwar_flag()
+bool Tech::has_broodwar_flag()
 {
   return mDatahub.techdata->has_broodwar_flag();
 }

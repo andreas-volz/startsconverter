@@ -138,7 +138,7 @@ uint8_t Order::energy()
   return mDatahub.orders->energy()->at(mId);
 }
 
-Techdata Order::energy_obj()
+Tech Order::energy_obj()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
 
@@ -151,7 +151,7 @@ Techdata Order::energy_obj()
     throw PropertyNotAvailableException(mId, "energy_obj");
   }
 
-  return Techdata(mDatahub, energy_id);
+  return Tech(mDatahub, energy_id);
 }
 
 uint8_t Order::animation()

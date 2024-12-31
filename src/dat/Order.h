@@ -9,8 +9,8 @@
 
 // project
 #include "ObjectAccess.h"
+#include "Tech.h"
 #include "Weapon.h"
-#include "Techdata.h"
 
 namespace dat
 {
@@ -52,7 +52,7 @@ public:
   Weapon targeting_obj();
 
   uint8_t energy();
-  Techdata energy_obj();
+  Tech energy_obj();
 
   uint8_t animation();
 
