@@ -140,6 +140,7 @@ public:
      * 25 = 1/3 Damage?
      */
     std::vector<uint8_t>* explosion() const { return m_explosion; }
+
     std::vector<attack_type_enum_t>* target_flags() const { return m_target_flags; }
 
     /**
