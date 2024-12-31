@@ -23,6 +23,11 @@
 			    }
 	    },
 	    {
+	        "name": "ticon",
+	        "arcfile": "unit\\cmdbtns\\ticon.pcx",
+	        "palette": "ticon.pal"
+	    },
+	    {
 	        "name": "ticon-0",
 	        "arcfile": "unit\\cmdbtns\\ticon.pcx",
 	        "palette": "ticon-0.pal",
@@ -30,6 +35,56 @@
 		        "length": 16,
 		        "start": 0,
 		        "index": 0
+			    }
+	    },
+	    {
+	        "name": "ticon-1",
+	        "arcfile": "unit\\cmdbtns\\ticon.pcx",
+	        "palette": "ticon-0.pal",
+			"mapping": {
+		        "length": 16,
+		        "start": 0,
+		        "index": 1
+			    }
+	    },
+	    {
+	        "name": "ticon-2",
+	        "arcfile": "unit\\cmdbtns\\ticon.pcx",
+	        "palette": "ticon-0.pal",
+			"mapping": {
+		        "length": 16,
+		        "start": 0,
+		        "index": 2
+			    }
+	    },
+	    {
+	        "name": "ticon-3",
+	        "arcfile": "unit\\cmdbtns\\ticon.pcx",
+	        "palette": "ticon-0.pal",
+			"mapping": {
+		        "length": 16,
+		        "start": 0,
+		        "index": 3
+			    }
+	    },
+	    {
+	        "name": "ticon-4",
+	        "arcfile": "unit\\cmdbtns\\ticon.pcx",
+	        "palette": "ticon-0.pal",
+			"mapping": {
+		        "length": 16,
+		        "start": 0,
+		        "index": 4
+			    }
+	    },
+	    {
+	        "name": "ticon-5",
+	        "arcfile": "unit\\cmdbtns\\ticon.pcx",
+	        "palette": "ticon-0.pal",
+			"mapping": {
+		        "length": 16,
+		        "start": 0,
+		        "index": 5
 			    }
 	    },
 	    {

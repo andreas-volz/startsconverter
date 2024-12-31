@@ -94,14 +94,13 @@ bool Pcx::saveRGBMapJson(Storage storage)
 
   for(int i = 0; i < mPaletteImage->getSize().x; i++)
   {
-    json j_rgb;
+    //json j_rgb;
     unsigned char pixel = mPaletteImage->at(i);
     Color &color = mPalette->at(pixel);
-    j_rgb.push_back(color.getRed());
-    j_rgb.push_back(color.getGreen());
-    j_rgb.push_back(color.getBlue());
-    j_rgb.push_back(255);
-    j_color_list.push_back(j_rgb);
+    j_color_list.push_back(color.getRed());
+    j_color_list.push_back(color.getGreen());
+    j_color_list.push_back(color.getBlue());
+    //j_color_list.push_back(j_rgb);
   }
 
   saveJson(j_color_list, storage, true);
