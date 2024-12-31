@@ -33,7 +33,7 @@ public:
   uint16_t label();
   TblEntry label_tbl();
 
-  uint8_t race();
+  techdata_dat_t::race_enum_t race();
 
   uint8_t unused();
 

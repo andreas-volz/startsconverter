@@ -67,10 +67,10 @@ void techdata_dat_t::_read() {
     for (int i = 0; i < l_label; i++) {
         m_label->push_back(m__io->read_u2le());
     }
-    m_race = new std::vector<uint8_t>();
+    m_race = new std::vector<race_enum_t>();
     const int l_race = num_lines();
     for (int i = 0; i < l_race; i++) {
-        m_race->push_back(m__io->read_u1());
+        m_race->push_back(static_cast<techdata_dat_t::race_enum_t>(m__io->read_u1()));
     }
     m_unused = new std::vector<uint8_t>();
     const int l_unused = num_lines();

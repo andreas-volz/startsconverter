@@ -15,6 +15,13 @@ class techdata_dat_t : public kaitai::kstruct {
 
 public:
 
+    enum race_enum_t {
+        RACE_ENUM_ZERG = 0,
+        RACE_ENUM_TERRAN = 1,
+        RACE_ENUM_PROTOSS = 2,
+        RACE_ENUM_ALL = 3
+    };
+
     techdata_dat_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent = 0, techdata_dat_t* p__root = 0);
 
 private:
@@ -105,7 +112,7 @@ private:
     std::vector<uint32_t>* m_unknown4;
     std::vector<uint16_t>* m_icon;
     std::vector<uint16_t>* m_label;
-    std::vector<uint8_t>* m_race;
+    std::vector<race_enum_t>* m_race;
     std::vector<uint8_t>* m_unused;
     std::vector<uint8_t>* m_broodwar_flag;
     bool n_broodwar_flag;
@@ -157,10 +164,10 @@ public:
     /**
      * Determines which race can use/research the technology. "All" will disable the tech in StarEdit (but not in-game).
      */
-    std::vector<uint8_t>* race() const { return m_race; }
+    std::vector<race_enum_t>* race() const { return m_race; }
 
     /**
-     * unused
+     * unused data field
      */
     std::vector<uint8_t>* unused() const { return m_unused; }
 

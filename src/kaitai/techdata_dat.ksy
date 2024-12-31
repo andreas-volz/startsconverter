@@ -55,6 +55,7 @@ seq:
 
   - id: race
     type: u1
+    enum: race_enum
     repeat: expr
     repeat-expr: num_lines
     doc: |
@@ -65,7 +66,7 @@ seq:
     repeat: expr
     repeat-expr: num_lines
     doc: |
-      unused
+      unused data field
 
   - id: broodwar_flag
     type: u1
@@ -74,6 +75,13 @@ seq:
     if: has_broodwar_flag == true
     doc: |
       Makes the technology available only while playing the BroodWar expansion set.
+
+enums:
+  race_enum:
+    0: zerg
+    1: terran
+    2: protoss
+    3: all
 
 instances:
   has_broodwar_flag:

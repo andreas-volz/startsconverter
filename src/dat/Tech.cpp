@@ -80,7 +80,7 @@ TblEntry Tech::label_tbl()
   return mDatahub.stat_txt_tbl_vec.at(label()-1);
 }
 
-uint8_t Tech::race()
+techdata_dat_t::race_enum_t Tech::race()
 {
   LOG4CXX_TRACE(logger, to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.techdata->race()->at(mId);
