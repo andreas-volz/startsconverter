@@ -68,7 +68,7 @@ uint8_t Order::unknown5()
   return mDatahub.orders->unknown5()->at(mId);
 }
 
-uint8_t Order::interruptible()
+bool Order::interruptible()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.orders->interruptible()->at(mId);
@@ -80,7 +80,7 @@ uint8_t Order::unknown7()
   return mDatahub.orders->unknown7()->at(mId);
 }
 
-uint8_t Order::queueable()
+bool Order::queueable()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.orders->queueable()->at(mId);

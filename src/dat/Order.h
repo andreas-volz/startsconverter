@@ -34,11 +34,11 @@ public:
 
   uint8_t unknown5();
 
-  uint8_t interruptible();
+  bool interruptible();
 
   uint8_t unknown7();
 
-  uint8_t queueable();
+  bool queueable();
 
   uint8_t unknown9();
 
