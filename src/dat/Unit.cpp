@@ -627,6 +627,12 @@ units_dat_t::staredit_group_flags_type_t* Unit::staredit_group_flags()
   return mDatahub.units->staredit_group_flags()->at(mId);
 }
 
+uint8_t Unit::supply_provided()
+{
+  LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
+  return mDatahub.units->supply_provided()->at(mId);
+}
+
 uint8_t Unit::supply_required()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
@@ -637,6 +643,12 @@ uint8_t Unit::space_provided()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
   return mDatahub.units->space_provided()->at(mId);
+}
+
+uint8_t Unit::space_required()
+{
+  LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
+  return mDatahub.units->space_required()->at(mId);
 }
 
 uint16_t Unit::build_score()

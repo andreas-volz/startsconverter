@@ -1213,8 +1213,10 @@ void to_json(json &j, Unit u)
   j["build_time"] = json(u.build_time());
   j["requirements"] = json(u.requirements());
   j["staredit_group_flags"] = json(u.staredit_group_flags());
+  j["supply_provided"] = json(u.supply_provided());
   j["supply_required"] = json(u.supply_required());
   j["space_provided"] = json(u.space_provided());
+  j["space_required"] = json(u.space_required());
   j["build_score"] = json(u.build_score());
   j["destroy_score"] = json(u.destroy_score());
   j["unit_map_string"] = json(u.unit_map_string());

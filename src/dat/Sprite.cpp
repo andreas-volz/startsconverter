@@ -63,7 +63,7 @@ uint8_t Sprite::health_bar()
   try
   {
     // This property is only available from unit index 130 to num_lines
-    health_bar = mDatahub.sprites->health_bar()->at(mId);
+    health_bar = mDatahub.sprites->health_bar()->at(mId-130);
   }
   catch (const std::out_of_range& oor)
   {
@@ -129,7 +129,7 @@ uint8_t Sprite::select_circle_image_size()
   try
   {
     // This property is only available from unit index 130 to num_lines
-    select_circle_image_size = mDatahub.sprites->select_circle_image_size()->at(mId);
+    select_circle_image_size = mDatahub.sprites->select_circle_image_size()->at(mId-130);
   }
   catch (const std::out_of_range& oor)
   {
@@ -148,7 +148,7 @@ uint8_t Sprite::select_circle_vertical_pos()
   try
   {
     // This property is only available from unit index 130 to num_lines
-    select_circle_vertical_pos = mDatahub.sprites->select_circle_vertical_pos()->at(mId);
+    select_circle_vertical_pos = mDatahub.sprites->select_circle_vertical_pos()->at(mId-130);
   }
   catch (const std::out_of_range& oor)
   {

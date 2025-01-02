@@ -139,9 +139,13 @@ public:
 
   units_dat_t::staredit_group_flags_type_t* staredit_group_flags();
 
+  uint8_t supply_provided();
+
   uint8_t supply_required();
 
   uint8_t space_provided();
+
+  uint8_t space_required();
 
   uint16_t build_score();
 
