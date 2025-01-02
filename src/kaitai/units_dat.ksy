@@ -625,7 +625,7 @@ enums:
     3: large
 
   right_click_action_enum:
-    0: no_commands_auo_attack
+    0: no_commands_auto_attack
     1: normal_movement_normal_attack
     2: normal_movement_no_attack
     3: no_movement_normal_attack
