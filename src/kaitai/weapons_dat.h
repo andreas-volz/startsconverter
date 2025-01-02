@@ -24,7 +24,7 @@ public:
     };
 
     enum weapon_type_enum_t {
-        WEAPON_TYPE_ENUM_NDEPENDENT = 0,
+        WEAPON_TYPE_ENUM_INDEPENDENT = 0,
         WEAPON_TYPE_ENUM_EXPLOSIVE = 1,
         WEAPON_TYPE_ENUM_CONCUSSIVE = 2,
         WEAPON_TYPE_ENUM_NORMAL = 3,

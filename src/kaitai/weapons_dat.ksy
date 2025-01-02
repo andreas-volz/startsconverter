@@ -255,7 +255,7 @@ enums:
     18: ground_units_only # no hover units
 
   weapon_type_enum:
-    0: ndependent
+    0: independent
     1: explosive
     2: concussive
     3: normal
