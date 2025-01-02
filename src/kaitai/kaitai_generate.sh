@@ -1,9 +1,10 @@
 #!/bin/bash
 
-DAT_FILES="units_dat weapons_dat file_tbl flingy_dat sprites_dat images_dat sfxdata_dat portdata_dat upgrades_dat orders_dat techdata_dat mapdata_dat"
+DAT_FILES="units_dat weapons_dat file_tbl flingy_dat sprites_dat images_dat sfxdata_dat portdata_dat upgrades_dat orders_dat techdata_dat mapdata_dat lo_overlay"
 TILESET_FILES="tileset_cv5  tileset_dddata_bin  tileset_vf4  tileset_vr4  tileset_vx4"
+OVERLAY_FILES="lo_overlay"
 CHK_FILES="chk_parser"
-KSY_FILES="$DAT_FILES $CHK_FILES $TILESET_FILES"
+KSY_FILES="$DAT_FILES $CHK_FILES $TILESET_FILES $OVERLAY_FILES"
 # run without parameter
 if [ $# = 0 ]; then
   echo -e "Run:\n"

@@ -14,6 +14,10 @@ startool_kaitai_dat_sources = files(
 	'mapdata_dat.cpp'
 )
 
+startool_kaitai_overlay_sources = files(
+  'lo_overlay.cpp'
+)
+
 startool_kaitai_tileset_sources = files(
 	'tileset_cv5.cpp',
 	'tileset_vf4.cpp',
@@ -26,4 +30,4 @@ startool_kaitai_chk_sources = files(
     'chk_parser.cpp',
 )
 
-startool_kaitai_sources = startool_kaitai_dat_sources + startool_kaitai_tileset_sources + startool_kaitai_chk_sources
+startool_kaitai_sources = startool_kaitai_dat_sources + startool_kaitai_tileset_sources + startool_kaitai_chk_sources + startool_kaitai_overlay_sources
