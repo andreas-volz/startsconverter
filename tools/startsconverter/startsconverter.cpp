@@ -21,6 +21,8 @@
 #include "WidgetsConverter.h"
 #include "GameUIConverter.h"
 #include "CursorConverter.h"
+#include "FileUtil.h"
+#include "pacman.h"
 #include "Pcx.h" // remove
 #include "Widgets.h" // remove
 
@@ -176,7 +178,7 @@ int main(int argc, const char **argv)
 
   // needs to stay outside because we need it later
   PaletteConverter palette_converter(bootstrap.getSubArchive());
-  if(converterCheck("all", "palette", "graphics", "tileset", "campaign", "widgets", "cursor"))
+  if(converterCheck("all", "palette", "graphics", "tileset", "campaign", "widgets", "cursor", "cmdbtns", "wireframe"))
   {
     Storage paletteStorage;
     paletteStorage.setDataPath(destination_directory);
@@ -326,40 +328,66 @@ int main(int argc, const char **argv)
     pcx_rgbmap.saveRGBMapJson(rgbmapStorage("tunit.json"));
     Pcx pcx_rgbmap2(bootstrap.getSubArchive(), "unit\\cmdbtns\\ticon.pcx");
     pcx_rgbmap2.saveRGBMapJson(rgbmapStorage("ticon.json"));
-    //CursorConverter cursor_converter(bootstrap.getSubArchive(), rgbmapStorage);
-    //cursor_converter.convert(cursorStorage);
+    Pcx pcx_rgbmap3(bootstrap.getSubArchive(), "unit\\cmdbtns\\twire.pcx");
+    pcx_rgbmap2.saveRGBMapJson(rgbmapStorage("twire.json"));
     cout << "DONE" << endl;
 
   }
 
-  Storage iconStorage;
-  iconStorage.setDataPath(destination_directory);
-  iconStorage.setDataType("icons");
+  if(converterCheck("all", "cmdbtns"))
+  {
+    Storage iconStorage;
+    iconStorage.setDataPath(destination_directory);
+    iconStorage.setDataType("graphics/unit/cmdbtns");
+    CheckPath(iconStorage);
 
-  Grp icons(bootstrap.getSubArchive());
-  icons.setPalette(palette_converter.getPalette("ticon-0"));
-  icons.load("unit\\cmdbtns\\cmdicons.grp");
-  icons.save(iconStorage("cmdbtns-0.png"));
+    Grp icons(bootstrap.getSubArchive());
+    icons.setPalette(palette_converter.getPalette("ticon-0"));
+    icons.load("unit\\cmdbtns\\cmdicons.grp");
+    icons.save(iconStorage("cmdbtns-0.png"));
 
-  icons.setPalette(palette_converter.getPalette("ticon-1"));
-  icons.load("unit\\cmdbtns\\cmdicons.grp");
-  icons.save(iconStorage("cmdbtns-1.png"));
+    icons.setPalette(palette_converter.getPalette("ticon-1"));
+    icons.load("unit\\cmdbtns\\cmdicons.grp");
+    icons.save(iconStorage("cmdbtns-1.png"));
 
-  icons.setPalette(palette_converter.getPalette("ticon-2"));
-  icons.load("unit\\cmdbtns\\cmdicons.grp");
-  icons.save(iconStorage("cmdbtns-2.png"));
+    icons.setPalette(palette_converter.getPalette("ticon-2"));
+    icons.load("unit\\cmdbtns\\cmdicons.grp");
+    icons.save(iconStorage("cmdbtns-2.png"));
 
-  icons.setPalette(palette_converter.getPalette("ticon-3"));
-  icons.load("unit\\cmdbtns\\cmdicons.grp");
-  icons.save(iconStorage("cmdbtns-3.png"));
+    icons.setPalette(palette_converter.getPalette("ticon-3"));
+    icons.load("unit\\cmdbtns\\cmdicons.grp");
+    icons.save(iconStorage("cmdbtns-3.png"));
 
-  icons.setPalette(palette_converter.getPalette("ticon-4"));
-  icons.load("unit\\cmdbtns\\cmdicons.grp");
-  icons.save(iconStorage("cmdbtns-4.png"));
+    icons.setPalette(palette_converter.getPalette("ticon-4"));
+    icons.load("unit\\cmdbtns\\cmdicons.grp");
+    icons.save(iconStorage("cmdbtns-4.png"));
 
-  icons.setPalette(palette_converter.getPalette("ticon-5"));
-  icons.load("unit\\cmdbtns\\cmdicons.grp");
-  icons.save(iconStorage("cmdbtns-5.png"));
+    icons.setPalette(palette_converter.getPalette("ticon-5"));
+    icons.load("unit\\cmdbtns\\cmdicons.grp");
+    icons.save(iconStorage("cmdbtns-5.png"));
+  }
+
+  if(converterCheck("all", "wireframe"))
+  {
+    Storage iconStorage;
+    iconStorage.setDataPath(destination_directory);
+    iconStorage.setDataType("graphics/unit/wirefram");
+    CheckPath(iconStorage);
+
+    Grp icons(bootstrap.getSubArchive());
+    std::shared_ptr<DataChunk> data = make_shared<DataChunk>(DataChunk());
+    data->read(pacman::searchFile("dataset/unique_palette.pal"));
+    std::shared_ptr<Palette> pal = make_shared<Palette>(Palette(data));
+    icons.setPalette(pal);
+    icons.load("unit\\wirefram\\grpwire.grp");
+    icons.save(iconStorage("grpwire.png"));
+
+    icons.load("unit\\wirefram\\tranwire.grp");
+    icons.save(iconStorage("tranwire.png"));
+
+    icons.load("unit\\wirefram\\wirefram.grp");
+    icons.save(iconStorage("wirefram.png"));
+  }
 
   cout << "App Finished" << endl;
   return 0;
