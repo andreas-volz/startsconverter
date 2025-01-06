@@ -330,6 +330,13 @@ int main(int argc, const char **argv)
     pcx_rgbmap2.saveRGBMapJson(rgbmapStorage("ticon.json"));
     Pcx pcx_rgbmap3(bootstrap.getSubArchive(), "unit\\cmdbtns\\twire.pcx");
     pcx_rgbmap2.saveRGBMapJson(rgbmapStorage("twire.json"));
+
+    string dataset_dir = "/home/andreas/src/git/starts/startsconverter/dataset";
+        //pacman::searchDir("dataset");
+    shared_ptr<Breeze> breeze = make_shared<Breeze>(dataset_dir);
+    Pcx pcx_unique(breeze, "unique_palette_colored.pcx");
+    pcx_unique.saveRGBMapJson(rgbmapStorage("unique_palette.json"));
+
     cout << "DONE" << endl;
 
   }
@@ -340,6 +347,10 @@ int main(int argc, const char **argv)
     iconStorage.setDataPath(destination_directory);
     iconStorage.setDataType("graphics/unit/cmdbtns");
     CheckPath(iconStorage);
+
+    std::shared_ptr<DataChunk> data = make_shared<DataChunk>(DataChunk());
+    data->read(pacman::searchFile("dataset/unique_palette.pal"));
+    std::shared_ptr<Palette> pal = make_shared<Palette>(Palette(data));
 
     Grp icons(bootstrap.getSubArchive());
     icons.setPalette(palette_converter.getPalette("ticon-0"));
@@ -365,6 +376,10 @@ int main(int argc, const char **argv)
     icons.setPalette(palette_converter.getPalette("ticon-5"));
     icons.load("unit\\cmdbtns\\cmdicons.grp");
     icons.save(iconStorage("cmdbtns-5.png"));
+
+    icons.setPalette(pal);
+    icons.load("unit\\cmdbtns\\cmdicons.grp");
+    icons.save(iconStorage("cmdbtns.png"));
   }
 
   if(converterCheck("all", "wireframe"))
