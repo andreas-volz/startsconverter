@@ -326,10 +326,14 @@ int main(int argc, const char **argv)
     cout << "Run RGBMapConverter...";fflush(stdout);
     Pcx pcx_rgbmap(bootstrap.getSubArchive(), "game\\tunit.pcx");
     pcx_rgbmap.saveRGBMapJson(rgbmapStorage("tunit.json"));
+
     Pcx pcx_rgbmap2(bootstrap.getSubArchive(), "unit\\cmdbtns\\ticon.pcx");
+    //pcx_rgbmap2.mapIndexPalette(16, 0, 0); // TODO: why is here no mapping needed?
     pcx_rgbmap2.saveRGBMapJson(rgbmapStorage("ticon.json"));
-    Pcx pcx_rgbmap3(bootstrap.getSubArchive(), "unit\\cmdbtns\\twire.pcx");
-    pcx_rgbmap2.saveRGBMapJson(rgbmapStorage("twire.json"));
+
+    Pcx pcx_rgbmap3(bootstrap.getSubArchive(), "game\\twire.pcx");
+    pcx_rgbmap3.mapIndexPalette(24, 0, 0);
+    pcx_rgbmap3.saveRGBMapJson(rgbmapStorage("twire.json"));
 
     string dataset_dir = "/home/andreas/src/git/starts/startsconverter/dataset";
         //pacman::searchDir("dataset");
@@ -347,6 +351,8 @@ int main(int argc, const char **argv)
     iconStorage.setDataPath(destination_directory);
     iconStorage.setDataType("graphics/unit/cmdbtns");
     CheckPath(iconStorage);
+
+    cout << "Run cmdbtns...";fflush(stdout);
 
     std::shared_ptr<DataChunk> data = make_shared<DataChunk>(DataChunk());
     data->read(pacman::searchFile("dataset/unique_palette.pal"));
@@ -388,6 +394,8 @@ int main(int argc, const char **argv)
     iconStorage.setDataPath(destination_directory);
     iconStorage.setDataType("graphics/unit/wirefram");
     CheckPath(iconStorage);
+
+    cout << "Run wireframe...";fflush(stdout);
 
     Grp icons(bootstrap.getSubArchive());
     std::shared_ptr<DataChunk> data = make_shared<DataChunk>(DataChunk());

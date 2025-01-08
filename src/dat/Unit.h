@@ -48,7 +48,7 @@ public:
 
   uint16_t shield_amount();
 
-  uint32_t hitpoints();
+  uint32_t hit_points();
 
   uint8_t elevation_level();
 

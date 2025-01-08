@@ -162,10 +162,11 @@ uint16_t Unit::shield_amount()
   return mDatahub.units->shield_amount()->at(mId);
 }
 
-uint32_t Unit::hitpoints()
+uint32_t Unit::hit_points()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
-  return mDatahub.units->hit_points()->at(mId)->hitpoints();
+  // TODO: maybe I save hitpoints0() and hitpoints1() later in two values if I know better why it was needed!
+  return mDatahub.units->hit_points()->at(mId)->hitpoints0() + mDatahub.units->hit_points()->at(mId)->hitpoints1();
 }
 
 uint8_t Unit::elevation_level()

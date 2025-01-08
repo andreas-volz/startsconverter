@@ -601,7 +601,7 @@ json DatConverter::export_mapdata_dat()
 void to_json(json &j, units_dat_t::hit_points_type_t *t)
 {
   // TODO: maybe I save hitpoints0() and hitpoints1() later in two values if I know better why it was needed!
-  j = json{ {"hitpoints", t->hitpoints()} };
+  j = json(t->hitpoints0() + t->hitpoints1());
 }
 
 void to_json(json &j, units_dat_t::special_ability_flags_type_t *t)
@@ -1055,7 +1055,7 @@ void to_json(json &j, Unit u)
   j["unit_direction"] = json(u.unit_direction());
   j["shield_enable"] = json(u.shield_enable());
   j["shield_amount"] = json(u.shield_amount());
-  j["hitpoints"] = json(u.hitpoints());
+  j["hitpoints"] = json(u.hit_points());
   j["elevation_level"] = json(u.elevation_level());
   j["unknown"] = json(u.unknown());
   j["rank"] = json(u.rank());
