@@ -14,10 +14,10 @@
 class units_dat_t : public kaitai::kstruct {
 
 public:
-    class staredit_group_flags_type_t;
     class hit_points_type_t;
     class addon_position_type_t;
     class special_ability_flags_type_t;
+    class group_flags_type_t;
     class staredit_placement_box_type_t;
     class unit_dimension_type_t;
     class staredit_availability_flags_type_t;
@@ -47,55 +47,6 @@ private:
 
 public:
     ~units_dat_t();
-
-    /**
-     * zerg: Unit is from race "Zerg"
-     * terran: Unit is from race "Terran"
-     * protoss: Unit is from race "Protoss"
-     * men: Unit is a "Men"-type unit for triggers.
-     * building: Unit is a "Building"-type unit for triggers.
-     * factory: Unit is a "Factory"-type unit for triggers.
-     * independent: Unit is treated as an Independent unit (abandoned unit type).
-     * neutral: Unit is treated as a Neutral unit.
-     */
-
-    class staredit_group_flags_type_t : public kaitai::kstruct {
-
-    public:
-
-        staredit_group_flags_type_t(kaitai::kstream* p__io, units_dat_t* p__parent = 0, units_dat_t* p__root = 0);
-
-    private:
-        void _read();
-        void _clean_up();
-
-    public:
-        ~staredit_group_flags_type_t();
-
-    private:
-        bool m_zerg;
-        bool m_terran;
-        bool m_protoss;
-        bool m_men;
-        bool m_building;
-        bool m_factory;
-        bool m_independent;
-        bool m_neutral;
-        units_dat_t* m__root;
-        units_dat_t* m__parent;
-
-    public:
-        bool zerg() const { return m_zerg; }
-        bool terran() const { return m_terran; }
-        bool protoss() const { return m_protoss; }
-        bool men() const { return m_men; }
-        bool building() const { return m_building; }
-        bool factory() const { return m_factory; }
-        bool independent() const { return m_independent; }
-        bool neutral() const { return m_neutral; }
-        units_dat_t* _root() const { return m__root; }
-        units_dat_t* _parent() const { return m__parent; }
-    };
 
     class hit_points_type_t : public kaitai::kstruct {
 
@@ -273,6 +224,55 @@ public:
         bool invincible() const { return m_invincible; }
         bool mechanical() const { return m_mechanical; }
         bool producesunits() const { return m_producesunits; }
+        units_dat_t* _root() const { return m__root; }
+        units_dat_t* _parent() const { return m__parent; }
+    };
+
+    /**
+     * zerg: Unit is from race "Zerg"
+     * terran: Unit is from race "Terran"
+     * protoss: Unit is from race "Protoss"
+     * men: Unit is a "Men"-type unit for triggers.
+     * building: Unit is a "Building"-type unit for triggers.
+     * factory: Unit is a "Factory"-type unit for triggers.
+     * independent: Unit is treated as an Independent unit (abandoned unit type).
+     * neutral: Unit is treated as a Neutral unit.
+     */
+
+    class group_flags_type_t : public kaitai::kstruct {
+
+    public:
+
+        group_flags_type_t(kaitai::kstream* p__io, units_dat_t* p__parent = 0, units_dat_t* p__root = 0);
+
+    private:
+        void _read();
+        void _clean_up();
+
+    public:
+        ~group_flags_type_t();
+
+    private:
+        bool m_zerg;
+        bool m_terran;
+        bool m_protoss;
+        bool m_men;
+        bool m_building;
+        bool m_factory;
+        bool m_independent;
+        bool m_neutral;
+        units_dat_t* m__root;
+        units_dat_t* m__parent;
+
+    public:
+        bool zerg() const { return m_zerg; }
+        bool terran() const { return m_terran; }
+        bool protoss() const { return m_protoss; }
+        bool men() const { return m_men; }
+        bool building() const { return m_building; }
+        bool factory() const { return m_factory; }
+        bool independent() const { return m_independent; }
+        bool neutral() const { return m_neutral; }
         units_dat_t* _root() const { return m__root; }
         units_dat_t* _parent() const { return m__parent; }
     };
@@ -490,7 +490,7 @@ private:
     std::vector<uint16_t>* m_vespene_cost;
     std::vector<uint16_t>* m_build_time;
     std::vector<uint16_t>* m_requirements;
-    std::vector<staredit_group_flags_type_t*>* m_staredit_group_flags;
+    std::vector<group_flags_type_t*>* m_group_flags;
     std::vector<uint8_t>* m_supply_provided;
     std::vector<uint8_t>* m_supply_required;
     std::vector<uint8_t>* m_space_required;
@@ -510,8 +510,8 @@ private:
     kaitai::kstruct* m__parent;
     std::vector<std::string>* m__raw_special_ability_flags;
     std::vector<kaitai::kstream*>* m__io__raw_special_ability_flags;
-    std::vector<std::string>* m__raw_staredit_group_flags;
-    std::vector<kaitai::kstream*>* m__io__raw_staredit_group_flags;
+    std::vector<std::string>* m__raw_group_flags;
+    std::vector<kaitai::kstream*>* m__io__raw_group_flags;
     std::vector<std::string>* m__raw_staredit_availability_flags;
     std::vector<kaitai::kstream*>* m__io__raw_staredit_availability_flags;
 
@@ -742,9 +742,9 @@ public:
     std::vector<uint16_t>* requirements() const { return m_requirements; }
 
     /**
-     * Flags used in StarEdit. Check the type for detail specification.
+     * Group flags. Check the type for detail specification.
      */
-    std::vector<staredit_group_flags_type_t*>* staredit_group_flags() const { return m_staredit_group_flags; }
+    std::vector<group_flags_type_t*>* group_flags() const { return m_group_flags; }
 
     /**
      * Amount of Supply/Psi/Control required to train/build the unit. Halves are rounded down for the display, but calculated normally.
@@ -797,8 +797,8 @@ public:
     kaitai::kstruct* _parent() const { return m__parent; }
     std::vector<std::string>* _raw_special_ability_flags() const { return m__raw_special_ability_flags; }
     std::vector<kaitai::kstream*>* _io__raw_special_ability_flags() const { return m__io__raw_special_ability_flags; }
-    std::vector<std::string>* _raw_staredit_group_flags() const { return m__raw_staredit_group_flags; }
-    std::vector<kaitai::kstream*>* _io__raw_staredit_group_flags() const { return m__io__raw_staredit_group_flags; }
+    std::vector<std::string>* _raw_group_flags() const { return m__raw_group_flags; }
+    std::vector<kaitai::kstream*>* _io__raw_group_flags() const { return m__io__raw_group_flags; }
     std::vector<std::string>* _raw_staredit_availability_flags() const { return m__raw_staredit_availability_flags; }
     std::vector<kaitai::kstream*>* _io__raw_staredit_availability_flags() const { return m__io__raw_staredit_availability_flags; }
 };

@@ -622,10 +622,10 @@ uint16_t Unit::requirements()
   return mDatahub.units->requirements()->at(mId);
 }
 
-units_dat_t::staredit_group_flags_type_t* Unit::staredit_group_flags()
+units_dat_t::group_flags_type_t* Unit::group_flags()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
-  return mDatahub.units->staredit_group_flags()->at(mId);
+  return mDatahub.units->group_flags()->at(mId);
 }
 
 uint8_t Unit::supply_provided()

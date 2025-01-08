@@ -321,13 +321,13 @@ seq:
     doc: |
       TBD
 
-  - id: staredit_group_flags
-    type: staredit_group_flags_type
+  - id: group_flags
+    type: group_flags_type
     repeat: expr
     repeat-expr: 228
     size: 1
     doc: |
-      Flags used in StarEdit. Check the type for detail specification.
+      Group flags. Check the type for detail specification.
 
   - id: supply_provided
     type: u1
@@ -554,7 +554,7 @@ types:
       mechanical: Unit is treated as a mechanical-type target for weapons and spells (e.g. Lockdown). It can also be repaired by SCVs.
       producesunits:
 
-  staredit_group_flags_type:
+  group_flags_type:
     seq:
       - id: zerg
         type: b1  # 0b0000_0001 = 0x01

@@ -137,7 +137,7 @@ public:
 
   uint16_t requirements();
 
-  units_dat_t::staredit_group_flags_type_t* staredit_group_flags();
+  units_dat_t::group_flags_type_t* group_flags();
 
   uint8_t supply_provided();
 

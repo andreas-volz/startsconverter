@@ -268,7 +268,7 @@ json DatConverter::export_units_dat()
 
   j["requirements"] = json(*units->requirements());
 
-  j["staredit_group_flags"] = json(*units->staredit_group_flags());
+  j["group_flags"] = json(*units->group_flags());
 
   j["supply_provided"] = json(*units->supply_provided());
 
@@ -658,7 +658,7 @@ void to_json(json &j, units_dat_t::unit_dimension_type_t *t)
   j = json{ {"left", t->left()}, {"up", t->up()}, {"right", t->right()}, {"down", t->down()} };
 }
 
-void to_json(json &j, units_dat_t::staredit_group_flags_type_t *t)
+void to_json(json &j, units_dat_t::group_flags_type_t *t)
 {
   j = json
   {
@@ -1212,7 +1212,7 @@ void to_json(json &j, Unit u)
   j["vespene_cost"] = json(u.vespene_cost());
   j["build_time"] = json(u.build_time());
   j["requirements"] = json(u.requirements());
-  j["staredit_group_flags"] = json(u.staredit_group_flags());
+  j["group_flags"] = json(u.group_flags());
   j["supply_provided"] = json(u.supply_provided());
   j["supply_required"] = json(u.supply_required());
   j["space_provided"] = json(u.space_provided());

@@ -24,7 +24,7 @@ void to_json(nlohmann::json &j, units_dat_t::special_ability_flags_type_t* t);
 void to_json(nlohmann::json &j, units_dat_t::staredit_placement_box_type_t* t);
 void to_json(nlohmann::json &j, units_dat_t::addon_position_type_t* t);
 void to_json(nlohmann::json &j, units_dat_t::unit_dimension_type_t* t);
-void to_json(nlohmann::json &j, units_dat_t::staredit_group_flags_type_t* t);
+void to_json(nlohmann::json &j, units_dat_t::group_flags_type_t* t);
 void to_json(nlohmann::json &j, units_dat_t::staredit_availability_flags_type_t* t);
 
 

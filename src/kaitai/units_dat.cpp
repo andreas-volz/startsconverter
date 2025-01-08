@@ -51,9 +51,9 @@ units_dat_t::units_dat_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent, uni
     m_vespene_cost = 0;
     m_build_time = 0;
     m_requirements = 0;
-    m_staredit_group_flags = 0;
-    m__raw_staredit_group_flags = 0;
-    m__io__raw_staredit_group_flags = 0;
+    m_group_flags = 0;
+    m__raw_group_flags = 0;
+    m__io__raw_group_flags = 0;
     m_supply_provided = 0;
     m_supply_required = 0;
     m_space_required = 0;
@@ -313,15 +313,15 @@ void units_dat_t::_read() {
     for (int i = 0; i < l_requirements; i++) {
         m_requirements->push_back(m__io->read_u2le());
     }
-    m__raw_staredit_group_flags = new std::vector<std::string>();
-    m__io__raw_staredit_group_flags = new std::vector<kaitai::kstream*>();
-    m_staredit_group_flags = new std::vector<staredit_group_flags_type_t*>();
-    const int l_staredit_group_flags = 228;
-    for (int i = 0; i < l_staredit_group_flags; i++) {
-        m__raw_staredit_group_flags->push_back(m__io->read_bytes(1));
-        kaitai::kstream* io__raw_staredit_group_flags = new kaitai::kstream(m__raw_staredit_group_flags->at(m__raw_staredit_group_flags->size() - 1));
-        m__io__raw_staredit_group_flags->push_back(io__raw_staredit_group_flags);
-        m_staredit_group_flags->push_back(new staredit_group_flags_type_t(io__raw_staredit_group_flags, this, m__root));
+    m__raw_group_flags = new std::vector<std::string>();
+    m__io__raw_group_flags = new std::vector<kaitai::kstream*>();
+    m_group_flags = new std::vector<group_flags_type_t*>();
+    const int l_group_flags = 228;
+    for (int i = 0; i < l_group_flags; i++) {
+        m__raw_group_flags->push_back(m__io->read_bytes(1));
+        kaitai::kstream* io__raw_group_flags = new kaitai::kstream(m__raw_group_flags->at(m__raw_group_flags->size() - 1));
+        m__io__raw_group_flags->push_back(io__raw_group_flags);
+        m_group_flags->push_back(new group_flags_type_t(io__raw_group_flags, this, m__root));
     }
     m_supply_provided = new std::vector<uint8_t>();
     const int l_supply_provided = 228;
@@ -544,20 +544,20 @@ void units_dat_t::_clean_up() {
     if (m_requirements) {
         delete m_requirements; m_requirements = 0;
     }
-    if (m__raw_staredit_group_flags) {
-        delete m__raw_staredit_group_flags; m__raw_staredit_group_flags = 0;
+    if (m__raw_group_flags) {
+        delete m__raw_group_flags; m__raw_group_flags = 0;
     }
-    if (m__io__raw_staredit_group_flags) {
-        for (std::vector<kaitai::kstream*>::iterator it = m__io__raw_staredit_group_flags->begin(); it != m__io__raw_staredit_group_flags->end(); ++it) {
+    if (m__io__raw_group_flags) {
+        for (std::vector<kaitai::kstream*>::iterator it = m__io__raw_group_flags->begin(); it != m__io__raw_group_flags->end(); ++it) {
             delete *it;
         }
-        delete m__io__raw_staredit_group_flags; m__io__raw_staredit_group_flags = 0;
+        delete m__io__raw_group_flags; m__io__raw_group_flags = 0;
     }
-    if (m_staredit_group_flags) {
-        for (std::vector<staredit_group_flags_type_t*>::iterator it = m_staredit_group_flags->begin(); it != m_staredit_group_flags->end(); ++it) {
+    if (m_group_flags) {
+        for (std::vector<group_flags_type_t*>::iterator it = m_group_flags->begin(); it != m_group_flags->end(); ++it) {
             delete *it;
         }
-        delete m_staredit_group_flags; m_staredit_group_flags = 0;
+        delete m_group_flags; m_group_flags = 0;
     }
     if (m_supply_provided) {
         delete m_supply_provided; m_supply_provided = 0;
@@ -600,36 +600,6 @@ void units_dat_t::_clean_up() {
         }
         delete m_staredit_availability_flags; m_staredit_availability_flags = 0;
     }
-}
-
-units_dat_t::staredit_group_flags_type_t::staredit_group_flags_type_t(kaitai::kstream* p__io, units_dat_t* p__parent, units_dat_t* p__root) : kaitai::kstruct(p__io) {
-    m__parent = p__parent;
-    m__root = p__root;
-
-    try {
-        _read();
-    } catch(...) {
-        _clean_up();
-        throw;
-    }
-}
-
-void units_dat_t::staredit_group_flags_type_t::_read() {
-    m_zerg = m__io->read_bits_int_le(1);
-    m_terran = m__io->read_bits_int_le(1);
-    m_protoss = m__io->read_bits_int_le(1);
-    m_men = m__io->read_bits_int_le(1);
-    m_building = m__io->read_bits_int_le(1);
-    m_factory = m__io->read_bits_int_le(1);
-    m_independent = m__io->read_bits_int_le(1);
-    m_neutral = m__io->read_bits_int_le(1);
-}
-
-units_dat_t::staredit_group_flags_type_t::~staredit_group_flags_type_t() {
-    _clean_up();
-}
-
-void units_dat_t::staredit_group_flags_type_t::_clean_up() {
 }
 
 units_dat_t::hit_points_type_t::hit_points_type_t(kaitai::kstream* p__io, units_dat_t* p__parent, units_dat_t* p__root) : kaitai::kstruct(p__io) {
@@ -741,6 +711,36 @@ units_dat_t::special_ability_flags_type_t::~special_ability_flags_type_t() {
 }
 
 void units_dat_t::special_ability_flags_type_t::_clean_up() {
+}
+
+units_dat_t::group_flags_type_t::group_flags_type_t(kaitai::kstream* p__io, units_dat_t* p__parent, units_dat_t* p__root) : kaitai::kstruct(p__io) {
+    m__parent = p__parent;
+    m__root = p__root;
+
+    try {
+        _read();
+    } catch(...) {
+        _clean_up();
+        throw;
+    }
+}
+
+void units_dat_t::group_flags_type_t::_read() {
+    m_zerg = m__io->read_bits_int_le(1);
+    m_terran = m__io->read_bits_int_le(1);
+    m_protoss = m__io->read_bits_int_le(1);
+    m_men = m__io->read_bits_int_le(1);
+    m_building = m__io->read_bits_int_le(1);
+    m_factory = m__io->read_bits_int_le(1);
+    m_independent = m__io->read_bits_int_le(1);
+    m_neutral = m__io->read_bits_int_le(1);
+}
+
+units_dat_t::group_flags_type_t::~group_flags_type_t() {
+    _clean_up();
+}
+
+void units_dat_t::group_flags_type_t::_clean_up() {
 }
 
 units_dat_t::staredit_placement_box_type_t::staredit_placement_box_type_t(kaitai::kstream* p__io, units_dat_t* p__parent, units_dat_t* p__root) : kaitai::kstruct(p__io) {
