@@ -289,6 +289,8 @@ json DatConverter::export_units_dat()
     j["broodwar_flag"] = json(*units->broodwar_flag());
   }
 
+  j["is_format_bw"] = json(units->is_format_bw());
+
   j["staredit_availability_flags"] = json(*units->staredit_availability_flags());
 
   return j;
