@@ -58,7 +58,7 @@ Image Sprite::image_obj()
 uint8_t Sprite::health_bar()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
-  uint16_t health_bar = 0;
+  uint8_t health_bar = 0;
 
   try
   {
@@ -124,7 +124,7 @@ bool Sprite::is_visible()
 uint8_t Sprite::select_circle_image_size()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
-  uint16_t select_circle_image_size = 0;
+  uint8_t select_circle_image_size = 0;
 
   try
   {
@@ -143,7 +143,7 @@ uint8_t Sprite::select_circle_image_size()
 uint8_t Sprite::select_circle_vertical_pos()
 {
   LOG4CXX_TRACE(logger,  to_string(mId) + "=>" + LOG_CUR_FUNC + "()");
-  uint16_t select_circle_vertical_pos = 0;
+  uint8_t select_circle_vertical_pos = 0;
 
   try
   {

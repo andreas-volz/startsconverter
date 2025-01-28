@@ -11,12 +11,8 @@ sprites_dat_t::sprites_dat_t(kaitai::kstream* p__io, kaitai::kstruct* p__parent,
     m_is_visible = 0;
     m_select_circle_image_size = 0;
     m_select_circle_vertical_pos = 0;
-    f_file_size_rest = false;
-    f_file_size_first_130 = false;
     f_num_lines = false;
-    f_file_size = false;
-    f_record_size = false;
-    f_record_size_first_130 = false;
+    f_num_decorations = false;
 
     try {
         _read();
@@ -33,7 +29,7 @@ void sprites_dat_t::_read() {
         m_image->push_back(m__io->read_u2le());
     }
     m_health_bar = new std::vector<uint8_t>();
-    const int l_health_bar = (num_lines() - 130);
+    const int l_health_bar = (num_lines() - num_decorations());
     for (int i = 0; i < l_health_bar; i++) {
         m_health_bar->push_back(m__io->read_u1());
     }
@@ -48,12 +44,12 @@ void sprites_dat_t::_read() {
         m_is_visible->push_back(m__io->read_u1());
     }
     m_select_circle_image_size = new std::vector<uint8_t>();
-    const int l_select_circle_image_size = (num_lines() - 130);
+    const int l_select_circle_image_size = (num_lines() - num_decorations());
     for (int i = 0; i < l_select_circle_image_size; i++) {
         m_select_circle_image_size->push_back(m__io->read_u1());
     }
     m_select_circle_vertical_pos = new std::vector<uint8_t>();
-    const int l_select_circle_vertical_pos = (num_lines() - 130);
+    const int l_select_circle_vertical_pos = (num_lines() - num_decorations());
     for (int i = 0; i < l_select_circle_vertical_pos; i++) {
         m_select_circle_vertical_pos->push_back(m__io->read_u1());
     }
@@ -84,50 +80,18 @@ void sprites_dat_t::_clean_up() {
     }
 }
 
-int32_t sprites_dat_t::file_size_rest() {
-    if (f_file_size_rest)
-        return m_file_size_rest;
-    m_file_size_rest = (file_size() - file_size_first_130());
-    f_file_size_rest = true;
-    return m_file_size_rest;
-}
-
-int32_t sprites_dat_t::file_size_first_130() {
-    if (f_file_size_first_130)
-        return m_file_size_first_130;
-    m_file_size_first_130 = (record_size_first_130() * 130);
-    f_file_size_first_130 = true;
-    return m_file_size_first_130;
-}
-
 int32_t sprites_dat_t::num_lines() {
     if (f_num_lines)
         return m_num_lines;
-    m_num_lines = ((file_size_rest() / record_size()) + 130);
+    m_num_lines = 386;
     f_num_lines = true;
     return m_num_lines;
 }
 
-int32_t sprites_dat_t::file_size() {
-    if (f_file_size)
-        return m_file_size;
-    m_file_size = _io()->size();
-    f_file_size = true;
-    return m_file_size;
-}
-
-int8_t sprites_dat_t::record_size() {
-    if (f_record_size)
-        return m_record_size;
-    m_record_size = 7;
-    f_record_size = true;
-    return m_record_size;
-}
-
-int8_t sprites_dat_t::record_size_first_130() {
-    if (f_record_size_first_130)
-        return m_record_size_first_130;
-    m_record_size_first_130 = 4;
-    f_record_size_first_130 = true;
-    return m_record_size_first_130;
+uint8_t sprites_dat_t::num_decorations() {
+    if (f_num_decorations)
+        return m_num_decorations;
+    m_num_decorations = 207;
+    f_num_decorations = true;
+    return m_num_decorations;
 }

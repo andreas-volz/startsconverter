@@ -25,67 +25,18 @@ public:
     ~sprites_dat_t();
 
 private:
-    bool f_file_size_rest;
-    int32_t m_file_size_rest;
-
-public:
-
-    /**
-     * File size for the records after 130. This number might change from file to file.
-     */
-    int32_t file_size_rest();
-
-private:
-    bool f_file_size_first_130;
-    int32_t m_file_size_first_130;
-
-public:
-
-    /**
-     * File size for the first 130 records that is always static size.
-     */
-    int32_t file_size_first_130();
-
-private:
     bool f_num_lines;
     int32_t m_num_lines;
 
 public:
-
-    /**
-     * A division of the dynamic rest file size though the record size gives the number of records in the file to parse.
-     * The static first 130 are then added to this number.
-     */
     int32_t num_lines();
 
 private:
-    bool f_file_size;
-    int32_t m_file_size;
+    bool f_num_decorations;
+    uint8_t m_num_decorations;
 
 public:
-    int32_t file_size();
-
-private:
-    bool f_record_size;
-    int8_t m_record_size;
-
-public:
-
-    /**
-     * The size of one data record. This is all type sizes in the format summarized (starting from record 130).
-     */
-    int8_t record_size();
-
-private:
-    bool f_record_size_first_130;
-    int8_t m_record_size_first_130;
-
-public:
-
-    /**
-     * The size of one data record. This is all type sizes in the format summarized (the first 130 records).
-     */
-    int8_t record_size_first_130();
+    uint8_t num_decorations();
 
 private:
     std::vector<uint16_t>* m_image;
